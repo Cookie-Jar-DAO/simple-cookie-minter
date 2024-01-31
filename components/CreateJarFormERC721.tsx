@@ -4,7 +4,7 @@ import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { useAccount, usePublicClient } from "wagmi";
 import { isAddress, isHex } from "viem";
 import zod from "zod";
-import { useMintNFTJarERC20 } from "../app/hooks/useMintNFTJar";
+import { useMintNFTJarERC721 } from "../app/hooks/useMintNFTJar";
 import { ZERO_ADDRESS } from "../app/constants";
 import { useEffect, useState } from "react";
 import { waitForTransaction } from "wagmi/actions";
@@ -19,7 +19,7 @@ import {
 import SegmentTokenGating from "./SegmentTokenGating";
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
-import { ICreateJarFormInput, ICreateJarFormInputERC20, ICreateJarFormInputERC721 } from "./types/CookieTypes";
+import { ICreateJarFormInput, ICreateJarFormInputERC721 } from "./types/CookieTypes";
 
 
 const toNumber = zod
@@ -78,7 +78,7 @@ const CreateJarFormERC721 = () => {
     formState: { isValid },
   } = form;
 
-  const { mintCookieJarNFT } = useMintNFTJarERC20();
+  const { mintCookieJarNFT } = useMintNFTJarERC721();
 
   useEffect(() => {
     const handleTx = async () => {
@@ -106,26 +106,26 @@ const CreateJarFormERC721 = () => {
 
   const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputERC721> = async (data) => {
     console.log(data);
-    // if (isValid) {
-    //   const result = await mintCookieJarNFT(data);
+    if (isValid) {
+      const result = await mintCookieJarNFT(data);
 
-    //   if (!result) {
-    //     toast({
-    //       title: "Cookie burnt",
-    //       description: `Transaction failed!`,
-    //     });
-    //     return;
-    //   }
+      if (!result) {
+        toast({
+          title: "Cookie burnt",
+          description: `Transaction failed!`,
+        });
+        return;
+      }
 
-    //   const { hash } = result;
+      const { hash } = result;
 
-    //   toast({
-    //     title: "Baking cookie",
-    //     description: `Transaction submitted with hash ${hash}`,
-    //   });
+      toast({
+        title: "Baking cookie",
+        description: `Transaction submitted with hash ${hash}`,
+      });
 
-    //   setHash(hash);
-    // }
+      setHash(hash);
+    }
   };
 
   console.log(isValid);
