@@ -6,13 +6,10 @@ import { Address, isAddress } from "viem";
 import zod from "zod";
 import { NFTImage } from "./NFTImage";
 import { useReachInJar } from "../app/hooks/useReachInJar";
-
-// inputs: [
-//     { internalType: "address", name: "cookieMonster", type: "address" },
-//     { internalType: "string", name: "_reason", type: "string" },
-//   ],
+import { Button } from "@/components/ui/Button";
 
 export interface IClaimFromJarFormInput {
+  cookieJarAddress: Address;
   cookieMonster: string;
   reason: string;
 }
@@ -32,7 +29,11 @@ const schema = zod
 const inputStyle =
   "w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900 p-2";
 
-const ClaimFromJarForm = ({ cookieAddress }: { cookieAddress: Address }) => {
+const ClaimFromJarForm = ({
+  cookieJarAddress,
+}: {
+  cookieJarAddress: Address;
+}) => {
   const { address } = useAccount();
   const {
     handleSubmit,
@@ -41,6 +42,7 @@ const ClaimFromJarForm = ({ cookieAddress }: { cookieAddress: Address }) => {
     formState: { errors, isValid },
   } = useForm<IClaimFromJarFormInput>({
     defaultValues: {
+      cookieJarAddress,
       cookieMonster: address,
       reason: "COOKIES!",
     },
@@ -92,21 +94,12 @@ const ClaimFromJarForm = ({ cookieAddress }: { cookieAddress: Address }) => {
 
         <div className="flex justify-center items-center col-span-full sm:col-span-3 gap-4">
           <div className="input-wrapper">
-            <button
-              type="submit"
-              className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-            >
-              Claim Cookie
-            </button>
+            <Button type="submit">Claim Cookie</Button>
           </div>
           <div className="input-wrapper">
-            <button
-              onClick={() => reset()}
-              type="submit"
-              className="focus:shadow-outline rounded bg-red-500 py-2 px-4 font-bold text-white hover:bg-red-700 focus:outline-none"
-            >
+            <Button onClick={() => reset()} type="submit">
               Reset
-            </button>
+            </Button>
           </div>
         </div>
       </form>

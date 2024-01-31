@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Address, isAddress } from "viem";
 import { FetchTokenResult, fetchToken } from "wagmi/actions";
 import { ZERO_ADDRESS } from "../constants";
-import { CookieJar } from "../utils/indexer/db";
-import { useChainId, useNetwork } from "wagmi";
+import { CookieJar } from "../../lib/indexer/db";
+import { useNetwork } from "wagmi";
 
 const useCookieJarToken = ({ cookieJar }: { cookieJar: CookieJar }) => {
   const { cookieToken } = cookieJar.initializer;
@@ -39,7 +39,6 @@ const useCookieJarToken = ({ cookieJar }: { cookieJar: CookieJar }) => {
       });
     }
   }, []);
-
 
   return { token };
 };

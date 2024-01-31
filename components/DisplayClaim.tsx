@@ -1,4 +1,11 @@
 import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export const DisplayClaim = ({
   heading,
@@ -10,10 +17,12 @@ export const DisplayClaim = ({
   element?: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-col">
-      <h2 className="mb-2">{heading}</h2>
-      <h2 className="mb-2">{description}</h2>
-      {element}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>{heading}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>{element}</CardContent>
+    </Card>
   );
 };

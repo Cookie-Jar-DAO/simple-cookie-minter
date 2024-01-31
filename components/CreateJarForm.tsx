@@ -1,17 +1,44 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { useAccount, usePublicClient } from "wagmi";
+import { useAccount, useBalance, usePublicClient, useToken } from "wagmi";
 import { fetchToken } from "@wagmi/core";
-import { Address, isAddress, parseEther } from "viem";
+import { Address, isAddress, isHex, parseEther } from "viem";
 import zod from "zod";
 import { useMintNFTJar } from "../app/hooks/useMintNFTJar";
 import { ZERO_ADDRESS } from "../app/constants";
 import { NFTImage } from "./NFTImage";
 import { useEffect, useState } from "react";
-import { FetchTokenResult } from "wagmi/actions";
+import {
+  FetchTokenResult,
+  fetchBalance,
+  waitForTransaction,
+} from "wagmi/actions";
+import { Button } from "@/components/ui/button";
+import { SupportedImplementations } from "@/app/contracts";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/components/ui/use-toast";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export interface ICreateJarFormInput {
+  cookieJar: SupportedImplementations;
   receiver: string;
   title: string;
   description: string;
@@ -19,7 +46,8 @@ export interface ICreateJarFormInput {
   cookiePeriod: number;
   cookieAmount: bigint;
   cookieToken: string;
-  allowList: { account: Address }[];
+  erc20Token: string;
+  erc20Threshold: bigint;
   donation: boolean;
   donationAmount?: string;
 }
@@ -35,12 +63,9 @@ const ethAddressSchema = zod.string().refine((value) => isAddress(value), {
     "Provided address is invalid. Please insure you have typed correctly.",
 });
 
-const allowListSchema = zod.object({
-  account: ethAddressSchema,
-});
-
 const schema = zod
   .object({
+    cookieJar: zod.string().transform((value) => "ERC20CookieJar6551"),
     receiver: ethAddressSchema,
     title: zod.string(),
     description: zod.string(),
@@ -48,7 +73,8 @@ const schema = zod
     cookiePeriod: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
     cookieAmount: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
     cookieToken: ethAddressSchema,
-    allowList: zod.array(allowListSchema),
+    erc20Token: ethAddressSchema,
+    erc20Threshold: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
     donation: zod.boolean(),
     donationAmount: zod.string().optional(),
   })
@@ -60,8 +86,25 @@ const inputStyle =
 const CreateJarForm = () => {
   const { address } = useAccount();
   const publicClient = usePublicClient();
-  const [token, setToken] = useState<FetchTokenResult | undefined>(undefined);
+  const { toast } = useToast();
+  const [hash, setHash] = useState<string>("");
   const chain = publicClient?.chain;
+  const form = useForm<ICreateJarFormInput>({
+    defaultValues: {
+      cookieJar: "ERC20CookieJar6551",
+      receiver: address,
+      title: "Cookie Jar",
+      description: "nom nom nom nom",
+      cookiePeriod: 86400,
+      cookieToken: ZERO_ADDRESS,
+      cookieAmount: parseEther("1"),
+      erc20Token: "0x5f207d42f869fd1c71d7f0f81a2a67fc20ff7323", //TODO hardcoded WETH sepolia
+      erc20Threshold: parseEther("1"),
+      donation: false,
+    },
+    resolver: zodResolver(schema),
+  });
+
   const {
     handleSubmit,
     register,
@@ -70,24 +113,22 @@ const CreateJarForm = () => {
     formState: { errors, isValid },
     watch,
     setValue,
-  } = useForm<ICreateJarFormInput>({
-    defaultValues: {
-      receiver: address,
-      title: "Cookie Jar",
-      description: "nom nom nom nom",
-      cookiePeriod: 86400,
-      cookieToken: ZERO_ADDRESS,
-      cookieAmount: parseEther("1"),
-      allowList: [{ account: address }],
-      donation: false,
-    },
-    resolver: zodResolver(schema),
-  });
+  } = form;
+
   const { mintCookieJarNFT } = useMintNFTJar();
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "allowList",
+  const { data: cookieToken } = useBalance({
+    address,
+    token:
+      watch("cookieToken") === ZERO_ADDRESS
+        ? undefined
+        : (watch("cookieToken") as `0x${string}`),
+  });
+
+  console.log({ cookieToken, watchCookieToken: watch("cookieToken") });
+
+  const { data: erc20Token } = useToken({
+    address: watch("erc20Token") as `0x${string}`,
   });
 
   const donation = watch("donation", false);
@@ -98,42 +139,53 @@ const CreateJarForm = () => {
     }
   }, [donation, setValue]);
 
-  const cookieToken = watch("cookieToken");
-
   useEffect(() => {
-    if (cookieToken !== ZERO_ADDRESS && isAddress(cookieToken)) {
-      const getToken = async () => {
-        const token = await fetchToken({
-          address: cookieToken,
+    const handleTx = async () => {
+      if (hash && isHex(hash)) {
+        const txData = await waitForTransaction({
+          hash,
         });
-        setToken(token);
-      };
 
-      getToken();
-    }
+        if (txData.status === "success") {
+          toast({
+            title: "Cookie baked",
+            description: `Cookie jar created!`,
+          });
+        } else {
+          toast({
+            title: "Cookie burnt",
+            description: `Transaction failed! [hash: ${hash}]`,
+          });
+        }
+      }
+    };
 
-    if (cookieToken === ZERO_ADDRESS) {
-      setToken(undefined);
-    }
-  }, [cookieToken]);
+    handleTx();
+  }, [hash]);
 
   const onSubmit: SubmitHandler<ICreateJarFormInput> = async (data) => {
     console.log(data);
     if (isValid) {
-      await mintCookieJarNFT(data);
+      const { hash } = await mintCookieJarNFT(data);
+
+      toast({
+        title: "Baking cookie",
+        description: `Transaction submitted with hash ${hash}`,
+      });
+
+      setHash(hash);
     }
   };
 
   console.log(isValid);
 
   return (
-    <div className="m-auto flex w-3/4 flex-col gap-4 dark:text-gray-50">
-      <h1 className="bold text-2xl">Let&apos;s bake</h1>
+    <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 dark:bg-gray-900"
+        className="flex flex-col gap-2 dark:bg-gray-900 max-w-3xl m-auto"
       >
-        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
           <div className="space-y-2 col-span-full lg:col-span-1">
             <p className="font-medium">Cookie Jar config</p>
             <p className="text-xs">
@@ -142,90 +194,204 @@ const CreateJarForm = () => {
             </p>
             <NFTImage />
           </div>
+
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-            <div className="col-span-full">
-              <label htmlFor="receiver">Receiver</label>
-              <input
-                {...register("receiver")}
-                className={`${inputStyle}         ${
-                  errors.receiver ? "border-red-500" : "border-zinc-300"
-                }`}
-              />
-              <p className="text-red-500">{errors.receiver?.message}</p>
-            </div>
-            <div className="col-span-full">
-              <label htmlFor="title">Title</label>
-              <input {...register("title")} className={inputStyle} />
-              <p className="text-red-500">{errors.title?.message}</p>
-            </div>
-            <div className="col-span-full">
-              <label htmlFor="description">Description</label>
-              <textarea {...register("description")} className={inputStyle} />
-              <p className="text-red-500">{errors.description?.message}</p>
-            </div>
-            <div className="col-span-full">
-              <label htmlFor="link">Link</label>
-              <div className="flex">
-                <input
-                  placeholder="cookiemonster.com"
-                  {...register("link")}
-                  className={inputStyle}
-                />
-              </div>
-              <p className="text-red-500">{errors.link?.message}</p>
-            </div>
-            <div className="col-span-full">
-              <label htmlFor="cookieToken">{`Cookie Token: ${
-                token ? token.name : chain.nativeCurrency.name
-              }`}</label>
-              <input {...register("cookieToken")} className={inputStyle} />
-              <p className="text-red-500">{errors.cookieToken?.message}</p>
-            </div>
-            <div className="col-span-full sm:col-span-3">
-              <label htmlFor="cookiePeriod">Cookie Period</label>
-              <input {...register("cookiePeriod")} className={inputStyle} />
-              <p className="text-red-500">{errors.cookiePeriod?.message}</p>
-            </div>
-            <div className="col-span-full sm:col-span-3">
-              <label htmlFor="cookieAmount">Cookie Amount</label>
-              <input {...register("cookieAmount")} className={inputStyle} />
-              <p className="text-red-500">{errors.cookieAmount?.message}</p>
-            </div>
+            <FormField
+              control={control}
+              name="receiver"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>Receiver</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={address}
+                      defaultValue={address}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    This will be the owner of the cookie jar.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="title"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="DAO Crumbles" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    This will be the name of the cookie jar.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="nom nom nom" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    This will be the description of the cookie jar.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="link"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>Link</FormLabel>
+                  <FormControl>
+                    <Input placeholder="cookiemonster.com" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    External link. For example the org website
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="cookiePeriod"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>Cookie period</FormLabel>
+                  <FormControl>
+                    <Input placeholder="86400" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The time in seconds between cookie distributions
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="cookieToken"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>Cookie Token</FormLabel>
+                  <FormControl>
+                    <Input placeholder="0x0" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The token that will be used to distribute cookies
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="cookieAmount"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>Cookie amount</FormLabel>
+                  <FormControl>
+                    <Input placeholder="1" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The amount of cookies to distribute
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Collapsible className="col-span-full">
+              <CollapsibleTrigger>🍪 Cookie token info 🍪</CollapsibleTrigger>
+              <CollapsibleContent>
+                <p>
+                  <strong>Symbol</strong> {cookieToken?.symbol}
+                </p>
+                <p>
+                  <strong>Decimals</strong> {cookieToken?.decimals}
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
         </fieldset>
 
-        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
           <div className="space-y-2 col-span-full lg:col-span-1">
-            <p className="font-medium">Set allowlist</p>
+            <p className="font-medium">Set ERC20 gating</p>
             <p className="text-xs">
-              Provided the addresses of the cookie monsters you want to allow to
-              eat your cookies.
+              Provide the address of the ERC20 and the threshold balance to
+              allow cookie withdrawals.
             </p>
           </div>
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-            <ul className="col-span-full">
-              {fields.map((item, index) => (
-                <li key={item.id} className="col-span-full">
-                  <input
-                    {...register(`allowList.${index}.account`)}
-                    className={inputStyle}
-                  />
-                  <button type="button" onClick={() => remove(index)}>
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              onClick={() => append({ account: ZERO_ADDRESS })}
-            >
-              Append
-            </button>
+            <FormField
+              control={control}
+              name="erc20Token"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>ERC20 Token</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="0x5f207d42f869fd1c71d7f0f81a2a67fc20ff7323"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    The token that will be used to gate cookie withdrawals
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="erc20Threshold"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormLabel>ERC20 Threshold</FormLabel>
+                  <FormControl>
+                    <Input placeholder="1" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The minimum balance of the ERC20 to allow cookie withdrawals
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Collapsible className="col-span-full">
+              <CollapsibleTrigger>✅ Gating token info ✅</CollapsibleTrigger>
+              <CollapsibleContent>
+                <p>
+                  <strong>Symbol</strong> {erc20Token?.symbol}
+                </p>
+                <p>
+                  <strong>Decimals</strong> {erc20Token?.decimals}
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
         </fieldset>
 
-        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
+        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
           <div className="space-y-2 col-span-full lg:col-span-1">
             <p className="font-medium">Fund public goods</p>
             <p className="text-xs">
@@ -233,44 +399,52 @@ const CreateJarForm = () => {
             </p>
           </div>
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-            <div className="col-span-full">
-              <div className="flex flex-row gap-4">
-                <input type="checkbox" {...register("donation")} />
-                <label htmlFor="donation">{`Donate ${chain.nativeCurrency.name} to the devs`}</label>
-              </div>
+            <FormField
+              control={control}
+              name="donation"
+              render={({ field }) => (
+                <FormItem className="col-span-full">
+                  <FormControl>
+                    <Checkbox
+                      onCheckedChange={(checked) => {
+                        return checked
+                          ? field.onChange(true)
+                          : field.onChange(false);
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Donate {chain.nativeCurrency.name} to the devs
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <p className="text-red-500">{errors.donation?.message}</p>
-            </div>
             {donation && (
-              <div className="col-span-full sm:col-span-3">
-                <label htmlFor="donationAmount">Donation Amount</label>
-                <input {...register("donationAmount")} className={inputStyle} />
-                <p className="text-red-500">{errors.donationAmount?.message}</p>
-              </div>
+              <FormField
+                control={control}
+                name="donationAmount"
+                render={({ field }) => (
+                  <FormItem className="col-span-full">
+                    <FormLabel>Donation amount</FormLabel>
+                    <FormControl>
+                      <Input placeholder="1" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      The amount of {chain.nativeCurrency.name} to donate
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             )}
           </div>
         </fieldset>
-        <div className="flex justify-center items-center col-span-full sm:col-span-3 gap-4">
-          <div className="input-wrapper">
-            <button
-              type="submit"
-              className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-            >
-              Mint Cookie
-            </button>
-          </div>
-          <div className="input-wrapper">
-            <button
-              onClick={() => reset()}
-              type="submit"
-              className="focus:shadow-outline rounded bg-red-500 py-2 px-4 font-bold text-white hover:bg-red-700 focus:outline-none"
-            >
-              Reset
-            </button>
-          </div>
-        </div>
+        <Button type="submit">Mint Cookie</Button>
+        <Button onClick={() => reset()}>Reset</Button>
       </form>
-    </div>
+    </Form>
   );
 };
 

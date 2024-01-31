@@ -1,38 +1,40 @@
-import { useQuery } from "react-query";
-import { Address, usePublicClient } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
+import { usePublicClient } from "wagmi";
 import { ZERO_ADDRESS } from "../constants";
 
-export const useCookieNFT = ({
-  nftAddress,
-}: {
-  nftAddress?: `0x${string}`;
-}) => {
+export const useCookieNFT = ({ nftAddress }: { nftAddress?: string }) => {
   const publicClient = usePublicClient();
 
+  const { data, ...rest } = useQuery({
+    queryKey: ["nftData", { nftAddress }],
+    queryFn: () =>
+      publicClient?.getLogs({
+        address: nftAddress as `0x${string}`,
+        event: {
+          name: "Transfer",
+          inputs: [
+            { type: "address", indexed: true, name: "from" },
+            { type: "address", indexed: true, name: "to" },
+            { type: "uint256", indexed: false, name: "value" },
+          ],
+          type: "event",
+        },
+        args: {
+          from: ZERO_ADDRESS,
+        },
+      }),
+    enabled: !!nftAddress || !!publicClient,
+  });
+
   if (!nftAddress) {
-    throw new Error("No cookie jar address provided");
+    console.log("No cookie jar address provided");
+    return undefined;
   }
 
   if (!publicClient) {
-    throw new Error("Not connected to network");
+    console.log("Not connected to network");
+    return undefined;
   }
-  const { data, ...rest } = useQuery(["nftData", { nftAddress }], () =>
-    publicClient?.getLogs({
-      address: nftAddress as `0x${string}`,
-      event: {
-        name: "Transfer",
-        inputs: [
-          { type: "address", indexed: true, name: "from" },
-          { type: "address", indexed: true, name: "to" },
-          { type: "uint256", indexed: false, name: "value" },
-        ],
-        type: "event",
-      },
-      args: {
-        from: ZERO_ADDRESS,
-      },
-    })
-  );
 
   const totalSupply = data?.length;
 

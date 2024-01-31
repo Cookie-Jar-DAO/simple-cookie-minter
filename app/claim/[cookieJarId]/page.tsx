@@ -2,7 +2,7 @@ import Confetti from "react-confetti";
 
 import { DisplayClaim } from "@/components/DisplayClaim";
 import { Countdown } from "@/components/Countdown";
-import { ClaimDetails } from "@/components/DetailsBox";
+import { DetailsBox } from "@/components/DetailsBox";
 import ClaimFromJarForm from "@/components/ClaimFromJarForm";
 import { useState } from "react";
 import { useCookieJar } from "@/app/hooks/useCookieJar";
@@ -143,7 +143,7 @@ export const Claims = ({ params }: { params: { cookieJarId: string } }) => {
               claimPeriod={data.claimPeriod}
               lastClaimed={data.lastClaimed}
             />
-            <ClaimDetails
+            <DetailsBox
               claimAmt={data.claimAmt}
               claimPeriod={data.claimPeriod}
               unit={token.token!.symbol}
@@ -161,7 +161,7 @@ export const Claims = ({ params }: { params: { cookieJarId: string } }) => {
   if (data && canClaim && cookieJar?.address && isAddress(cookieJar.address))
     return (
       <div className="flex flex-column p-24">
-        <ClaimDetails
+        <DetailsBox
           claimAmt={data.claimAmt}
           claimPeriod={data.claimPeriod}
           unit={token.token!.symbol}

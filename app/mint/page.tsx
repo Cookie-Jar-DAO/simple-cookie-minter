@@ -1,5 +1,5 @@
 "use client";
-import Header from "../../components/Header";
+import { Header } from "../../components/Header";
 import CreateJarForm from "../../components/CreateJarForm";
 import Footer from "../../components/Footer";
 

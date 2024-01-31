@@ -3,10 +3,9 @@ import { useQuery } from "react-query";
 import { CookieJarCore } from "../abis";
 import { useIndexer } from "./useIndexer";
 import { Abi, Address } from "viem";
-import { db } from "../utils/indexer/db";
+import { db } from "../../lib/indexer/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { PublicClient, useAccount, useChainId, usePublicClient } from "wagmi";
-import { ZERO_ADDRESS } from "../constants";
 import useCookieJarToken from "./useCookieJarToken";
 
 // fetch user cookie claim data from the blockchain

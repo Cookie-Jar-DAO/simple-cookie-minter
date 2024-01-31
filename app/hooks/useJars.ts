@@ -1,4 +1,4 @@
-import { db } from "../utils/indexer";
+import { db } from "../../lib/indexer";
 import { useLiveQuery } from "dexie-react-hooks";
 
 export const useJars = () => {

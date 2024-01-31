@@ -2,12 +2,13 @@
 
 import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-import { assertExists } from "./utils";
-import { sepolia, gnosis, goerli } from "wagmi/chains";
-import { QueryClientProvider, QueryClient } from "react-query";
+import { assertExists } from "../lib";
+import { sepolia } from "wagmi/chains";
 import { useIndexer } from "./hooks/useIndexer";
 
-const chains = [sepolia, gnosis, goerli];
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const chains = [sepolia];
 
 // See: https://docs.family.co/connectkit/getting-started#getting-started-section-3-implementation
 const wagmiConfig = createConfig(
