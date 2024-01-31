@@ -19,7 +19,7 @@ import {
 import SegmentTokenGating from "./SegmentTokenGating";
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
-import { ICreateJarFormInput, ICreateJarFormInputERC20 } from "./types/CookieTypes";
+import { ICreateJarFormInput, ICreateJarFormInputERC20, ICreateJarFormInputERC721 } from "./types/CookieTypes";
 
 const toNumber = zod
   .number()
@@ -141,7 +141,7 @@ const CreateJarFormERC20 = () => {
 
         <SegmentDonation form={form} />
 
-       
+
         <Button type="submit">Mint Cookie</Button>
         <Button onClick={() => reset()}>Reset</Button>
       </form>

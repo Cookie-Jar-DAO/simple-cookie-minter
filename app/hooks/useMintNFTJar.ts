@@ -1,5 +1,8 @@
 import { useWalletClient } from "wagmi";
-import { ICreateJarFormInput, ICreateJarFormInputERC20 } from "../../components/types/CookieTypes";
+import {
+  ICreateJarFormInput,
+  ICreateJarFormInputERC20,
+} from "../../components/types/CookieTypes";
 import { useDeployment } from "./useDeployment";
 import { ZERO_ADDRESS } from "../constants";
 import { prepareWriteContract, writeContract } from "wagmi/actions";
@@ -16,7 +19,9 @@ export const useMintNFTJarERC20 = () => {
   const deployment = useDeployment();
   const { toast } = useToast();
 
-  const mintCookieJarNFT = async (mintData: ICreateJarFormInput & ICreateJarFormInputERC20) => {
+  const mintCookieJarNFT = async (
+    mintData: ICreateJarFormInput & ICreateJarFormInputERC20
+  ) => {
     console.log("mintData", mintData);
 
     if (!walletClient) {
@@ -117,7 +122,9 @@ export const useMintNFTJarERC20 = () => {
   };
 };
 
-const encodeCookieMintParameters = (data: ICreateJarFormInput & ICreateJarFormInputERC20) => {
+const encodeCookieMintParameters = (
+  data: ICreateJarFormInput & ICreateJarFormInputERC20
+) => {
   // 0. address owner or safeTarget,
   // 1. uint256 _periodLength,
   // 2. uint256 _cookieAmount,

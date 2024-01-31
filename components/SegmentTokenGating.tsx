@@ -2,7 +2,7 @@
 // <TokenGattingFieldSet form={form} />
 
 import React from 'react';
-import { ICreateJarFormInput } from './types/CookieTypes';
+import { SegmentCookieMetaProps } from './types/CookieTypes';
 import {  useToken } from "wagmi";
 
 import {
@@ -20,26 +20,14 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
   } from "@/components/ui/collapsible";
-import { UseFormReturn } from 'react-hook-form';
 
-
-const SegmentTokenGating = (
-    {
-        form
-    }: {
-        form: UseFormReturn<ICreateJarFormInput>;
-    }
-) => {
+const SegmentTokenGating: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
 
 
     const {
-        handleSubmit,
-        register,
-        reset,
         control,
         formState: { isValid },
         watch,
-        setValue,
       } = form;
 
       const { data: erc20Token } = useToken({

@@ -2,46 +2,35 @@
 // <TokenGattingFieldSet form={form} />
 
 import React from 'react';
-import { ICreateJarFormInput } from './types/CookieTypes';
+import { SegmentCookieMetaProps } from './types/CookieTypes';
 
 import { useAccount, useBalance, useToken } from "wagmi";
 
 import {
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-  } from "@/components/ui/form";
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-  } from "@/components/ui/collapsible";
-import { UseFormReturn } from 'react-hook-form';
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Textarea } from './ui/textarea';
 import { NFTImage } from './NFTImage';
 import { ZERO_ADDRESS } from '@/app/constants';
 
 
-const SegmentCookieMeta = (
-    {
-        form
-    }: {
-        form: UseFormReturn<ICreateJarFormInput>;
-    }
-) => {
+const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
   const {
-    handleSubmit,
-    register,
-    reset,
     control,
     formState: { isValid },
     watch,
-    setValue,
   } = form;
 
   const { address } = useAccount();
@@ -55,12 +44,12 @@ const SegmentCookieMeta = (
 
 
 
-      const { data: erc20Token } = useToken({
-        address: watch("erc20Token") as `0x${string}`,
-      });
+  const { data: erc20Token } = useToken({
+    address: watch("erc20Token") as `0x${string}`,
+  });
 
-    return (
-      <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
+  return (
+    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
       <div className="space-y-2 col-span-full lg:col-span-1">
         <p className="font-medium">Cookie Jar config</p>
         <p className="text-xs">
@@ -205,7 +194,7 @@ const SegmentCookieMeta = (
         </Collapsible>
       </div>
     </fieldset>
-    );
-    }
+  );
+}
 
 export default SegmentCookieMeta;

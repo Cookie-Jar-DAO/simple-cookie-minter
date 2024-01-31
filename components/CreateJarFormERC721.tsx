@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { useAccount, usePublicClient } from "wagmi";
 import { isAddress, isHex } from "viem";
 import zod from "zod";
@@ -19,7 +19,7 @@ import {
 import SegmentTokenGating from "./SegmentTokenGating";
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
-import { ICreateJarFormInput, ICreateJarFormInputERC721 } from "./types/CookieTypes";
+import { ICreateJarFormInput, ICreateJarFormInputERC20, ICreateJarFormInputERC721 } from "./types/CookieTypes";
 
 
 const toNumber = zod
@@ -35,7 +35,7 @@ const ethAddressSchema = zod.string().refine((value) => isAddress(value), {
 
 const schema = zod
   .object({
-    cookieJar: zod.string().transform((value) => "ERC20CookieJar6551"),
+    cookieJar: zod.string().transform((value) => "ERC721CookieJar6551"),
     receiver: ethAddressSchema,
     title: zod.string(),
     description: zod.string(),
@@ -43,8 +43,8 @@ const schema = zod
     cookiePeriod: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
     cookieAmount: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
     cookieToken: ethAddressSchema,
-    erc20Token: ethAddressSchema,
-    erc20Threshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
+    erc721Token: ethAddressSchema,
+    erc721Threshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
     donation: zod.boolean(),
     donationAmount: zod.string().optional(),
   })
@@ -58,15 +58,15 @@ const CreateJarFormERC721 = () => {
   const chain = publicClient?.chain;
   const form = useForm<ICreateJarFormInput & ICreateJarFormInputERC721>({
     defaultValues: {
-      cookieJar: "ERC20CookieJar6551",
+      cookieJar: "ERC721CookieJar6551",
       receiver: address,
       title: "Cookie Jar",
       description: "nom nom nom nom",
       cookiePeriod: 86400,
       cookieToken: ZERO_ADDRESS,
       cookieAmount: "1000000000000000000",
-      erc20Token: "0x5f207d42f869fd1c71d7f0f81a2a67fc20ff7323", //TODO hardcoded WETH sepolia
-      erc20Threshold: "1000000000000000000",
+      erc721Token: "0x5f207d42f869fd1c71d7f0f81a2a67fc20ff7323", //TODO hardcoded WETH sepolia
+      erc721Threshold: "1000000000000000000",
       donation: false,
     },
     resolver: zodResolver(schema),
@@ -106,26 +106,26 @@ const CreateJarFormERC721 = () => {
 
   const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputERC721> = async (data) => {
     console.log(data);
-    if (isValid) {
-      const result = await mintCookieJarNFT(data);
+    // if (isValid) {
+    //   const result = await mintCookieJarNFT(data);
 
-      if (!result) {
-        toast({
-          title: "Cookie burnt",
-          description: `Transaction failed!`,
-        });
-        return;
-      }
+    //   if (!result) {
+    //     toast({
+    //       title: "Cookie burnt",
+    //       description: `Transaction failed!`,
+    //     });
+    //     return;
+    //   }
 
-      const { hash } = result;
+    //   const { hash } = result;
 
-      toast({
-        title: "Baking cookie",
-        description: `Transaction submitted with hash ${hash}`,
-      });
+    //   toast({
+    //     title: "Baking cookie",
+    //     description: `Transaction submitted with hash ${hash}`,
+    //   });
 
-      setHash(hash);
-    }
+    //   setHash(hash);
+    // }
   };
 
   console.log(isValid);
@@ -142,7 +142,7 @@ const CreateJarFormERC721 = () => {
 
         <SegmentDonation form={form} />
 
-       
+
         <Button type="submit">Mint Cookie</Button>
         <Button onClick={() => reset()}>Reset</Button>
       </form>
