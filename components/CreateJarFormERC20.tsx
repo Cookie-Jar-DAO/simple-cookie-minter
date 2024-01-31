@@ -16,10 +16,10 @@ import {
   Form,
 } from "@/components/ui/form";
 
-import SegmentTokenGating from "./SegmentTokenGating";
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
 import { ICreateJarFormInput, ICreateJarFormInputERC20, ICreateJarFormInputERC721 } from "./types/CookieTypes";
+import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
 
 const toNumber = zod
   .number()
@@ -137,7 +137,7 @@ const CreateJarFormERC20 = () => {
       >
         <SegmentCookieMeta form={form} />
 
-        <SegmentTokenGating form={form} />
+        <SegmentERC20TokenGating form={form} />
 
         <SegmentDonation form={form} />
 

@@ -21,7 +21,7 @@ import {
     CollapsibleTrigger,
   } from "@/components/ui/collapsible";
 
-const SegmentTokenGating: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
+const SegmentERC20TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
 
 
     const {
@@ -97,4 +97,4 @@ const SegmentTokenGating: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => 
     );
     }
 
-export default SegmentTokenGating;
+export default SegmentERC20TokenGating;
