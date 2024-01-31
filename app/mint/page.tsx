@@ -1,6 +1,6 @@
 "use client";
 import { Header } from "../../components/Header";
-import CreateJarForm from "../../components/CreateJarForm";
+import CreateJarForm from "../../components/CreateJarFormERC20";
 import Footer from "../../components/Footer";
 
 export default function Mint() {
