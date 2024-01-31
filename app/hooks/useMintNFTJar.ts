@@ -274,6 +274,28 @@ const encodeCookieMintParameters = (
     ]);
   }
 
+  if ('erc721Token' in data && data.cookieJar === "ERC721CookieJar6551") {
+    const erc721Token = isAddress(data.erc721Token)
+      ? data.erc721Token
+      : ZERO_ADDRESS;
+    const erc721Threshold = BigInt(data.erc721Threshold);
+
+    if (erc721Token === ZERO_ADDRESS || erc721Threshold === 0n) {
+      throw new Error("Invalid input");
+    }
+
+    const parameters =
+      "address owner, uint256 _periodLength, uint256 _cookieAmount, address _cookieToken, address _erc721addr, uint256 _threshold";
+    return encodeAbiParameters(parseAbiParameters(parameters), [
+      owner,
+      periodLength,
+      cookieAmount,
+      cookieToken,
+      erc721Token,
+      erc721Threshold,
+    ]);
+  }
+
   // Baal
   // 5. address _dao,
   // 6. uint256 _threshold,

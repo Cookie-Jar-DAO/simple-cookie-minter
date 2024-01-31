@@ -21,6 +21,7 @@ import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
 import { ICreateJarFormInput, ICreateJarFormInputERC721 } from "./types/CookieTypes";
 import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
+import SegmentERC721TokenGating from "./SegmentERC721TokenGating";
 
 
 const toNumber = zod
@@ -56,7 +57,6 @@ const CreateJarFormERC721 = () => {
   const publicClient = usePublicClient();
   const { toast } = useToast();
   const [hash, setHash] = useState<string>("");
-  const chain = publicClient?.chain;
   const form = useForm<ICreateJarFormInput & ICreateJarFormInputERC721>({
     defaultValues: {
       cookieJar: "ERC721CookieJar6551",
@@ -67,7 +67,7 @@ const CreateJarFormERC721 = () => {
       cookieToken: ZERO_ADDRESS,
       cookieAmount: "1000000000000000000",
       erc721Token: "0x5f207d42f869fd1c71d7f0f81a2a67fc20ff7323", //TODO hardcoded WETH sepolia
-      erc721Threshold: "1000000000000000000",
+      erc721Threshold: "1",
       donation: false,
     },
     resolver: zodResolver(schema),
@@ -139,7 +139,7 @@ const CreateJarFormERC721 = () => {
       >
         <SegmentCookieMeta form={form} />
 
-        {/* <SegmentERC721TokenGating form={form} /> */}
+        <SegmentERC721TokenGating form={form} />
 
         <SegmentDonation form={form} />
 

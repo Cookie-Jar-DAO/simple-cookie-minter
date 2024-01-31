@@ -48,9 +48,14 @@ export const Header = () => {
             Mint
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <Link legacyBehavior href="/mint" passHref>
+            <Link legacyBehavior href="/mintERC20" passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 ERC20
+              </NavigationMenuLink>
+            </Link>{" "}
+            <Link legacyBehavior href="/mintERC721" passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                ERC721
               </NavigationMenuLink>
             </Link>{" "}
           </NavigationMenuContent>
