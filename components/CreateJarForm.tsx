@@ -1,19 +1,14 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useAccount, useBalance, usePublicClient, useToken } from "wagmi";
-import { fetchToken } from "@wagmi/core";
-import { Address, isAddress, isHex, parseEther } from "viem";
+import { isAddress, isHex, parseEther } from "viem";
 import zod from "zod";
 import { useMintNFTJar } from "../app/hooks/useMintNFTJar";
 import { ZERO_ADDRESS } from "../app/constants";
 import { NFTImage } from "./NFTImage";
 import { useEffect, useState } from "react";
-import {
-  FetchTokenResult,
-  fetchBalance,
-  waitForTransaction,
-} from "wagmi/actions";
+import { waitForTransaction } from "wagmi/actions";
 import { Button } from "@/components/ui/button";
 import { SupportedImplementations } from "@/app/contracts";
 import { Textarea } from "@/components/ui/textarea";
@@ -44,10 +39,10 @@ export interface ICreateJarFormInput {
   description: string;
   link: string;
   cookiePeriod: number;
-  cookieAmount: bigint;
+  cookieAmount: string;
   cookieToken: string;
   erc20Token: string;
-  erc20Threshold: bigint;
+  erc20Threshold: string;
   donation: boolean;
   donationAmount?: string;
 }
@@ -71,17 +66,14 @@ const schema = zod
     description: zod.string(),
     link: zod.string().url(),
     cookiePeriod: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
-    cookieAmount: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
+    cookieAmount: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
     cookieToken: ethAddressSchema,
     erc20Token: ethAddressSchema,
-    erc20Threshold: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
+    erc20Threshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
     donation: zod.boolean(),
     donationAmount: zod.string().optional(),
   })
   .required();
-
-const inputStyle =
-  "w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900 p-2";
 
 const CreateJarForm = () => {
   const { address } = useAccount();
@@ -97,9 +89,9 @@ const CreateJarForm = () => {
       description: "nom nom nom nom",
       cookiePeriod: 86400,
       cookieToken: ZERO_ADDRESS,
-      cookieAmount: parseEther("1"),
+      cookieAmount: "1000000000000000000",
       erc20Token: "0x5f207d42f869fd1c71d7f0f81a2a67fc20ff7323", //TODO hardcoded WETH sepolia
-      erc20Threshold: parseEther("1"),
+      erc20Threshold: "1000000000000000000",
       donation: false,
     },
     resolver: zodResolver(schema),
@@ -110,7 +102,7 @@ const CreateJarForm = () => {
     register,
     reset,
     control,
-    formState: { errors, isValid },
+    formState: { isValid },
     watch,
     setValue,
   } = form;
@@ -166,7 +158,17 @@ const CreateJarForm = () => {
   const onSubmit: SubmitHandler<ICreateJarFormInput> = async (data) => {
     console.log(data);
     if (isValid) {
-      const { hash } = await mintCookieJarNFT(data);
+      const result = await mintCookieJarNFT(data);
+
+      if (!result) {
+        toast({
+          title: "Cookie burnt",
+          description: `Transaction failed!`,
+        });
+        return;
+      }
+
+      const { hash } = result;
 
       toast({
         title: "Baking cookie",

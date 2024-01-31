@@ -1,9 +1,9 @@
 "use client";
-import Header from "../../components/Header";
+import { Header } from "../../components/Header";
 import CreateJarForm from "../../components/CreateJarForm";
 import Footer from "../../components/Footer";
 import { useJars } from "../hooks/useJars";
-import JarCard from "@/components/JarCard";
+import { JarCard } from "@/components/JarCard";
 
 export default function Home() {
   const { cookieJars } = useJars();

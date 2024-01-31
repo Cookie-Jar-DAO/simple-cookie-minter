@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { CookieJarCore } from "../abis";
 import { useIndexer } from "./useIndexer";
@@ -99,20 +99,19 @@ export const useCookieJar = ({ cookieJarId }: { cookieJarId: string }) => {
 
   const cookieJar = useLiveQuery(() => db.cookieJars.get(cookieJarId));
 
-  const { data, ...rest } = useQuery(
-    ["claimData", { address }],
-    () =>
+  const { data, ...rest } = useQuery({
+    queryKey: ["claimData", { address }],
+    queryFn: () =>
       fetchUserClaim({
         cookieJarAddress: cookieJar?.address as `0x${string}`,
         userAddress: address?.toLowerCase() as `0x${string}`,
         chainId,
         publicClient: client!,
       }),
-    {
-      enabled: !!address && !!cookieJar && !!chainId && !!client,
-      refetchInterval: 5000,
-    }
-  );
+
+    enabled: !!address && !!cookieJar && !!chainId && !!client,
+    refetchInterval: 5000,
+  });
 
   const token = useCookieJarToken({ cookieJar: cookieJar! });
 

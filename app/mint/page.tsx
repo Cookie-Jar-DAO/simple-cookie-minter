@@ -3,7 +3,7 @@ import { Header } from "../../components/Header";
 import CreateJarForm from "../../components/CreateJarForm";
 import Footer from "../../components/Footer";
 
-export default function Home() {
+export default function Mint() {
   return (
     <>
       <Header />

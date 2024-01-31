@@ -6,7 +6,7 @@ import { Address, isAddress } from "viem";
 import zod from "zod";
 import { NFTImage } from "./NFTImage";
 import { useReachInJar } from "../app/hooks/useReachInJar";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export interface IClaimFromJarFormInput {
   cookieJarAddress: Address;

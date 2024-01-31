@@ -1,7 +1,7 @@
+"use client";
 import Confetti from "react-confetti";
 
 import { DisplayClaim } from "@/components/DisplayClaim";
-import { Countdown } from "@/components/Countdown";
 import { DetailsBox } from "@/components/DetailsBox";
 import ClaimFromJarForm from "@/components/ClaimFromJarForm";
 import { useState } from "react";
@@ -12,7 +12,11 @@ import useWindowSize from "@/app/hooks/useWindowSize";
 import { isAddress } from "viem";
 import Link from "next/link";
 
-export const Claims = ({ params }: { params: { cookieJarId: string } }) => {
+export default function Claims({
+  params,
+}: {
+  params: { cookieJarId: string };
+}) {
   const { isConnected } = useAccount();
   const [showConfetti, setShowConfetti] = useState(false);
   const { width, height } = useWindowSize();
@@ -139,10 +143,7 @@ export const Claims = ({ params }: { params: { cookieJarId: string } }) => {
                 }}
               />
             )}
-            <Countdown
-              claimPeriod={data.claimPeriod}
-              lastClaimed={data.lastClaimed}
-            />
+
             <DetailsBox
               claimAmt={data.claimAmt}
               claimPeriod={data.claimPeriod}
@@ -167,9 +168,9 @@ export const Claims = ({ params }: { params: { cookieJarId: string } }) => {
           unit={token.token!.symbol}
           claimId={cookieJar?.jarUid}
         />
-        <ClaimFromJarForm cookieAddress={cookieJar?.address} />
+        <ClaimFromJarForm cookieJarAddress={cookieJar?.address} />
       </div>
     );
 
   return null;
-};
+}
