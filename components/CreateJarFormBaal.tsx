@@ -12,16 +12,15 @@ import { Button } from "@/components/ui/button";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import {
-  Form,
-} from "@/components/ui/form";
-
+import { Form } from "@/components/ui/form";
 
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
-import { ICreateJarFormInput, ICreateJarFormInputBaal } from "./types/CookieTypes";
+import {
+  ICreateJarFormInput,
+  ICreateJarFormInputBaal,
+} from "./types/CookieTypes";
 import SegmentBaalTokenGating from "./SegmentBaalTokenGating";
-
 
 const toNumber = zod
   .number()
@@ -36,7 +35,7 @@ const ethAddressSchema = zod.string().refine((value) => isAddress(value), {
 
 const schema = zod
   .object({
-    cookieJar: zod.string().transform((value) => "ERC721CookieJar6551"),
+    cookieJar: zod.string().transform((value) => "BaalCookieJar6551"),
     receiver: ethAddressSchema,
     title: zod.string(),
     description: zod.string(),
@@ -44,8 +43,10 @@ const schema = zod
     cookiePeriod: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
     cookieAmount: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
     cookieToken: ethAddressSchema,
-    erc721Token: ethAddressSchema,
-    erc721Threshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
+    baalDao: ethAddressSchema,
+    baalThreshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
+    baalUseLoot: zod.boolean(),
+    baalUseShares: zod.boolean(),
     donation: zod.boolean(),
     donationAmount: zod.string().optional(),
   })
@@ -58,7 +59,7 @@ const CreateJarFormERC721 = () => {
   const [hash, setHash] = useState<string>("");
   const form = useForm<ICreateJarFormInput & ICreateJarFormInputBaal>({
     defaultValues: {
-      cookieJar: "ERC721CookieJar6551",
+      cookieJar: "BaalCookieJar6551",
       receiver: address,
       title: "Cookie Jar",
       description: "nom nom nom nom",
@@ -81,6 +82,10 @@ const CreateJarFormERC721 = () => {
   } = form;
 
   const { mintCookieJarNFT } = useMintNFTJar();
+
+  const data = form.watch();
+
+  console.log(data);
 
   useEffect(() => {
     const handleTx = async () => {
@@ -106,7 +111,9 @@ const CreateJarFormERC721 = () => {
     handleTx();
   }, [hash]);
 
-  const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputBaal> = async (data) => {
+  const onSubmit: SubmitHandler<
+    ICreateJarFormInput & ICreateJarFormInputBaal
+  > = async (data) => {
     console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
@@ -143,7 +150,6 @@ const CreateJarFormERC721 = () => {
         <SegmentBaalTokenGating form={form} />
 
         <SegmentDonation form={form} />
-
 
         <Button type="submit">Mint Cookie</Button>
         <Button onClick={() => reset()}>Reset</Button>
