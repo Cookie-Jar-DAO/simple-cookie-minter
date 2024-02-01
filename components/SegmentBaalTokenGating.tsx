@@ -20,6 +20,8 @@ import {
     CollapsibleTrigger,
   } from "@/components/ui/collapsible";
 import { Form } from 'react-hook-form';
+import { useDAOData } from '@/app/hooks/useDAOdata';
+
 
 const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
 
@@ -30,9 +32,12 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({ form 
         watch,
       } = form;
 
-      // const { data: erc721Token } = useToken({
-      //   address: watch("erc721Token") as `0x${string}`,
-      // });
+      const { data: daoData } = useDAOData({
+        networkId: "0xaa36a7",
+        daoAddress: watch("baalDao") as `0x${string}`,
+      });
+
+
 
     return (
         <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
@@ -116,17 +121,18 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({ form 
             )}
           />
 
-          {/* <Collapsible className="col-span-full">
+          <Collapsible className="col-span-full">
             <CollapsibleTrigger>✅ Gating DAO info ✅</CollapsibleTrigger>
             <CollapsibleContent>
+            { !daoData?.data?.dao?.name && <p>DAO not found</p>}
               <p>
-                <strong>Symbol</strong> {erc721Token?.symbol}
+                <strong>Name</strong> {daoData?.data?.dao?.name}
               </p>
               <p>
-                <strong>Name</strong> {erc721Token?.name}
+                <strong>Member Count</strong> {daoData?.data?.dao?.activeMemberCount}
               </p>
             </CollapsibleContent>
-          </Collapsible> */}
+          </Collapsible>
         </div>
       </fieldset>
     );
