@@ -20,7 +20,7 @@ export const fetchDAOdata = async ({
             dao: daoAddress,
             includeTokens: true,
             graphApiKeys: {
-              [networkId]: '4dc75858e639bc0281535353ad946fe2',
+              [networkId]: process.env.NEXT_PUBLIC_MAINNET_GRAPH_KEY,
             },
           });
 
