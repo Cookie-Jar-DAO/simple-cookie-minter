@@ -16,10 +16,12 @@ import {
   Form,
 } from "@/components/ui/form";
 
+
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
-import { ICreateJarFormInput, ICreateJarFormInputERC20 } from "./types/CookieTypes";
-import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
+import { ICreateJarFormInput, ICreateJarFormInputBaal } from "./types/CookieTypes";
+import SegmentBaalTokenGating from "./SegmentBaalTokenGating";
+
 
 const toNumber = zod
   .number()
@@ -34,7 +36,7 @@ const ethAddressSchema = zod.string().refine((value) => isAddress(value), {
 
 const schema = zod
   .object({
-    cookieJar: zod.string().transform((value) => "ERC20CookieJar6551"),
+    cookieJar: zod.string().transform((value) => "ERC721CookieJar6551"),
     receiver: ethAddressSchema,
     title: zod.string(),
     description: zod.string(),
@@ -42,30 +44,31 @@ const schema = zod
     cookiePeriod: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
     cookieAmount: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
     cookieToken: ethAddressSchema,
-    erc20Token: ethAddressSchema,
-    erc20Threshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
+    erc721Token: ethAddressSchema,
+    erc721Threshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
     donation: zod.boolean(),
     donationAmount: zod.string().optional(),
   })
   .required();
 
-const CreateJarFormERC20 = () => {
+const CreateJarFormERC721 = () => {
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const { toast } = useToast();
   const [hash, setHash] = useState<string>("");
-  const chain = publicClient?.chain;
-  const form = useForm<ICreateJarFormInput & ICreateJarFormInputERC20>({
+  const form = useForm<ICreateJarFormInput & ICreateJarFormInputBaal>({
     defaultValues: {
-      cookieJar: "ERC20CookieJar6551",
+      cookieJar: "ERC721CookieJar6551",
       receiver: address,
       title: "Cookie Jar",
       description: "nom nom nom nom",
       cookiePeriod: 86400,
       cookieToken: ZERO_ADDRESS,
       cookieAmount: "1000000000000000000",
-      erc20Token: "0x5f207d42f869fd1c71d7f0f81a2a67fc20ff7323", //TODO hardcoded WETH sepolia
-      erc20Threshold: "1000000000000000000",
+      baalDao: ZERO_ADDRESS,
+      baalThreshold: "1000000000000000000",
+      baalUseLoot: false,
+      baalUseShares: false,
       donation: false,
     },
     resolver: zodResolver(schema),
@@ -103,7 +106,7 @@ const CreateJarFormERC20 = () => {
     handleTx();
   }, [hash]);
 
-  const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputERC20> = async (data) => {
+  const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputBaal> = async (data) => {
     console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
@@ -137,7 +140,7 @@ const CreateJarFormERC20 = () => {
       >
         <SegmentCookieMeta form={form} />
 
-        <SegmentERC20TokenGating form={form} />
+        <SegmentBaalTokenGating form={form} />
 
         <SegmentDonation form={form} />
 
@@ -149,4 +152,4 @@ const CreateJarFormERC20 = () => {
   );
 };
 
-export default CreateJarFormERC20;
+export default CreateJarFormERC721;

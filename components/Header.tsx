@@ -45,7 +45,7 @@ export const Header = () => {
           <NavigationMenuTrigger
             className={`submenu-trigger ${navigationMenuTriggerStyle()}`}
           >
-            Mint
+            Mint Jar
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <Link legacyBehavior href="/mintERC20" passHref>
@@ -56,6 +56,11 @@ export const Header = () => {
             <Link legacyBehavior href="/mintERC721" passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 ERC721
+              </NavigationMenuLink>
+            </Link>{" "}
+            <Link legacyBehavior href="/mintBaal" passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Baal
               </NavigationMenuLink>
             </Link>{" "}
           </NavigationMenuContent>

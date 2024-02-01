@@ -1,6 +1,7 @@
 import { useWalletClient } from "wagmi";
 import {
   ICreateJarFormInput,
+  ICreateJarFormInputBaal,
   ICreateJarFormInputERC20,
   ICreateJarFormInputERC721,
 } from "../../components/types/CookieTypes";
@@ -15,13 +16,13 @@ import {
 } from "viem/utils";
 import { useToast } from "@/components/ui/use-toast";
 
-export const useMintNFTJarERC20 = () => {
+export const useMintNFTJar = () => {
   const walletClient = useWalletClient();
   const deployment = useDeployment();
   const { toast } = useToast();
 
   const mintCookieJarNFT = async (
-    mintData: ICreateJarFormInput & ICreateJarFormInputERC20
+    mintData: ICreateJarFormInput & (ICreateJarFormInputERC20 | ICreateJarFormInputERC721 | ICreateJarFormInputBaal)
   ) => {
     console.log("mintData", mintData);
 
@@ -123,116 +124,9 @@ export const useMintNFTJarERC20 = () => {
   };
 };
 
-export const useMintNFTJarERC721 = () => {
-  const walletClient = useWalletClient();
-  const deployment = useDeployment();
-  const { toast } = useToast();
-
-  const mintCookieJarNFT = async (
-    mintData: ICreateJarFormInput & ICreateJarFormInputERC721
-  ) => {
-    console.log("mintData", mintData);
-
-    if (!walletClient) {
-      toast({
-        variant: "destructive",
-        title: "Oops! Not connected?",
-        description: "We couldn't find a wallet",
-      });
-      return;
-    }
-
-    if (!deployment) {
-      toast({
-        variant: "destructive",
-        title: "What? No contracts found!",
-        description: "We couldn't find a deployment",
-      });
-      return;
-    }
-
-    const nftContract = deployment.find(
-      (contract) => contract.contractName === "CookieNFT"
-    );
-
-    if (!nftContract) {
-      toast({
-        variant: "destructive",
-        title: "What? No cookie minterƒ contract found!",
-        description: "We couldn't find a minter contract for the cookie jar",
-      });
-      return;
-    }
-
-    if (
-      !deployment.find(
-        (contract) => contract.contractName === mintData.cookieJar
-      )
-    ) {
-      toast({
-        variant: "destructive",
-        title: "What? No cookie jar implementation found!",
-        description: "We couldn't find a cookie jar implementation",
-      });
-      return;
-    }
-
-    const value =
-      mintData.donation &&
-      mintData.donationAmount &&
-      BigInt(mintData.donationAmount) > 0
-        ? parseEther(mintData.donationAmount)
-        : undefined;
-
-    //   function cookieMint(
-    //     address cookieJarImp,
-    //     bytes memory _initializer,
-    //     string memory details,
-    //     address donationToken,
-    //     uint256 donationAmount
-    // )
-
-    const implementationAddress = deployment.find(
-      (contract) => contract.contractName === mintData.cookieJar
-    )?.contractAddress;
-    const initializer = encodeCookieMintParameters(mintData);
-
-    // Details
-    // "{\"type\":\"Baal\",\"name\":\"Moloch Pastries\",\"description\":\"This is where you add some more content\",\"link\":\"app.daohaus.club/0x64/0x0....666\"}";
-
-    const details = {
-      type: mintData.cookieJar,
-      name: mintData.title,
-      description: mintData.description,
-      link: mintData.link,
-    };
-
-    console.log(mintData, details);
-
-    const config = await prepareWriteContract({
-      address: nftContract.contractAddress as `0x${string}`,
-      abi: nftContract?.abi,
-      functionName: "cookieMint",
-      args: [
-        implementationAddress,
-        initializer,
-        JSON.stringify(details),
-        ZERO_ADDRESS, // donation in native token
-        mintData.donationAmount,
-      ],
-      value,
-    });
-
-    return await writeContract(config);
-  };
-
-  return {
-    mintCookieJarNFT,
-  };
-};
 
 const encodeCookieMintParameters = (
-  data: ICreateJarFormInput & (ICreateJarFormInputERC20 | ICreateJarFormInputERC721)
+  data: ICreateJarFormInput & (ICreateJarFormInputERC20 | ICreateJarFormInputERC721 | ICreateJarFormInputBaal)
 ) => {
   // 0. address owner or safeTarget,
   // 1. uint256 _periodLength,
@@ -293,6 +187,30 @@ const encodeCookieMintParameters = (
       cookieToken,
       erc721Token,
       erc721Threshold,
+    ]);
+  }
+
+  if ('baalDao' in data && data.cookieJar === "BaalCookieJar6551") {
+    const baalDao = isAddress(data.baalDao)
+      ? data.baalDao
+      : ZERO_ADDRESS;
+    const baalThreshold = BigInt(data.baalThreshold);
+
+    if (baalDao === ZERO_ADDRESS || baalThreshold === 0n) {
+      throw new Error("Invalid input");
+    }
+
+    const parameters =
+      "address owner, uint256 _periodLength, uint256 _cookieAmount, address _cookieToken, address _dao, uint256 _threshold, bool _useShares, bool _useLoot";
+    return encodeAbiParameters(parseAbiParameters(parameters), [
+      owner,
+      periodLength,
+      cookieAmount,
+      cookieToken,
+      baalDao,
+      baalThreshold,
+      data.baalUseShares,
+      data.baalUseLoot,
     ]);
   }
 
