@@ -1,5 +1,10 @@
 import { useWalletClient } from "wagmi";
-import { ICreateJarFormInput } from "../../components/CreateJarForm";
+import {
+  ICreateJarFormInput,
+  ICreateJarFormInputBaal,
+  ICreateJarFormInputERC20,
+  ICreateJarFormInputERC721,
+} from "../../components/types/CookieTypes";
 import { useDeployment } from "./useDeployment";
 import { ZERO_ADDRESS } from "../constants";
 import { prepareWriteContract, writeContract } from "wagmi/actions";
@@ -16,7 +21,9 @@ export const useMintNFTJar = () => {
   const deployment = useDeployment();
   const { toast } = useToast();
 
-  const mintCookieJarNFT = async (mintData: ICreateJarFormInput) => {
+  const mintCookieJarNFT = async (
+    mintData: ICreateJarFormInput & (ICreateJarFormInputERC20 | ICreateJarFormInputERC721 | ICreateJarFormInputBaal)
+  ) => {
     console.log("mintData", mintData);
 
     if (!walletClient) {
@@ -117,7 +124,10 @@ export const useMintNFTJar = () => {
   };
 };
 
-const encodeCookieMintParameters = (data: ICreateJarFormInput) => {
+
+const encodeCookieMintParameters = (
+  data: ICreateJarFormInput & (ICreateJarFormInputERC20 | ICreateJarFormInputERC721 | ICreateJarFormInputBaal)
+) => {
   // 0. address owner or safeTarget,
   // 1. uint256 _periodLength,
   // 2. uint256 _cookieAmount,
@@ -136,7 +146,7 @@ const encodeCookieMintParameters = (data: ICreateJarFormInput) => {
   // ERC20
   // 5. address _erc20addr,
   // 6. uint256 _threshold
-  if (data.cookieJar === "ERC20CookieJar6551") {
+  if ('erc20Token' in data && data.cookieJar === "ERC20CookieJar6551") {
     const erc20Token = isAddress(data.erc20Token)
       ? data.erc20Token
       : ZERO_ADDRESS;
@@ -155,6 +165,52 @@ const encodeCookieMintParameters = (data: ICreateJarFormInput) => {
       cookieToken,
       erc20Token,
       erc20Threshold,
+    ]);
+  }
+
+  if ('erc721Token' in data && data.cookieJar === "ERC721CookieJar6551") {
+    const erc721Token = isAddress(data.erc721Token)
+      ? data.erc721Token
+      : ZERO_ADDRESS;
+    const erc721Threshold = BigInt(data.erc721Threshold);
+
+    if (erc721Token === ZERO_ADDRESS || erc721Threshold === 0n) {
+      throw new Error("Invalid input");
+    }
+
+    const parameters =
+      "address owner, uint256 _periodLength, uint256 _cookieAmount, address _cookieToken, address _erc721addr, uint256 _threshold";
+    return encodeAbiParameters(parseAbiParameters(parameters), [
+      owner,
+      periodLength,
+      cookieAmount,
+      cookieToken,
+      erc721Token,
+      erc721Threshold,
+    ]);
+  }
+
+  if ('baalDao' in data && data.cookieJar === "BaalCookieJar6551") {
+    const baalDao = isAddress(data.baalDao)
+      ? data.baalDao
+      : ZERO_ADDRESS;
+    const baalThreshold = BigInt(data.baalThreshold);
+
+    if (baalDao === ZERO_ADDRESS || baalThreshold === 0n) {
+      throw new Error("Invalid input");
+    }
+
+    const parameters =
+      "address owner, uint256 _periodLength, uint256 _cookieAmount, address _cookieToken, address _dao, uint256 _threshold, bool _useShares, bool _useLoot";
+    return encodeAbiParameters(parseAbiParameters(parameters), [
+      owner,
+      periodLength,
+      cookieAmount,
+      cookieToken,
+      baalDao,
+      baalThreshold,
+      data.baalUseShares,
+      data.baalUseLoot,
     ]);
   }
 
