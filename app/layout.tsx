@@ -32,7 +32,9 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          {children}
+          <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            {children}
+          </main>
         </Providers>
         <Footer />
         <Toaster />

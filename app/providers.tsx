@@ -7,6 +7,7 @@ import { sepolia } from "wagmi/chains";
 import { useIndexer } from "./hooks/useIndexer";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const chains = [sepolia];
 
@@ -45,6 +46,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <ConnectKitProvider>
         <QueryClientProvider client={queryClient}>
           {children}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ConnectKitProvider>
     </WagmiConfig>

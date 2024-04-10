@@ -1,13 +1,29 @@
-"use client";
 import Link from "next/link";
 import Image from "next/image";
+
 import { Button } from "@/components/ui/button";
 
-export default function Home() {
+// const fetchJars = async () => {
+//   const res = await fetch(
+//     "https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing"
+//   );
+//   const { jars } = await res.json();
+//   return jars;
+// };
+
+export default async function Home() {
+  // const jars = await fetchJars();
+  // console.log(jars);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-space-around p-24">
+    <>
       <h2>COOKIE JAR</h2>
-      <Image src={"/cookie.png"} alt="cookie" height={150} width={150} />
+      <Image
+        src={"/cookie.png"}
+        alt="cookie"
+        height={150}
+        width={150}
+        priority
+      />
       <section className="mb-3 text-lg text-white-500 dark:text-white-400 text-center">
         <p className="mb-2">Cookie Jar is a DAO owned slush fund</p>
         <p className="mb-2">
@@ -35,6 +51,6 @@ export default function Home() {
           </Button>
         </Link>
       </div>
-    </main>
+    </>
   );
 }
