@@ -1,0 +1,8 @@
+sources:
+  - name: cookie-jar-testing
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing
+
+documents:
+  - ./example-query.graphql

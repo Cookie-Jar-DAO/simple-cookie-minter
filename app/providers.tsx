@@ -25,11 +25,11 @@ const wagmiConfig = createConfig(
     ),
 
     // Required
-    appName: "Hypercert starter app",
+    appName: "Cookie Jar",
 
     // Optional
     appDescription:
-      "Hypercert starter app powered by Next.js, ChakraUI and Wagmi",
+      "Cookie Jar app powered by Next.js, Tailwind, Wagmi and Viem",
     appUrl: "https://example.com", // your app's url
     appIcon: "/public/hc_logo_400_400.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
     chains,
