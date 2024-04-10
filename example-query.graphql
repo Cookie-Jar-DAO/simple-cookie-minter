@@ -12,17 +12,3 @@ query ExampleQuery {
     receiver
   }
 }
-
-query ClaimsQuery {
-  claims(first: 100) {
-    id
-    uuid
-    claimer
-    receiver
-    reason {
-      tag
-      reason
-      link
-    }
-  }
-}
