@@ -53,7 +53,7 @@ const fetchJars = async (): Promise<CookieJar[] | undefined> => {
   }
 };
 
-export default async function Home() {
+export default async function JarsPage() {
   const cookieJars = await fetchJars();
   console.log("cookieJars", cookieJars);
 
