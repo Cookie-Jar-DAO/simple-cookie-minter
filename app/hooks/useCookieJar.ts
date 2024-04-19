@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { CookieJarCore } from "../abis";
-import { useIndexer } from "./useIndexer";
 import { Abi, Address } from "viem";
 import { db } from "../../lib/indexer/db";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -93,7 +92,6 @@ const fetchUserClaim = async ({
 export const useCookieJar = ({ cookieJarId }: { cookieJarId: string }) => {
   const publicClient = usePublicClient();
   const chainId = useChainId();
-  const { client } = useIndexer();
   const { address } = useAccount();
   const chain = publicClient.chain;
 

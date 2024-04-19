@@ -39,13 +39,15 @@ export type Initializer =
 
 export interface CookieJar {
   chainId: 5 | 100;
-  jarUid: string;
-  address: string;
   type: string;
-  title: string;
-  description: string;
+  periodLength: string;
+  owner: string;
+  name: string;
   link: string;
-  initializer: Initializer;
+  id: string;
+  description: string;
+  cookieToken: string;
+  cookieAmount: string;
 }
 
 export interface Subscription {

@@ -1,0 +1,12 @@
+query ClaimQuery($id: ID!) {
+  claim(
+    id: "0x06bb7c408734641970351917fb65e39b0863cc1100008f880933fc70fc54ad3dd362414d37c9ac0bf2060050ae6cb5352f95a5d7a87017c8ccfe14a63d8ad65f16b7542276e50667c98522"
+  ) {
+    id
+    amount
+    claimer
+    uuid
+    timestamp
+    receiver
+  }
+}

@@ -4,7 +4,6 @@ import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { assertExists } from "../lib";
 import { sepolia } from "wagmi/chains";
-import { useIndexer } from "./hooks/useIndexer";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -39,8 +38,6 @@ const wagmiConfig = createConfig(
 const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const { indexer } = useIndexer();
-
   return (
     <WagmiConfig config={wagmiConfig}>
       <ConnectKitProvider>

@@ -7,16 +7,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { truncateEthereumAddress } from "@/lib/utils";
 
 export const JarCard = ({ cookieJar }: { cookieJar: CookieJar }) => {
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle>{cookieJar.title}</CardTitle>
+        <CardTitle>{cookieJar.name}</CardTitle>
         <CardDescription>{cookieJar.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="mt-3 text-2xl">Your cookieJarId is {cookieJar.jarUid}</p>
+        <p className="mt-3 text-2xl">
+          Your cookieJarId is {truncateEthereumAddress(cookieJar.id)}
+        </p>
       </CardContent>
       <CardFooter></CardFooter>
     </Card>
