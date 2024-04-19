@@ -3,17 +3,41 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 
-// const fetchJars = async () => {
-//   const res = await fetch(
-//     "https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing"
-//   );
-//   const { jars } = await res.json();
-//   return jars;
-// };
+const fetchJars = async () => {
+  const res = await fetch(
+    "https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `
+          {
+            cookieJars(first: 5) {
+              id
+              name
+              type
+              description
+            }
+            claims(first: 5) {
+              id
+              uuid
+              claimer
+              receiver
+            }
+          }
+        `,
+      }),
+    }
+  );
+  const { jars } = await res.json();
+  console.log(jars);
+  return jars;
+};
 
 export default async function Home() {
-  // const jars = await fetchJars();
-  // console.log(jars);
+  const jars = await fetchJars();
   return (
     <>
       <h2>COOKIE JAR</h2>
