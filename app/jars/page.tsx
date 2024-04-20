@@ -2,6 +2,7 @@ import { useJars } from "../hooks/useJars";
 import { JarCard } from "@/components/JarCard";
 import CreateJarFormERC20 from "../../components/CreateJarFormERC20";
 import { CookieJar } from "@/lib/indexer/db";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const fetchJars = async (): Promise<CookieJar[] | undefined> => {
   try {
@@ -64,13 +65,15 @@ export default async function JarsPage() {
   return (
     <section className="container flex flex-col items-center gap-8">
       <h1 className="text-5xl font-semibold">Cookie Jars</h1>
-      <div className="flex flex-col gap-6">
-        {cookieJars.length > 0 ? (
-          cookieJars.map((jar) => <JarCard key={jar.id} cookieJar={jar} />)
-        ) : (
-          <CreateJarFormERC20 />
-        )}
-      </div>
+      <ScrollArea className="w-full max-w-4xl">
+        <div className="flex flex-col gap-2 p-4 pt-0">
+          {cookieJars.length > 0 ? (
+            cookieJars.map((jar) => <JarCard key={jar.id} cookieJar={jar} />)
+          ) : (
+            <CreateJarFormERC20 />
+          )}
+        </div>
+      </ScrollArea>
     </section>
   );
 }

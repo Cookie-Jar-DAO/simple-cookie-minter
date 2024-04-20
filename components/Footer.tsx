@@ -5,7 +5,7 @@ export const Footer = () => {
     <footer className="p-4 dark:bg-gray-800 dark:text-gray-100">
       <div className="container flex flex-col justify-center items-center mx-auto">
         <h2>Co Funded by the MetaFam</h2>
-        <div className="flex flex-row gap-12 justify-between max-w-xl">
+        <div className="flex flex-row gap-12 justify-between max-w-xl items-center">
           <a
             href="https://daohaus.club/"
             target="_blank"
