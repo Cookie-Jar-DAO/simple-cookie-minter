@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,6 +8,8 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Claim } from "@/lib/indexer/db";
+import { truncateEthereumAddress } from "@/lib/utils";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 const fetchClaims = async (jarId: string): Promise<Claim[] | undefined> => {
   console.log("jarId", jarId, typeof jarId);
@@ -28,6 +31,12 @@ const fetchClaims = async (jarId: string): Promise<Claim[] | undefined> => {
                     receiver
                     amount
                     timestamp
+                    reason {
+                      id
+                      link
+                      reason
+                      tag
+                    }
                   }
                 }
             `,
@@ -79,14 +88,36 @@ export default async function JarPage({
             return (
               <Card key={claim.id}>
                 <CardHeader>
-                  <CardTitle>{claim.id}</CardTitle>
-                  <CardDescription>{claim.receiver}</CardDescription>
+                  <CardTitle>{claim.reason.reason}</CardTitle>
+                  <CardDescription>
+                    {truncateEthereumAddress(claim.receiver)}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {claim.amount}
-                  {claim.timestamp}
-                  {claim.uuid}
-                  {claim.claimer}
+                  <div className="flex flex-col gap-2">
+                    {claim.amount}
+                    {claim.claimer}
+                    {claim.reason.link}
+                    <div className="flex justify-end">
+                      {claim.reason.tag}
+                      <div className="flex gap-2 ml-auto">
+                        <Button
+                          className="hover:bg-amber-200 focus:ring-4 focus:ring-amber-300"
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <ArrowDown className="h-4 w-4 " />
+                        </Button>
+                        <Button
+                          className="hover:bg-amber-200 focus:ring-4 focus:ring-amber-300"
+                          variant="ghost"
+                          size="icon"
+                        >
+                          <ArrowUp className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             );

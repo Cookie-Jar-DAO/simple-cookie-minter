@@ -57,6 +57,14 @@ export interface Claim {
   receiver: string;
   amount: string;
   timestamp: string;
+  reason: ClaimReason;
+}
+
+interface ClaimReason {
+  id: string;
+  link: string;
+  reason: string;
+  tag: string;
 }
 
 export interface Subscription {
