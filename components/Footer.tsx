@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const Footer = () => {
   return (
-    <footer className="p-4 dark:bg-gray-800 dark:text-gray-100">
+    <footer className="p-4 dark:bg-gray-800 dark:text-gray-100 bg-amber-100 bg-opacity-90 dark-bg-opacity-90">
       <div className="container flex flex-col justify-center items-center mx-auto">
         <h2>Co Funded by the MetaFam</h2>
         <div className="flex flex-row gap-12 justify-between max-w-xl items-center">

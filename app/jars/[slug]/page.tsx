@@ -56,5 +56,9 @@ export default async function JarPage({
 }) {
   const claims = await fetchClaims(params.slug);
   console.log("claims", claims);
-  return <div>My Post: {params.slug}</div>;
+  return (
+    <section className="container flex flex-col items-center gap-8 my-8 max-w-3xl bg-amber-100 bg-opacity-90 rounded-xl p-8">
+      <div>My Post: {params.slug}</div>
+    </section>
+  );
 }

@@ -15,7 +15,7 @@ import { Button } from "./ui/button";
 export const JarCard = ({ cookieJar }: { cookieJar: CookieJar }) => {
   return (
     <Link href={`/jars/${cookieJar.id}`}>
-      <Card className="w-full cursor-pointer hover:bg-slate-100 ">
+      <Card className="w-full cursor-pointer hover:bg-amber-200 ">
         <CardHeader>
           <CardTitle>{cookieJar.name}</CardTitle>
           <CardDescription>{cookieJar.description}</CardDescription>

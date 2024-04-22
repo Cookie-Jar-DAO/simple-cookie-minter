@@ -63,8 +63,8 @@ export default async function JarsPage() {
   }
 
   return (
-    <section className="container flex flex-col items-center gap-8">
-      <h1 className="text-5xl font-semibold">Cookie Jars</h1>
+    <section className="container flex flex-col items-center gap-8 my-8 max-w-3xl bg-amber-100 bg-opacity-90 rounded-xl p-8">
+      <h1 className="text-5xl font-semibold">Jars</h1>
       <ScrollArea className="w-full max-w-4xl">
         <div className="flex flex-col gap-2 p-4 pt-0">
           {cookieJars.length > 0 ? (

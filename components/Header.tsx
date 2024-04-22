@@ -30,7 +30,10 @@ export const Header = () => {
   }
 
   return (
-    <NavigationMenu onValueChange={onNavChange}>
+    <NavigationMenu
+      className="bg-amber-100 bg-opacity-90"
+      onValueChange={onNavChange}
+    >
       <NavigationMenuList>
         <Link legacyBehavior href="/" passHref>
           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
