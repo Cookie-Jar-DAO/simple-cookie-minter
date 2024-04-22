@@ -50,6 +50,15 @@ export interface CookieJar {
   cookieAmount: string;
 }
 
+export interface Claim {
+  id: string;
+  uuid: string;
+  claimer: string;
+  receiver: string;
+  amount: string;
+  timestamp: string;
+}
+
 export interface Subscription {
   chainId: 5 | 100 | 11155111;
   address: `0x${string}`;
