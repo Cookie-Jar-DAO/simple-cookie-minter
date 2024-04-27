@@ -1,0 +1,16 @@
+export query GetClaimsByJar($jarId: String!) {
+  claims(where: { jar: $jarId }) {
+    id
+    uuid
+    claimer
+    receiver
+    amount
+    timestamp
+    reason {
+      id
+      link
+      reason
+      tag
+    }
+  }
+}

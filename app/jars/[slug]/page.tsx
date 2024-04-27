@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -98,27 +99,27 @@ export default async function JarPage({
                     {claim.amount}
                     {claim.claimer}
                     {claim.reason.link}
-                    <div className="flex justify-end">
-                      {claim.reason.tag}
-                      <div className="flex gap-2 ml-auto">
-                        <Button
-                          className="hover:bg-amber-200 focus:ring-4 focus:ring-amber-300"
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <ArrowDown className="h-4 w-4 " />
-                        </Button>
-                        <Button
-                          className="hover:bg-amber-200 focus:ring-4 focus:ring-amber-300"
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <ArrowUp className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
                   </div>
                 </CardContent>
+                <CardFooter>
+                  <div className="flex justify-end">{claim.reason.tag}</div>
+                  <div className="flex gap-2 ml-auto">
+                    <Button
+                      className="hover:bg-amber-200 focus:ring-4 focus:ring-amber-300"
+                      variant="ghost"
+                      size="icon"
+                    >
+                      <ArrowDown className="h-4 w-4 " />
+                    </Button>
+                    <Button
+                      className="hover:bg-amber-200 focus:ring-4 focus:ring-amber-300"
+                      variant="ghost"
+                      size="icon"
+                    >
+                      <ArrowUp className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardFooter>
               </Card>
             );
           })}
