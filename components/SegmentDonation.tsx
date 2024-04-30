@@ -1,13 +1,12 @@
 // component: TokenGatingSegment
 // <TokenGattingFieldSet form={form} />
 
-import React, { useEffect } from 'react';
-import { SegmentCookieMetaProps } from './types/CookieTypes';
+import React, { useEffect } from "react";
+import { SegmentCookieMetaProps } from "./types/CookieTypes";
 
 import { usePublicClient } from "wagmi";
 
 import {
-
   FormControl,
   FormDescription,
   FormField,
@@ -17,8 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-
-
 
 const SegmentDonation: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
   const {
@@ -39,9 +36,8 @@ const SegmentDonation: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
     }
   }, [donation, setValue]);
 
-
   return (
-    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
+    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md bg-amber-100">
       <div className="space-y-2 col-span-full lg:col-span-1">
         <p className="font-medium">Fund public goods</p>
         <p className="text-xs">
@@ -53,7 +49,7 @@ const SegmentDonation: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
           control={control}
           name="donation"
           render={({ field }) => (
-            <FormItem className="col-span-full">
+            <FormItem className="col-span-full flex flex-row items-start space-x-3 space-y-0 p-4">
               <FormControl>
                 <Checkbox
                   onCheckedChange={(checked) => {
@@ -63,9 +59,15 @@ const SegmentDonation: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
                   }}
                 />
               </FormControl>
-              <FormDescription>
-                Donate {chain.nativeCurrency.name} to the devs
-              </FormDescription>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  Donate {chain.nativeCurrency.name} to the devs
+                </FormLabel>
+                <FormDescription>
+                  Public goods are good! Donations allow us to keep building
+                  stuff for you!
+                </FormDescription>
+              </div>
               <FormMessage />
             </FormItem>
           )}
@@ -92,6 +94,6 @@ const SegmentDonation: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
       </div>
     </fieldset>
   );
-}
+};
 
 export default SegmentDonation;

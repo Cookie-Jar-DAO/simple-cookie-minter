@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function truncateEthereumAddress(
   address: string,
-  length: number = 4
+  length: number = 4,
 ): string {
   if (!address) {
     return "";

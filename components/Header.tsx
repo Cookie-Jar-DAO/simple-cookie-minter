@@ -15,7 +15,7 @@ export const Header = () => {
   function onNavChange() {
     setTimeout(() => {
       const triggers = document.querySelectorAll(
-        '.submenu-trigger[data-state="open"]'
+        '.submenu-trigger[data-state="open"]',
       );
       if (triggers.length === 0) return;
 
@@ -56,17 +56,17 @@ export const Header = () => {
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 ERC20
               </NavigationMenuLink>
-            </Link>{" "}
+            </Link>
             <Link legacyBehavior href="/mintERC721" passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 ERC721
               </NavigationMenuLink>
-            </Link>{" "}
+            </Link>
             <Link legacyBehavior href="/mintBaal" passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                 Baal
               </NavigationMenuLink>
-            </Link>{" "}
+            </Link>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

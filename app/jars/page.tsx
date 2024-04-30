@@ -30,7 +30,7 @@ const fetchJars = async (): Promise<CookieJar[] | undefined> => {
           }
           `,
         }),
-      }
+      },
     );
     if (!res.ok) {
       throw new Error("Network response was not ok.");

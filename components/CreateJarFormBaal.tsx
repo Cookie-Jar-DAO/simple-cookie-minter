@@ -143,7 +143,7 @@ const CreateJarFormERC721 = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 dark:bg-gray-900 max-w-3xl m-auto"
+        className="flex flex-col gap-4 max-w-3xl m-auto my-8"
       >
         <SegmentCookieMeta form={form} />
 
@@ -151,8 +151,18 @@ const CreateJarFormERC721 = () => {
 
         <SegmentDonation form={form} />
 
-        <Button type="submit">Mint Cookie</Button>
-        <Button onClick={() => reset()}>Reset</Button>
+        <Button
+          className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300"
+          type="submit"
+        >
+          Mint Cookie
+        </Button>
+        <Button
+          className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300"
+          onClick={() => reset()}
+        >
+          Reset
+        </Button>
       </form>
     </Form>
   );

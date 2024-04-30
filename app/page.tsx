@@ -47,20 +47,20 @@ export default async function Home() {
       <div className="flex flex-col gap-8 text-center bg-amber-100 bg-opacity-90 rounded-xl p-8">
         <div className="mb-2">
           <h2 className="text-3xl font-bold">What is Cookie Jar?</h2>
-          <p className="mb">A DAO owned slush fund</p>
+          <p className="mb">Cookie Jar is a DAO owned slush fund</p>
         </div>
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
             {features.map((feature) => (
               <div key={feature.name} className="flex flex-col">
-                <dt className="flex flex-col items-center justify-center gap-3 text-base font-semibold leading-7 text-gray-900">
+                <dt className="flex flex-col items-center justify-center gap-3 text-xl font-semibold leading-7 text-gray-900">
                   <feature.icon
                     className="h-16 w-16 flex-none text-amber-600"
                     aria-hidden="true"
                   />
                   {feature.name}
                 </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                <dd className="mt-4 flex flex-auto flex-col text-base leading-7">
                   <p className="flex-auto">{feature.description}</p>
                 </dd>
               </div>

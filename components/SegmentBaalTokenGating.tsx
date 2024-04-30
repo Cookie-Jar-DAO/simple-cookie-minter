@@ -37,7 +37,7 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
   });
 
   return (
-    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
+    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md bg-amber-100">
       <div className="space-y-2 col-span-full lg:col-span-1">
         <p className="font-medium">Set DAO gating</p>
         <p className="text-xs">

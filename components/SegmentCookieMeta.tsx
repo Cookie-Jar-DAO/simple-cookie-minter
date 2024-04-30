@@ -42,7 +42,7 @@ const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
   });
 
   return (
-    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md dark:bg-gray-900">
+    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md bg-amber-100">
       <div className="space-y-2 col-span-full lg:col-span-1">
         <p className="font-medium">Cookie Jar config</p>
         <p className="text-xs">

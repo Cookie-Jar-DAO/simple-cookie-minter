@@ -4,7 +4,7 @@ const assertExists = (value: any, messageToThrow?: string) => {
     return value;
   } else {
     throw new Error(
-      messageToThrow || "assertExists: The passed value doesn’t exist"
+      messageToThrow || "assertExists: The passed value doesn’t exist",
     );
   }
 };

@@ -45,7 +45,7 @@ const fetchClaims = async (jarId: string): Promise<Claim[] | undefined> => {
             jarId: jarId,
           },
         }),
-      }
+      },
     );
     if (!res.ok) {
       throw new Error("Network response was not ok.");

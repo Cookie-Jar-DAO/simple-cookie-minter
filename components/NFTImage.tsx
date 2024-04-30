@@ -7,7 +7,7 @@ export const NFTImage = () => {
   const deployment = useDeployment();
 
   const cookieJarNFT = deployment?.find(
-    (contract) => contract.contractName === "CookieJarNFT"
+    (contract) => contract.contractName === "CookieJarNFT",
   );
 
   const cookieNft = useCookieNFT({

@@ -87,7 +87,7 @@ const isGiveCookieLog = (obj: unknown): obj is GiveCookieLog => {
 
 const storeCookieJar = async (
   summonCookieJarLog: Log,
-  publicClient: PublicClient
+  publicClient: PublicClient,
 ) => {
   if (!hasArgs(summonCookieJarLog)) {
     console.error("Invalid log");
@@ -128,7 +128,7 @@ const storeCookieJar = async (
             chainId,
             address: _decodedCookieJar.address as `0x${string}`,
             event: parseAbiItem(
-              "event GiveCookie(address indexed cookieMonster, uint256 amount, string _uid)"
+              "event GiveCookie(address indexed cookieMonster, uint256 amount, string _uid)",
             ),
             eventHandler: "StoreCookie",
             fromBlock: summonCookieJarLog.blockNumber!,
@@ -203,7 +203,7 @@ export const getEventHandler = (handler: EventHandlers) => {
 
 const calculateReasonTag = async (cookieJarUid: string, cookieUid: string) => {
   const reasonTag = keccak256(
-    stringToBytes(`CookieJar.${cookieJarUid}.reason.${cookieUid}`)
+    stringToBytes(`CookieJar.${cookieJarUid}.reason.${cookieUid}`),
   );
 
   console.log(`Calculated reasonTag: ${reasonTag} for cookie ${cookieUid}`);
@@ -212,7 +212,7 @@ const calculateReasonTag = async (cookieJarUid: string, cookieUid: string) => {
 
 const calculateAssessTag = async (cookieJarUid: string, cookieUid: string) => {
   const assessTag = keccak256(
-    stringToBytes(`CookieJar.${cookieJarUid}.reaction.${cookieUid}`)
+    stringToBytes(`CookieJar.${cookieJarUid}.reaction.${cookieUid}`),
   );
 
   console.log(`Calculated assessTag: ${assessTag} for cookie ${cookieUid}`);
@@ -244,7 +244,7 @@ const parseSummonArguments = (log: SummonLog) => {
       };
     } catch (e) {
       console.error(
-        `Failed to parse details ${details} as simple cookiejar: ${e}}`
+        `Failed to parse details ${details} as simple cookiejar: ${e}}`,
       );
     }
   }
@@ -274,7 +274,7 @@ const handleJSONDetails = (
   decodedSetup: {
     args: readonly [`0x${string}`];
     functionName: "setUp";
-  }
+  },
 ) => {
   const _details = JSON.parse(details as string) as {
     type: string;
@@ -288,7 +288,7 @@ const handleJSONDetails = (
   if (_details.type.toLowerCase() === "baal") {
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.baal),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -306,7 +306,7 @@ const handleJSONDetails = (
   if (_details.type.toLowerCase() === "erc20") {
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.erc20),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -322,7 +322,7 @@ const handleJSONDetails = (
   if (_details.type.toLowerCase() === "list") {
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.list),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -331,7 +331,7 @@ const handleJSONDetails = (
       cookieAmount: decodedAbiParameters[2],
       cookieToken: decodedAbiParameters[3],
       allowList: (decodedAbiParameters[4] as string[]).map((addr: string) =>
-        addr.toLowerCase()
+        addr.toLowerCase(),
       ),
     } as ListInitializer;
   }
@@ -339,7 +339,7 @@ const handleJSONDetails = (
   if (_details.type.toLowerCase() === "erc721") {
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.erc721),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -354,7 +354,7 @@ const handleJSONDetails = (
   if (_details.type.toLowerCase() === "open") {
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.open),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -368,7 +368,7 @@ const handleJSONDetails = (
   if (_details.type === "6551") {
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.list),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -388,7 +388,7 @@ const handleSimpleDetails = (
   decodedSetup: {
     args: readonly [`0x${string}`];
     functionName: "setUp";
-  }
+  },
 ) => {
   let _details = { type: "", title: "", description: "", link: "" };
   let _initializer = {};
@@ -399,7 +399,7 @@ const handleSimpleDetails = (
 
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.baal),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -420,7 +420,7 @@ const handleSimpleDetails = (
 
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.erc20),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -439,7 +439,7 @@ const handleSimpleDetails = (
 
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.list),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -448,7 +448,7 @@ const handleSimpleDetails = (
       cookieAmount: decodedAbiParameters[2],
       cookieToken: decodedAbiParameters[3],
       allowList: (decodedAbiParameters[4] as string[]).map((addr: string) =>
-        addr.toLowerCase()
+        addr.toLowerCase(),
       ),
     } as ListInitializer;
   }
@@ -459,7 +459,7 @@ const handleSimpleDetails = (
 
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.erc721),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {
@@ -477,7 +477,7 @@ const handleSimpleDetails = (
 
     const decodedAbiParameters = decodeAbiParameters(
       parseAbiParameters(parameterString.open),
-      decodedSetup.args[0]
+      decodedSetup.args[0],
     );
 
     _initializer = {

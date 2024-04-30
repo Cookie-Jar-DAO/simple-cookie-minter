@@ -564,12 +564,8 @@
     "absolutePath": "lib/zodiac/contracts/interfaces/IAvatar.sol",
     "id": 42240,
     "exportedSymbols": {
-      "Enum": [
-        41498
-      ],
-      "IAvatar": [
-        42239
-      ]
+      "Enum": [41498],
+      "IAvatar": [42239]
     },
     "nodeType": "SourceUnit",
     "src": "151:3100:64",
@@ -579,15 +575,7 @@
         "nodeType": "PragmaDirective",
         "src": "151:31:64",
         "nodes": [],
-        "literals": [
-          "solidity",
-          ">=",
-          "0.7",
-          ".0",
-          "<",
-          "0.9",
-          ".0"
-        ]
+        "literals": ["solidity", ">=", "0.7", ".0", "<", "0.9", ".0"]
       },
       {
         "id": 42155,
@@ -1069,10 +1057,7 @@
                     "pathNode": {
                       "id": 42193,
                       "name": "Enum.Operation",
-                      "nameLocations": [
-                        "1844:4:64",
-                        "1849:9:64"
-                      ],
+                      "nameLocations": ["1844:4:64", "1849:9:64"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 41497,
                       "src": "1844:14:64"
@@ -1252,10 +1237,7 @@
                     "pathNode": {
                       "id": 42208,
                       "name": "Enum.Operation",
-                      "nameLocations": [
-                        "2601:4:64",
-                        "2606:9:64"
-                      ],
+                      "nameLocations": ["2601:4:64", "2606:9:64"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 41497,
                       "src": "2601:14:64"
@@ -1592,9 +1574,7 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "linearizedBaseContracts": [
-          42239
-        ],
+        "linearizedBaseContracts": [42239],
         "name": "IAvatar",
         "nameLocation": "257:7:64",
         "scope": 42240,

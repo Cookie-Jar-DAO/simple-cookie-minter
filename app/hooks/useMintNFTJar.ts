@@ -22,7 +22,12 @@ export const useMintNFTJar = () => {
   const { toast } = useToast();
 
   const mintCookieJarNFT = async (
-    mintData: ICreateJarFormInput & (ICreateJarFormInputERC20 | ICreateJarFormInputERC721 | ICreateJarFormInputBaal)
+    mintData: ICreateJarFormInput &
+      (
+        | ICreateJarFormInputERC20
+        | ICreateJarFormInputERC721
+        | ICreateJarFormInputBaal
+      ),
   ) => {
     console.log("mintData", mintData);
 
@@ -45,7 +50,7 @@ export const useMintNFTJar = () => {
     }
 
     const nftContract = deployment.find(
-      (contract) => contract.contractName === "CookieNFT"
+      (contract) => contract.contractName === "CookieNFT",
     );
 
     if (!nftContract) {
@@ -59,7 +64,7 @@ export const useMintNFTJar = () => {
 
     if (
       !deployment.find(
-        (contract) => contract.contractName === mintData.cookieJar
+        (contract) => contract.contractName === mintData.cookieJar,
       )
     ) {
       toast({
@@ -86,7 +91,7 @@ export const useMintNFTJar = () => {
     // )
 
     const implementationAddress = deployment.find(
-      (contract) => contract.contractName === mintData.cookieJar
+      (contract) => contract.contractName === mintData.cookieJar,
     )?.contractAddress;
     const initializer = encodeCookieMintParameters(mintData);
 
@@ -124,9 +129,13 @@ export const useMintNFTJar = () => {
   };
 };
 
-
 const encodeCookieMintParameters = (
-  data: ICreateJarFormInput & (ICreateJarFormInputERC20 | ICreateJarFormInputERC721 | ICreateJarFormInputBaal)
+  data: ICreateJarFormInput &
+    (
+      | ICreateJarFormInputERC20
+      | ICreateJarFormInputERC721
+      | ICreateJarFormInputBaal
+    ),
 ) => {
   // 0. address owner or safeTarget,
   // 1. uint256 _periodLength,
@@ -146,7 +155,7 @@ const encodeCookieMintParameters = (
   // ERC20
   // 5. address _erc20addr,
   // 6. uint256 _threshold
-  if ('erc20Token' in data && data.cookieJar === "ERC20CookieJar6551") {
+  if ("erc20Token" in data && data.cookieJar === "ERC20CookieJar6551") {
     const erc20Token = isAddress(data.erc20Token)
       ? data.erc20Token
       : ZERO_ADDRESS;
@@ -168,7 +177,7 @@ const encodeCookieMintParameters = (
     ]);
   }
 
-  if ('erc721Token' in data && data.cookieJar === "ERC721CookieJar6551") {
+  if ("erc721Token" in data && data.cookieJar === "ERC721CookieJar6551") {
     const erc721Token = isAddress(data.erc721Token)
       ? data.erc721Token
       : ZERO_ADDRESS;
@@ -190,10 +199,8 @@ const encodeCookieMintParameters = (
     ]);
   }
 
-  if ('baalDao' in data && data.cookieJar === "BaalCookieJar6551") {
-    const baalDao = isAddress(data.baalDao)
-      ? data.baalDao
-      : ZERO_ADDRESS;
+  if ("baalDao" in data && data.cookieJar === "BaalCookieJar6551") {
+    const baalDao = isAddress(data.baalDao) ? data.baalDao : ZERO_ADDRESS;
     const baalThreshold = BigInt(data.baalThreshold);
 
     if (baalDao === ZERO_ADDRESS || baalThreshold === 0n) {

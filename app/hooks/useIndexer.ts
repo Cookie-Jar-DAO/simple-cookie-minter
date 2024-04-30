@@ -26,7 +26,7 @@ export const useIndexer = () => {
         if (!(await db.keyvals.get(`posterState-${chainId}`)) && deployment) {
           await db.keyvals.add(
             { lastBlock: BigInt(5173582) }, //TODO replace hardcoded startblock for indexer
-            `posterState-${chainId}`
+            `posterState-${chainId}`,
           );
         }
       };
@@ -40,7 +40,7 @@ export const useIndexer = () => {
       // TODO replace hardcoded Sepolia chainId
       if (chainId === 11155111) {
         const factoryAddress = deployment.find(
-          (contract) => contract.contractName === "CookieJarFactory"
+          (contract) => contract.contractName === "CookieJarFactory",
         )?.contractAddress;
 
         if (!factoryAddress || !isAddress(factoryAddress)) {
@@ -52,10 +52,10 @@ export const useIndexer = () => {
           chainId,
           factoryAddress,
           parseAbiItem(
-            "event SummonCookieJar(address cookieJar, bytes initializer, string details, string uid)"
+            "event SummonCookieJar(address cookieJar, bytes initializer, string details, string uid)",
           ),
           BigInt(5173582),
-          "StoreCookieJar"
+          "StoreCookieJar",
         );
       }
     }

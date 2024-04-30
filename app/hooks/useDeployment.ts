@@ -9,7 +9,7 @@ export const useDeployment = () => {
   }
 
   const target = Object.keys(DEPLOYMENTS).find(
-    (deployment) => deployment === chainId.toString()
+    (deployment) => deployment === chainId.toString(),
   );
 
   if (!target) {

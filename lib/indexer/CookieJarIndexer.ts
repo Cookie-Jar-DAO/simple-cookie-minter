@@ -13,7 +13,7 @@ interface CookieJarIndexerInterface {
     address: `0x${string}`,
     event: AbiEvent,
     fromBlock: bigint,
-    eventHandler: EventHandlers
+    eventHandler: EventHandlers,
   ) => void;
 }
 
@@ -81,10 +81,10 @@ class CookieJarIndexer implements CookieJarIndexerInterface {
             }
             console.log(
               `Got event for ${s.address} on ${s.event.name}`,
-              events
+              events,
             );
             await Promise.all(
-              events.map(async (e) => eventHandler(e, this._publicClient))
+              events.map(async (e) => eventHandler(e, this._publicClient)),
             );
           }
 
@@ -92,12 +92,12 @@ class CookieJarIndexer implements CookieJarIndexerInterface {
           await this.db.subscriptions.update(s, {
             lastBlock: currentBlock,
           });
-        })
+        }),
       );
 
       // Get Poster (0x000000000000cd17345801aa8147b8d3950260ff) events for cookie jars
       const cookieJars = (await this.db.cookieJars.toArray()).map(
-        (jar) => jar.address as `0x${string}`
+        (jar) => jar.address as `0x${string}`,
       );
       const posterState = await this.db.keyvals.get(`posterState-${chainId}`);
 
@@ -106,7 +106,7 @@ class CookieJarIndexer implements CookieJarIndexerInterface {
         const posts = await this._publicClient.getLogs({
           address: "0x000000000000cd17345801aa8147b8d3950260ff",
           event: parseAbiItem(
-            "event NewPost(address indexed user, string content, string indexed tag)"
+            "event NewPost(address indexed user, string content, string indexed tag)",
           ),
           args: {
             user: cookieJars,
@@ -131,9 +131,9 @@ class CookieJarIndexer implements CookieJarIndexerInterface {
                 decoded.args.user, //user
                 decoded.args.tag, //tag
                 decoded.args.content, //content
-                this._publicClient
+                this._publicClient,
               );
-            })
+            }),
           );
         }
 
@@ -153,7 +153,7 @@ class CookieJarIndexer implements CookieJarIndexerInterface {
     address: `0x${string}`,
     event: AbiEvent,
     fromBlock: bigint,
-    eventHandler: EventHandlers
+    eventHandler: EventHandlers,
   ) => {
     if (!this.db) {
       console.error("Database not initialized");
@@ -173,7 +173,7 @@ class CookieJarIndexer implements CookieJarIndexerInterface {
       });
 
       console.log(
-        `Subscribed to ${address} ${event} events at id ${id} on chain ${chainId}`
+        `Subscribed to ${address} ${event} events at id ${id} on chain ${chainId}`,
       );
     } catch (e) {
       console.error("Failed to subscribe to event", e);
