@@ -119,6 +119,7 @@ const CreateJarFormERC721 = () => {
       }
 
       const { hash } = result;
+      console.log("hash", hash);
 
       toast({
         title: "Baking cookie",

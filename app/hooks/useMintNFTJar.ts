@@ -56,7 +56,7 @@ export const useMintNFTJar = () => {
     if (!nftContract) {
       toast({
         variant: "destructive",
-        title: "What? No cookie minterƒ contract found!",
+        title: "What? No cookie minter contract found!",
         description: "We couldn't find a minter contract for the cookie jar",
       });
       return;

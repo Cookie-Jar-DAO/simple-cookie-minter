@@ -1,6 +1,7 @@
 import { Abi, AbiEvent } from "abitype";
 import Dexie, { Table } from "dexie";
-import { EventHandlers } from "./eventHandlers";
+
+type EventHandlers = "StoreCookieJar" | "StoreCookie";
 
 export interface CookieJarInitializer {
   safeTarget: string;

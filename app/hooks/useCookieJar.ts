@@ -89,44 +89,44 @@ const fetchUserClaim = async ({
 };
 
 // custom hook to fetch and return user claim data
-export const useCookieJar = ({ cookieJarId }: { cookieJarId: string }) => {
-  const publicClient = usePublicClient();
-  const chainId = useChainId();
-  const { address } = useAccount();
-  const chain = publicClient.chain;
+// export const useCookieJar = ({ cookieJarId }: { cookieJarId: string }) => {
+//   const publicClient = usePublicClient();
+//   const chainId = useChainId();
+//   const { address } = useAccount();
+//   const chain = publicClient.chain;
 
-  const cookieJar = useLiveQuery(() => db.cookieJars.get(cookieJarId));
+//   const cookieJar = useLiveQuery(() => db.cookieJars.get(cookieJarId));
 
-  const { data, ...rest } = useQuery({
-    queryKey: ["claimData", { address }],
-    queryFn: () =>
-      fetchUserClaim({
-        cookieJarAddress: cookieJar?.address as `0x${string}`,
-        userAddress: address?.toLowerCase() as `0x${string}`,
-        chainId,
-        publicClient: client!,
-      }),
+//   const { data, ...rest } = useQuery({
+//     queryKey: ["claimData", { address }],
+//     queryFn: () =>
+//       fetchUserClaim({
+//         cookieJarAddress: cookieJar?.address as `0x${string}`,
+//         userAddress: address?.toLowerCase() as `0x${string}`,
+//         chainId,
+//         publicClient: client!,
+//       }),
 
-    enabled: !!address && !!cookieJar && !!chainId && !!client,
-    refetchInterval: 5000,
-  });
+//     enabled: !!address && !!cookieJar && !!chainId && !!client,
+//     refetchInterval: 5000,
+//   });
 
-  const token = useCookieJarToken({ cookieJar: cookieJar! });
+//   const token = useCookieJarToken({ cookieJar: cookieJar! });
 
-  // determine if user has claimed cookies before
-  const hasClaimed = data?.lastClaimed && Number(data.lastClaimed) > 0;
-  // determine if user can claim based on last claim time and claim period
-  const canClaim = data?.canClaim || !hasClaimed;
-  const isMember = data?.canClaim;
+//   // determine if user has claimed cookies before
+//   const hasClaimed = data?.lastClaimed && Number(data.lastClaimed) > 0;
+//   // determine if user can claim based on last claim time and claim period
+//   const canClaim = data?.canClaim || !hasClaimed;
+//   const isMember = data?.canClaim;
 
-  // return user claim data along with helper variables and the query status
-  return {
-    cookieJar,
-    data,
-    hasClaimed,
-    canClaim,
-    isMember,
-    token,
-    ...rest,
-  };
-};
+//   // return user claim data along with helper variables and the query status
+//   return {
+//     cookieJar,
+//     data,
+//     hasClaimed,
+//     canClaim,
+//     isMember,
+//     token,
+//     ...rest,
+//   };
+// };

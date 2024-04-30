@@ -9,6 +9,7 @@ const fetchJars = async (): Promise<CookieJar[] | undefined> => {
     const res = await fetch(
       "https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing",
       {
+        cache: "no-store",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +66,7 @@ export default async function JarsPage() {
   return (
     <section className="container my-8 flex max-w-3xl flex-col items-center gap-8 rounded-xl bg-amber-100 bg-opacity-90 p-8">
       <h1 className="text-5xl font-semibold">Jars</h1>
-      <ScrollArea className="w-full max-w-4xl">
+      <ScrollArea className="h-[46rem] w-full max-w-4xl">
         <div className="flex flex-col gap-2 p-4 pt-0">
           {cookieJars.length > 0 ? (
             cookieJars.map((jar) => <JarCard key={jar.id} cookieJar={jar} />)

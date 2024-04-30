@@ -19,12 +19,22 @@ export const JarCard = ({ cookieJar }: { cookieJar: CookieJar }) => {
           <CardTitle>{cookieJar.name}</CardTitle>
           <CardDescription>{cookieJar.description}</CardDescription>
         </CardHeader>
-        <CardContent>
-          <p className="mt-3 text-2xl">
-            Your cookieJarId is {truncateEthereumAddress(cookieJar.id)}
+        {/* <CardContent>
+          <p>Cookie Jar Token: {cookieJar.cookieToken}</p>
+          <p>Cookie Amount: {cookieJar.cookieAmount}</p>
+
+          <p>
+            Link:
+            {cookieJar.link}
           </p>
-        </CardContent>
-        <CardFooter></CardFooter>
+        </CardContent> */}
+        <CardFooter className=" justify-between">
+          <p>Owned by: {truncateEthereumAddress(cookieJar.owner)}</p>
+          <p>
+            Valid Through:
+            {cookieJar.periodLength}
+          </p>
+        </CardFooter>
       </Card>
     </Link>
   );
