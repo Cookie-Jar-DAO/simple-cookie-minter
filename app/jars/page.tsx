@@ -63,7 +63,7 @@ export default async function JarsPage() {
   }
 
   return (
-    <section className="container flex flex-col items-center gap-8 my-8 max-w-3xl bg-amber-100 bg-opacity-90 rounded-xl p-8">
+    <section className="container my-8 flex max-w-3xl flex-col items-center gap-8 rounded-xl bg-amber-100 bg-opacity-90 p-8">
       <h1 className="text-5xl font-semibold">Jars</h1>
       <ScrollArea className="w-full max-w-4xl">
         <div className="flex flex-col gap-2 p-4 pt-0">

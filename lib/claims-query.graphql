@@ -1,4 +1,4 @@
-export query GetClaimsByJar($jarId: String!) {
+query GetClaimsByJar($jarId: String!) {
   claims(where: { jar: $jarId }) {
     id
     uuid

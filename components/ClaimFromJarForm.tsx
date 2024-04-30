@@ -67,13 +67,13 @@ const ClaimFromJarForm = ({
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-2 dark:bg-gray-900"
       >
-        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
-          <div className="space-y-2 col-span-full lg:col-span-1">
+        <fieldset className="grid grid-cols-4 gap-6 rounded-md p-6 shadow-sm dark:bg-gray-900">
+          <div className="col-span-full space-y-2 lg:col-span-1">
             <p className="font-medium">Reach in jar</p>
             <p className="text-xs">Reach in the jar and claim your cookie!</p>
             <NFTImage />
           </div>
-          <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+          <div className="col-span-full grid grid-cols-6 gap-4 lg:col-span-3">
             <div className="col-span-full">
               <label htmlFor="cookieMonster">Cookie monster</label>
               <input
@@ -92,7 +92,7 @@ const ClaimFromJarForm = ({
           </div>
         </fieldset>
 
-        <div className="flex justify-center items-center col-span-full sm:col-span-3 gap-4">
+        <div className="col-span-full flex items-center justify-center gap-4 sm:col-span-3">
           <div className="input-wrapper">
             <Button type="submit">Claim Cookie</Button>
           </div>

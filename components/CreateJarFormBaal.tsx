@@ -143,7 +143,7 @@ const CreateJarFormERC721 = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 max-w-3xl m-auto my-8"
+        className="m-auto my-8 flex max-w-3xl flex-col gap-4"
       >
         <SegmentCookieMeta form={form} />
 

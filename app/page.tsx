@@ -31,9 +31,9 @@ const features = [
 
 export default async function Home() {
   return (
-    <section className="container flex flex-col items-center gap-8 my-8 max-w-3x">
+    <section className="max-w-3x container my-8 flex flex-col items-center gap-8">
       <div className="text-center">
-        <h1 className="text-5xl font-bold bg-amber-100 rounded-xl border-4 p-8 border-amber-950">
+        <h1 className="rounded-xl border-4 border-amber-950 bg-amber-100 p-8 text-5xl font-bold">
           Welcome to
         </h1>
         <Image
@@ -44,7 +44,7 @@ export default async function Home() {
           priority
         />
       </div>
-      <div className="flex flex-col gap-8 text-center bg-amber-100 bg-opacity-90 rounded-xl p-8">
+      <div className="flex flex-col gap-8 rounded-xl bg-amber-100 bg-opacity-90 p-8 text-center">
         <div className="mb-2">
           <h2 className="text-3xl font-bold">What is Cookie Jar?</h2>
           <p className="mb">Cookie Jar is a DAO owned slush fund</p>
@@ -69,12 +69,12 @@ export default async function Home() {
         </div>
         <div>
           <Link href="/jars">
-            <Button className="text-white bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <Button className="mb-2 me-2 rounded-lg bg-amber-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-amber-800 focus:outline-none focus:ring-4 focus:ring-amber-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Jars
             </Button>
           </Link>
           <Link href="/mintERC20">
-            <Button className="text-white bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <Button className="mb-2 me-2 rounded-lg bg-amber-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-amber-800 focus:outline-none focus:ring-4 focus:ring-amber-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Mint ERC20 gated Jar
             </Button>
           </Link>

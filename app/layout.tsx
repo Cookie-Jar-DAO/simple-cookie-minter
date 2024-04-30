@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased bg-cookie-jars bg-no-repeat bg-center bg-cover text-foreground",
+          "min-h-screen bg-background bg-cookie-jars bg-cover bg-center bg-no-repeat font-sans text-foreground antialiased",
           fontSans.variable,
         )}
       >

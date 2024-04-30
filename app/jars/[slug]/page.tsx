@@ -81,7 +81,7 @@ export default async function JarPage({
   }
 
   return (
-    <section className="container flex flex-col items-center gap-8 my-8 max-w-3xl bg-amber-100 bg-opacity-90 rounded-xl p-8">
+    <section className="container my-8 flex max-w-3xl flex-col items-center gap-8 rounded-xl bg-amber-100 bg-opacity-90 p-8">
       <h1 className="text-5xl font-semibold">Claims</h1>
       <ScrollArea className="w-full max-w-4xl">
         <div className="flex flex-col gap-2 p-4 pt-0">
@@ -103,7 +103,7 @@ export default async function JarPage({
                 </CardContent>
                 <CardFooter>
                   <div className="flex justify-end">{claim.reason.tag}</div>
-                  <div className="flex gap-2 ml-auto">
+                  <div className="ml-auto flex gap-2">
                     <Button
                       className="hover:bg-amber-200 focus:ring-4 focus:ring-amber-300"
                       variant="ghost"

@@ -42,8 +42,8 @@ const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
   });
 
   return (
-    <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-md bg-amber-100">
-      <div className="space-y-2 col-span-full lg:col-span-1">
+    <fieldset className="grid grid-cols-4 gap-6 rounded-md bg-amber-100 p-6 shadow-md">
+      <div className="col-span-full space-y-2 lg:col-span-1">
         <p className="font-medium">Cookie Jar config</p>
         <p className="text-xs">
           Please provide the following information to create your cookie jar.
@@ -51,7 +51,7 @@ const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
         <NFTImage />
       </div>
 
-      <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
+      <div className="col-span-full grid grid-cols-6 gap-4 lg:col-span-3">
         <FormField
           control={control}
           name="receiver"

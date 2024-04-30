@@ -41,7 +41,7 @@ export const DetailsBox = ({
         <Link
           rel="noopener noreferrer"
           href={`/history/${claimId || ""}`}
-          className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent"
+          className="-mb-1 flex items-center border-b-2 px-4 dark:border-transparent"
         >
           <Button>View History</Button>
         </Link>

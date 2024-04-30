@@ -161,7 +161,7 @@ export default function Claims({
   // Has not claimed
   if (data && canClaim && cookieJar?.address && isAddress(cookieJar.address))
     return (
-      <div className="flex flex-column p-24">
+      <div className="flex-column flex p-24">
         <DetailsBox
           claimAmt={data.claimAmt}
           claimPeriod={data.claimPeriod}
