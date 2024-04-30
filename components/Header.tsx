@@ -10,6 +10,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 export const Header = () => {
   function onNavChange() {
@@ -51,19 +52,25 @@ export const Header = () => {
           >
             Mint Jar
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="flex flex-col gap-2 bg-amber-100 p-2">
             <Link legacyBehavior href="/mintERC20" passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(navigationMenuTriggerStyle(), "w-full")}
+              >
                 ERC20
               </NavigationMenuLink>
             </Link>
             <Link legacyBehavior href="/mintERC721" passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(navigationMenuTriggerStyle(), "w-full")}
+              >
                 ERC721
               </NavigationMenuLink>
             </Link>
             <Link legacyBehavior href="/mintBaal" passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(navigationMenuTriggerStyle(), "w-full")}
+              >
                 Baal
               </NavigationMenuLink>
             </Link>
