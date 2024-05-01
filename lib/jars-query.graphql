@@ -1,0 +1,13 @@
+query JarsQuery {
+  cookieJars(first: 1000) {
+    type
+    periodLength
+    owner
+    name
+    link
+    id
+    description
+    cookieToken
+    cookieAmount
+  }
+}

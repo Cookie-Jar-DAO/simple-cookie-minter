@@ -12,16 +12,15 @@ import { Button } from "@/components/ui/button";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import {
-  Form,
-} from "@/components/ui/form";
-
+import { Form } from "@/components/ui/form";
 
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
-import { ICreateJarFormInput, ICreateJarFormInputERC721 } from "./types/CookieTypes";
+import {
+  ICreateJarFormInput,
+  ICreateJarFormInputERC721,
+} from "./types/CookieTypes";
 import SegmentERC721TokenGating from "./SegmentERC721TokenGating";
-
 
 const toNumber = zod
   .number()
@@ -104,7 +103,9 @@ const CreateJarFormERC721 = () => {
     handleTx();
   }, [hash]);
 
-  const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputERC721> = async (data) => {
+  const onSubmit: SubmitHandler<
+    ICreateJarFormInput & ICreateJarFormInputERC721
+  > = async (data) => {
     console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
@@ -118,6 +119,7 @@ const CreateJarFormERC721 = () => {
       }
 
       const { hash } = result;
+      console.log("hash", hash);
 
       toast({
         title: "Baking cookie",
@@ -134,7 +136,7 @@ const CreateJarFormERC721 = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 dark:bg-gray-900 max-w-3xl m-auto"
+        className="m-auto my-8 flex max-w-3xl flex-col gap-4 dark:bg-gray-900"
       >
         <SegmentCookieMeta form={form} />
 
@@ -142,9 +144,18 @@ const CreateJarFormERC721 = () => {
 
         <SegmentDonation form={form} />
 
-
-        <Button type="submit">Mint Cookie</Button>
-        <Button onClick={() => reset()}>Reset</Button>
+        <Button
+          className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300"
+          type="submit"
+        >
+          Mint Cookie Jar
+        </Button>
+        <Button
+          className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300"
+          onClick={() => reset()}
+        >
+          Reset
+        </Button>
       </form>
     </Form>
   );

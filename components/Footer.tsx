@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-const Footer = () => {
+export const Footer = () => {
   return (
-    <footer className="p-4 dark:bg-gray-800 dark:text-gray-100">
-      <div className="container flex flex-col justify-center items-center mx-auto">
+    <footer className="dark-bg-opacity-90 bg-amber-100 bg-opacity-90 p-4 dark:bg-gray-800 dark:text-gray-100">
+      <div className="container mx-auto flex flex-col items-center justify-center">
         <h2>Co Funded by the MetaFam</h2>
-        <div className="flex flex-row gap-12 justify-between max-w-xl">
+        <div className="flex max-w-xl flex-row items-center justify-between gap-12">
           <a
             href="https://daohaus.club/"
             target="_blank"
@@ -59,5 +59,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

@@ -1,3 +1,4 @@
+"use client";
 import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
 import {
@@ -9,12 +10,13 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 export const Header = () => {
   function onNavChange() {
     setTimeout(() => {
       const triggers = document.querySelectorAll(
-        '.submenu-trigger[data-state="open"]'
+        '.submenu-trigger[data-state="open"]',
       );
       if (triggers.length === 0) return;
 
@@ -29,7 +31,10 @@ export const Header = () => {
   }
 
   return (
-    <NavigationMenu onValueChange={onNavChange}>
+    <NavigationMenu
+      className="bg-amber-100 bg-opacity-90"
+      onValueChange={onNavChange}
+    >
       <NavigationMenuList>
         <Link legacyBehavior href="/" passHref>
           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -47,22 +52,28 @@ export const Header = () => {
           >
             Mint Jar
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="flex flex-col gap-2 bg-amber-100 p-2">
             <Link legacyBehavior href="/mintERC20" passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(navigationMenuTriggerStyle(), "w-full")}
+              >
                 ERC20
               </NavigationMenuLink>
-            </Link>{" "}
+            </Link>
             <Link legacyBehavior href="/mintERC721" passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(navigationMenuTriggerStyle(), "w-full")}
+              >
                 ERC721
               </NavigationMenuLink>
-            </Link>{" "}
+            </Link>
             <Link legacyBehavior href="/mintBaal" passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(navigationMenuTriggerStyle(), "w-full")}
+              >
                 Baal
               </NavigationMenuLink>
-            </Link>{" "}
+            </Link>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

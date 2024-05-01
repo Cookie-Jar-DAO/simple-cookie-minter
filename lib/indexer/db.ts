@@ -1,6 +1,7 @@
 import { Abi, AbiEvent } from "abitype";
 import Dexie, { Table } from "dexie";
-import { EventHandlers } from "./eventHandlers";
+
+type EventHandlers = "StoreCookieJar" | "StoreCookie";
 
 export interface CookieJarInitializer {
   safeTarget: string;
@@ -39,13 +40,32 @@ export type Initializer =
 
 export interface CookieJar {
   chainId: 5 | 100;
-  jarUid: string;
-  address: string;
   type: string;
-  title: string;
-  description: string;
+  periodLength: string;
+  owner: string;
+  name: string;
   link: string;
-  initializer: Initializer;
+  id: string;
+  description: string;
+  cookieToken: string;
+  cookieAmount: string;
+}
+
+export interface Claim {
+  id: string;
+  uuid: string;
+  claimer: string;
+  receiver: string;
+  amount: string;
+  timestamp: string;
+  reason: ClaimReason;
+}
+
+interface ClaimReason {
+  id: string;
+  link: string;
+  reason: string;
+  tag: string;
 }
 
 export interface Subscription {

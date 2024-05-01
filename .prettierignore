@@ -1,0 +1,20 @@
+# Next.js specific
+.next/
+out/
+build/
+
+# Dependency directories
+node_modules/
+
+# Tailwind CSS
+tailwind.config.js
+postcss.config.js
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache directories
+.cache/

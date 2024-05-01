@@ -12,13 +12,14 @@ import { Button } from "@/components/ui/button";
 
 import { useToast } from "@/components/ui/use-toast";
 
-import {
-  Form,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
-import { ICreateJarFormInput, ICreateJarFormInputERC20 } from "./types/CookieTypes";
+import {
+  ICreateJarFormInput,
+  ICreateJarFormInputERC20,
+} from "./types/CookieTypes";
 import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
 
 const toNumber = zod
@@ -103,7 +104,9 @@ const CreateJarFormERC20 = () => {
     handleTx();
   }, [hash]);
 
-  const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputERC20> = async (data) => {
+  const onSubmit: SubmitHandler<
+    ICreateJarFormInput & ICreateJarFormInputERC20
+  > = async (data) => {
     console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
@@ -133,7 +136,7 @@ const CreateJarFormERC20 = () => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 dark:bg-gray-900 max-w-3xl m-auto"
+        className="m-auto my-8 flex max-w-3xl flex-col gap-4"
       >
         <SegmentCookieMeta form={form} />
 
@@ -141,9 +144,18 @@ const CreateJarFormERC20 = () => {
 
         <SegmentDonation form={form} />
 
-
-        <Button type="submit">Mint Cookie</Button>
-        <Button onClick={() => reset()}>Reset</Button>
+        <Button
+          className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300"
+          type="submit"
+        >
+          Mint Cookie Jar
+        </Button>
+        <Button
+          className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300"
+          onClick={() => reset()}
+        >
+          Reset
+        </Button>
       </form>
     </Form>
   );

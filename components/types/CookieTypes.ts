@@ -26,21 +26,21 @@ export interface ICreateJarFormInputERC721 {
   erc721Threshold: string;
 }
 
-  // Baal
-  // 5. address _dao,
-  // 6. uint256 _threshold,
-  // 7. bool _useShares,
-  // 8. bool _useLoot
-  export interface ICreateJarFormInputBaal {
-    baalDao: string;
-    baalThreshold: string;
-    baalUseShares: boolean;
-    baalUseLoot: boolean;
-  }
+// Baal
+// 5. address _dao,
+// 6. uint256 _threshold,
+// 7. bool _useShares,
+// 8. bool _useLoot
+export interface ICreateJarFormInputBaal {
+  baalDao: string;
+  baalThreshold: string;
+  baalUseShares: boolean;
+  baalUseLoot: boolean;
+}
 
 export interface SegmentCookieMetaProps<
   T extends ICreateJarFormInput &
-    (ICreateJarFormInputERC20 | ICreateJarFormInputERC721)
+    (ICreateJarFormInputERC20 | ICreateJarFormInputERC721),
 > {
   form: UseFormReturn<T>;
 }

@@ -1,0 +1,14 @@
+query ExampleQuery {
+  cookieJars(first: 5) {
+    id
+    name
+    type
+    description
+  }
+  claims(first: 5) {
+    id
+    uuid
+    claimer
+    receiver
+  }
+}

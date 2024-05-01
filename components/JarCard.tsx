@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+import { truncateEthereumAddress } from "@/lib/utils";
 import { CookieJar } from "@/lib/indexer/db";
 import {
   Card,
@@ -10,15 +13,29 @@ import {
 
 export const JarCard = ({ cookieJar }: { cookieJar: CookieJar }) => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{cookieJar.title}</CardTitle>
-        <CardDescription>{cookieJar.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="mt-3 text-2xl">Your cookieJarId is {cookieJar.jarUid}</p>
-      </CardContent>
-      <CardFooter></CardFooter>
-    </Card>
+    <Link href={`/jars/${cookieJar.id}`}>
+      <Card className="w-full cursor-pointer hover:bg-amber-200 ">
+        <CardHeader>
+          <CardTitle>{cookieJar.name}</CardTitle>
+          <CardDescription>{cookieJar.description}</CardDescription>
+        </CardHeader>
+        {/* <CardContent>
+          <p>Cookie Jar Token: {cookieJar.cookieToken}</p>
+          <p>Cookie Amount: {cookieJar.cookieAmount}</p>
+
+          <p>
+            Link:
+            {cookieJar.link}
+          </p>
+        </CardContent> */}
+        <CardFooter className=" justify-between">
+          <p>Owned by: {truncateEthereumAddress(cookieJar.owner)}</p>
+          <p>
+            Valid Through:
+            {cookieJar.periodLength}
+          </p>
+        </CardFooter>
+      </Card>
+    </Link>
   );
 };

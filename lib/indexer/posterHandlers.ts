@@ -5,7 +5,7 @@ export const postHandler = async (
   user: string,
   tag: string,
   data: string,
-  publicClient: PublicClient
+  publicClient: PublicClient,
 ) => {
   const parsedContent = await processPosterContent(data, tag);
   console.log("Parsed Content: ", parsedContent);
