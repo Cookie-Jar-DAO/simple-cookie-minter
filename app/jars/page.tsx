@@ -1,5 +1,5 @@
 import { useJars } from "../hooks/useJars";
-import { JarCard } from "@/components/JarCard";
+import { JarCard } from "@/components/jar-card";
 import CreateJarFormERC20 from "../../components/CreateJarFormERC20";
 import { CookieJar } from "@/lib/indexer/db";
 import { ScrollArea } from "@/components/ui/scroll-area";

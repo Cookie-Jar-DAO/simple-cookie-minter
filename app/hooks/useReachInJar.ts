@@ -2,6 +2,7 @@ import { useWalletClient } from "wagmi";
 import { writeContract, simulateContract } from "wagmi/actions";
 import { IClaimFromJarFormInput } from "../../components/ClaimFromJarForm";
 import { wagmiConfig } from "../providers";
+import { CookieJarCore } from "../abis";
 
 export const useReachInJar = () => {
   const walletClient = useWalletClient();
@@ -13,21 +14,11 @@ export const useReachInJar = () => {
 
     const { request } = await simulateContract(wagmiConfig, {
       address: claimData.cookieJarAddress,
-      abi: [
-        {
-          type: "function",
-          name: "reachInJar",
-          inputs: [
-            { name: "cookieMonster", type: "string", internalType: "address" },
-            { name: "_reason", type: "string", internalType: "string" },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-      ],
+      abi: CookieJarCore,
       functionName: "reachInJar",
       args: [claimData.cookieMonster, claimData.reason],
     });
+    console.log("request", request);
 
     return await writeContract(wagmiConfig, request);
   };

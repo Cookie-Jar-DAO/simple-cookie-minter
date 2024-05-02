@@ -1,8 +1,20 @@
 "use client";
 import React from "react";
 
-import { CookieJarCore } from "@/app/abis/CookieJarCore";
 import { useAccount, useReadContract } from "wagmi";
+
+import { CookieJarCore } from "@/app/abis/CookieJarCore";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ClaimFromJarForm } from "./claim-from-jar-form";
 
 const ClaimButton = ({
   contractAddress,
@@ -38,9 +50,24 @@ const ClaimButton = ({
     return <div>You are not eligible to claim from this Jar</div>;
   }
 
-  if (canClaim) {
-    <div>Claim Button Modal</div>;
-  }
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300">
+          Open
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-amber-100">
+        <DialogHeader>
+          <DialogTitle>Let&apos;s bake</DialogTitle>
+          <DialogDescription>
+            You are eligible to claim from this Jar
+          </DialogDescription>
+        </DialogHeader>
+        <ClaimFromJarForm cookieJarAddress={contractAddress} />
+      </DialogContent>
+    </Dialog>
+  );
 };
 
 export default ClaimButton;

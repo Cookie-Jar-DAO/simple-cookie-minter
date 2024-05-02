@@ -61,8 +61,7 @@ const ClaimFromJarForm = ({
   console.log(isValid);
 
   return (
-    <div className="m-auto flex w-3/4 flex-col gap-4 dark:text-gray-50">
-      <h1 className="bold text-2xl">Let&apos;s bake</h1>
+    <div className="m-auto flex flex-col gap-4 dark:text-gray-50">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-2 dark:bg-gray-900"

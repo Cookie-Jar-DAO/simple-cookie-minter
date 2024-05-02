@@ -7,7 +7,7 @@ import zod from "zod";
 import { useMintNFTJar } from "../app/hooks/useMintNFTJar";
 import { ZERO_ADDRESS } from "../app/constants";
 import { useEffect, useState } from "react";
-import { waitForTransaction } from "wagmi/actions";
+import { waitForTransaction, waitForTransactionReceipt } from "wagmi/actions";
 import { Button } from "@/components/ui/button";
 
 import { useToast } from "@/components/ui/use-toast";
@@ -21,6 +21,7 @@ import {
   ICreateJarFormInputERC20,
 } from "./types/CookieTypes";
 import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
+import { wagmiConfig } from "@/app/providers";
 
 const toNumber = zod
   .number()
@@ -80,10 +81,11 @@ const CreateJarFormERC20 = () => {
 
   const { mintCookieJarNFT } = useMintNFTJar();
 
+  // TODO: Clean up and use wagmi hooks
   useEffect(() => {
     const handleTx = async () => {
       if (hash && isHex(hash)) {
-        const txData = await waitForTransaction({
+        const txData = await waitForTransactionReceipt(wagmiConfig, {
           hash,
         });
 
@@ -102,7 +104,7 @@ const CreateJarFormERC20 = () => {
     };
 
     handleTx();
-  }, [hash]);
+  }, [hash, toast]);
 
   const onSubmit: SubmitHandler<
     ICreateJarFormInput & ICreateJarFormInputERC20
@@ -118,15 +120,16 @@ const CreateJarFormERC20 = () => {
         });
         return;
       }
+      console.log("result", result);
 
-      const { hash } = result;
+      // const { hash } = result;
 
       toast({
         title: "Baking cookie",
         description: `Transaction submitted with hash ${hash}`,
       });
 
-      setHash(hash);
+      setHash(result);
     }
   };
 
