@@ -1,5 +1,5 @@
 import { Rating, Reason, db } from "./db";
-import { PublicClient } from "wagmi";
+import { PublicClient } from "viem";
 
 export const postHandler = async (
   user: string,

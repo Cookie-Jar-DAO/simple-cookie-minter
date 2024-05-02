@@ -61,6 +61,7 @@ const SegmentDonation: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>
+                  {/* @ts-ignore: Will fix chain error */}
                   Donate {chain.nativeCurrency.name} to the devs
                 </FormLabel>
                 <FormDescription>
@@ -84,6 +85,8 @@ const SegmentDonation: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
                   <Input placeholder="1" {...field} />
                 </FormControl>
                 <FormDescription>
+                  {/* TODO: fix check check */}
+                  {/* @ts-ignore: Will fix chain error */}
                   The amount of {chain.nativeCurrency.name} to donate
                 </FormDescription>
                 <FormMessage />

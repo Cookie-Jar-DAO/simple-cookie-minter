@@ -30,10 +30,7 @@ export const JarCard = ({ cookieJar }: { cookieJar: CookieJar }) => {
         </CardContent> */}
         <CardFooter className=" justify-between">
           <p>Owned by: {truncateEthereumAddress(cookieJar.owner)}</p>
-          <p>
-            Valid Through:
-            {cookieJar.periodLength}
-          </p>
+          <p>Claimable every {cookieJar.periodLength} seconds</p>
         </CardFooter>
       </Card>
     </Link>
