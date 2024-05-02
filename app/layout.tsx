@@ -26,17 +26,17 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background bg-cookie-jars bg-cover bg-center bg-no-repeat font-sans text-foreground antialiased",
+          "min-h-screen bg-background bg-cookie-jars bg-center bg-repeat font-sans text-foreground antialiased",
           fontSans.variable,
         )}
       >
         <Providers>
-          <Header />
           <div className="relative flex min-h-screen flex-col">
+            <Header />
             <main className="flex-1">{children}</main>
+            <Footer />
           </div>
         </Providers>
-        <Footer />
         <Toaster />
       </body>
     </html>
