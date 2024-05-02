@@ -1,5 +1,5 @@
 import { findDao } from "@daohaus/moloch-v3-data";
-import { useQuery } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
 
 interface IDaoDataOptions {
   networkId: string;
@@ -39,11 +39,12 @@ export const useDAOData = ({
   includeTokens,
   graphApiKeys,
 }: IDaoDataOptions) => {
-  const { data, error, ...rest } = useQuery(
-    [`dao-data-${daoAddress}`],
-    () => fetchDAOdata({ networkId, daoAddress, includeTokens, graphApiKeys }),
-    { enabled: !!daoAddress },
-  );
+  const { data, error, ...rest } = useQuery({
+    queryKey: [`dao-data-${daoAddress}`],
+    queryFn: () =>
+      fetchDAOdata({ networkId, daoAddress, includeTokens, graphApiKeys }),
+    enabled: !!daoAddress,
+  });
 
   return { ...data, error, ...rest };
 };

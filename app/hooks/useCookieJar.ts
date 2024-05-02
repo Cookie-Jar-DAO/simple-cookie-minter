@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { CookieJarCore } from "../abis";
-import { Abi, Address } from "viem";
+import { Abi, Address, PublicClient } from "viem";
 import { db } from "../../lib/indexer/db";
 import { useLiveQuery } from "dexie-react-hooks";
-import { PublicClient, useAccount, useChainId, usePublicClient } from "wagmi";
+import { useAccount, useChainId, usePublicClient } from "wagmi";
 import useCookieJarToken from "./useCookieJarToken";
 
 // fetch user cookie claim data from the blockchain

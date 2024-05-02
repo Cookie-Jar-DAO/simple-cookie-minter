@@ -7,7 +7,7 @@ import {
 } from "../../components/types/CookieTypes";
 import { useDeployment } from "./useDeployment";
 import { ZERO_ADDRESS } from "../constants";
-import { prepareWriteContract, writeContract } from "wagmi/actions";
+import { writeContract, simulateContract } from "wagmi/actions";
 import {
   encodeAbiParameters,
   isAddress,
@@ -15,6 +15,7 @@ import {
   parseEther,
 } from "viem/utils";
 import { useToast } from "@/components/ui/use-toast";
+import { wagmiConfig } from "../providers";
 
 export const useMintNFTJar = () => {
   const walletClient = useWalletClient();
@@ -107,7 +108,7 @@ export const useMintNFTJar = () => {
 
     console.log(mintData, details);
 
-    const config = await prepareWriteContract({
+    const { request } = await simulateContract(wagmiConfig, {
       address: nftContract.contractAddress as `0x${string}`,
       abi: nftContract?.abi,
       functionName: "cookieMint",
@@ -121,7 +122,7 @@ export const useMintNFTJar = () => {
       value,
     });
 
-    return await writeContract(config);
+    return await writeContract(wagmiConfig, request);
   };
 
   return {

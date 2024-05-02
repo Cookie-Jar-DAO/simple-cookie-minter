@@ -4,7 +4,7 @@ export const Footer = () => {
   return (
     <footer className="dark-bg-opacity-90 bg-amber-100 bg-opacity-90 p-4 dark:bg-gray-800 dark:text-gray-100">
       <div className="container mx-auto flex flex-col items-center justify-center">
-        <h2>Co Funded by the MetaFam</h2>
+        <p className="text-sm text-amber-950">Co Funded by the MetaFam</p>
         <div className="flex max-w-xl flex-row items-center justify-between gap-12">
           <a
             href="https://daohaus.club/"
@@ -14,8 +14,8 @@ export const Footer = () => {
             <Image
               src={"/daohaus.png"}
               alt="built by DAOHaus"
-              width={150}
-              height={150}
+              width={75}
+              height={75}
             />
           </a>
           <a
@@ -26,8 +26,8 @@ export const Footer = () => {
             <Image
               src={"/publicnouns.png"}
               alt="built by Public Nouns"
-              width={150}
-              height={150}
+              width={75}
+              height={75}
             />
           </a>
           <a
@@ -38,8 +38,8 @@ export const Footer = () => {
             <Image
               src={"/raidguild.svg"}
               alt="built by Raid Guild"
-              width={150}
-              height={150}
+              width={75}
+              height={75}
             />
           </a>
           <a
@@ -50,8 +50,8 @@ export const Footer = () => {
             <Image
               src={"/metacartel.png"}
               alt="built by MetaCartel"
-              width={150}
-              height={150}
+              width={75}
+              height={75}
             />
           </a>
         </div>

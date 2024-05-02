@@ -32,7 +32,7 @@ export const Header = () => {
 
   return (
     <NavigationMenu
-      className="bg-amber-100 bg-opacity-90"
+      className="max-h-16 bg-amber-100 bg-opacity-90"
       onValueChange={onNavChange}
     >
       <NavigationMenuList>
