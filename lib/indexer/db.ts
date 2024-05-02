@@ -45,7 +45,7 @@ export interface CookieJar {
   owner: string;
   name: string;
   link: string;
-  id: string;
+  id: `0x${string}`;
   description: string;
   cookieToken: string;
   cookieAmount: string;

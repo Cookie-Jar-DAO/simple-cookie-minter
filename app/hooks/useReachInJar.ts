@@ -1,6 +1,7 @@
 import { useWalletClient } from "wagmi";
-import { prepareWriteContract, writeContract } from "wagmi/actions";
+import { writeContract, simulateContract } from "wagmi/actions";
 import { IClaimFromJarFormInput } from "../../components/ClaimFromJarForm";
+import { wagmiConfig } from "../providers";
 
 export const useReachInJar = () => {
   const walletClient = useWalletClient();
@@ -10,13 +11,16 @@ export const useReachInJar = () => {
       throw new Error("Not connected to wallet");
     }
 
-    const config = await prepareWriteContract({
+    const { request } = await simulateContract(wagmiConfig, {
       address: claimData.cookieJarAddress,
       abi: [
         {
           type: "function",
           name: "reachInJar",
-          inputs: [{ name: "_reason", type: "string", internalType: "string" }],
+          inputs: [
+            { name: "cookieMonster", type: "string", internalType: "address" },
+            { name: "_reason", type: "string", internalType: "string" },
+          ],
           outputs: [],
           stateMutability: "nonpayable",
         },
@@ -25,7 +29,7 @@ export const useReachInJar = () => {
       args: [claimData.cookieMonster, claimData.reason],
     });
 
-    return await writeContract(config);
+    return await writeContract(wagmiConfig, request);
   };
 
   return {

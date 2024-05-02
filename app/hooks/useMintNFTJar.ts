@@ -7,12 +7,7 @@ import {
 } from "../../components/types/CookieTypes";
 import { useDeployment } from "./useDeployment";
 import { ZERO_ADDRESS } from "../constants";
-import { useSimulateContract } from "wagmi";
-import {
-  prepareWriteContract,
-  writeContract,
-  simulateContract,
-} from "wagmi/actions";
+import { writeContract, simulateContract } from "wagmi/actions";
 import {
   encodeAbiParameters,
   isAddress,

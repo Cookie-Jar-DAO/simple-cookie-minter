@@ -2,7 +2,8 @@ import Image from "next/image";
 
 import { Claim, CookieJar } from "@/lib/indexer/db";
 
-import { ClaimsList } from "@/components/ClaimsList";
+import { ClaimsList } from "@/components/claims-list";
+import ClaimButton from "@/components/claim-button";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
@@ -105,20 +106,25 @@ export default async function JarPage({
             className="object-cover object-center"
           />
         </div>
-        <div className="sm:col-span-8 lg:col-span-7">
-          <h1 className="text-3xl font-bold text-gray-900 sm:pr-12">
-            {cookieJar.name}
-          </h1>
-          <section aria-labelledby="information-heading" className="mt-2">
-            <h3 id="information-heading" className="sr-only">
-              Jar information
-            </h3>
-            <p className="text-2xl text-gray-900">{cookieJar.periodLength}</p>
-            <div className="mt-6">
-              <h4 className="sr-only">Description</h4>
-              <p className="text-sm text-gray-700">{cookieJar.description}</p>
+        <div className="flex h-full flex-col justify-between sm:col-span-8 lg:col-span-7">
+          <section aria-labelledby="jar-information" className="mt-2">
+            <h1 className="text-3xl font-bold text-gray-900 sm:pr-12">
+              {cookieJar.name}
+            </h1>
+            <div className="">
+              <h3 id="information-heading" className="sr-only">
+                Jar information
+              </h3>
+              <p className="text-xl text-gray-900">
+                Claim period: {cookieJar.periodLength}
+              </p>
+              <div className="mt-6">
+                <h4 className="sr-only">Description</h4>
+                <p className="text-sm text-gray-700">{cookieJar.description}</p>
+              </div>
             </div>
           </section>
+          <ClaimButton contractAddress={cookieJar.id} />
         </div>
       </div>
       <ClaimsList claims={claims} />
