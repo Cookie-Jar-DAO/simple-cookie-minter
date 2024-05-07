@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export interface IClaimFromJarFormInput {
   cookieJarAddress: Address;
-  cookieMonster: string;
+  cookieMonster: Address;
   reason: string;
 }
 
@@ -32,13 +32,11 @@ const ethAddressSchema = z.string().refine((value) => isAddress(value), {
 
 const schema = z
   .object({
+    cookieJarAddress: ethAddressSchema,
     cookieMonster: ethAddressSchema,
     reason: z.string(),
   })
   .required();
-
-const inputStyle =
-  "w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900 p-2";
 
 const ClaimFromJarForm = ({
   cookieJarAddress,
@@ -93,7 +91,7 @@ const ClaimFromJarForm = ({
               <FormLabel>Reason</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself"
+                  placeholder="Tell me why..."
                   className="resize-none"
                   {...field}
                 />

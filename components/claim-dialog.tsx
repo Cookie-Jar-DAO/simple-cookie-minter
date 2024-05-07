@@ -53,9 +53,7 @@ const ClaimButton = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300">
-          Open
-        </Button>
+        <Button>Claim</Button>
       </DialogTrigger>
       <DialogContent className="bg-amber-100">
         <DialogHeader>

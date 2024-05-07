@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Claim, CookieJar } from "@/lib/indexer/db";
 
 import { ClaimsList } from "@/components/claims-list";
-import ClaimButton from "@/components/claim-button";
+import ClaimButton from "@/components/claim-dialog";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
