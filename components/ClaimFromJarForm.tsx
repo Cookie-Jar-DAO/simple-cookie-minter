@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 export interface IClaimFromJarFormInput {
   cookieJarAddress: Address;
-  cookieMonster: string;
+  cookieMonster: Address;
   reason: string;
 }
 

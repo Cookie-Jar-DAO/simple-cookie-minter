@@ -20,7 +20,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        gluten: ["'Gluten'", ...fontFamily.serif],
+        sans: ["'Poppins'", "var(--font-sans)", ...fontFamily.sans],
       },
       backgroundImage: {
         "cookie-jars": "url('/cookie-jars.webp')",
