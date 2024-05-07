@@ -48,6 +48,48 @@
 }
 
 @layer base {
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins/Poppins-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/Poppins/Poppins-Light.ttf") format("truetype");
+    font-weight: light;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Gluten";
+    src: url("/fonts/Gluten/static/Gluten-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Gluten";
+    src: url("/fonts/Gluten/static/Gluten-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Gluten";
+    src: url("/fonts/Gluten/static/Gluten-ExtraBold.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+  }
+
   * {
     @apply border-border;
   }
