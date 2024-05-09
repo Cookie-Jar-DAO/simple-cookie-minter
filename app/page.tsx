@@ -52,7 +52,7 @@ export default async function Home() {
           className="-z-10 bg-center object-cover"
           fill
         />
-        <div className="absolute inset-0 bg-amber-900 opacity-30"></div>
+        <div className="absolute inset-0 bg-amber-900 opacity-30" />
         <div className="relative z-20 flex flex-col items-center text-center">
           <h1 className="font-gluten relative z-30 text-[6rem] font-extrabold text-amber-50">
             Welcome to
@@ -75,11 +75,15 @@ export default async function Home() {
             community.
           </p>
           <div className="flex justify-center gap-4">
-            <Link href="/jars">
-              <Button variant="outline">See all Jars</Button>
+            <Link className="w-[150px]" href="/jars">
+              <Button className="w-full" size="lg" variant="outline">
+                See all Jars
+              </Button>
             </Link>
-            <Link href="/mintERC20">
-              <Button>Create Jar</Button>
+            <Link className="w-[150px]" href="/mintERC20">
+              <Button className="w-full" size="lg">
+                Create Jar
+              </Button>
             </Link>
           </div>
         </div>

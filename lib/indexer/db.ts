@@ -1,5 +1,6 @@
 import { Abi, AbiEvent } from "abitype";
 import Dexie, { Table } from "dexie";
+import { Address } from "viem";
 
 type EventHandlers = "StoreCookieJar" | "StoreCookie";
 
@@ -42,10 +43,10 @@ export interface CookieJar {
   chainId: 5 | 100;
   type: string;
   periodLength: string;
-  owner: string;
+  owner: Address;
   name: string;
   link: string;
-  id: `0x${string}`;
+  id: Address;
   description: string;
   cookieToken: string;
   cookieAmount: string;
