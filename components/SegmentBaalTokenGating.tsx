@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/collapsible";
 import { Form } from "react-hook-form";
 import { useDAOData } from "@/app/hooks/useDAOdata";
+import { Checkbox } from "./ui/checkbox";
 
 const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
   form,
@@ -37,7 +38,7 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
   });
 
   return (
-    <fieldset className="grid grid-cols-4 gap-6 rounded-md bg-amber-100 p-6 shadow-md">
+    <fieldset className="grid grid-cols-4 gap-6 p-6">
       <div className="col-span-full space-y-2 lg:col-span-1">
         <p className="font-medium">Set DAO gating</p>
         <p className="text-xs">
@@ -88,14 +89,22 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
           control={control}
           name="baalUseShares"
           render={({ field }) => (
-            <FormItem className="col-span-full">
-              <FormLabel>Use Shares</FormLabel>
+            <FormItem className="col-span-full flex flex-row items-start space-x-3 space-y-0 p-4">
               <FormControl>
-                <Input type="checkbox" {...field} />
+                <Checkbox
+                  onCheckedChange={(checked) => {
+                    return checked
+                      ? field.onChange(true)
+                      : field.onChange(false);
+                  }}
+                />
               </FormControl>
-              <FormDescription>
-                Use shares to gate cookie withdrawals
-              </FormDescription>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Use Shares</FormLabel>
+                <FormDescription>
+                  Use shares to gate cookie withdrawals
+                </FormDescription>
+              </div>
               <FormMessage />
             </FormItem>
           )}
@@ -105,14 +114,23 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
           control={control}
           name="baalUseLoot"
           render={({ field }) => (
-            <FormItem className="col-span-full">
-              <FormLabel>Use Loot</FormLabel>
+            <FormItem className="col-span-full flex flex-row items-start space-x-3 space-y-0 p-4">
               <FormControl>
-                <Input type="checkbox" {...field} />
+                <Checkbox
+                  onCheckedChange={(checked) => {
+                    return checked
+                      ? field.onChange(true)
+                      : field.onChange(false);
+                  }}
+                />
               </FormControl>
-              <FormDescription>
-                Use loot to gate cookie withdrawals
-              </FormDescription>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Use Loot</FormLabel>
+
+                <FormDescription>
+                  Use loot to gate cookie withdrawals
+                </FormDescription>
+              </div>
               <FormMessage />
             </FormItem>
           )}
