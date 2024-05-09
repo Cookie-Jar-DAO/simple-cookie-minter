@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 
+import { ConnectKitButton } from "connectkit";
 import { useAccount, useReadContract } from "wagmi";
 
 import { CookieJarCore } from "@/app/abis/CookieJarCore";
@@ -14,9 +15,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ClaimFromJarForm } from "./claim-from-jar-form";
 
-const ClaimButton = ({
+import { ClaimFromJarForm } from "@/components/claim-from-jar-form";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
+
+const ClaimDialog = ({
   contractAddress,
 }: {
   contractAddress: `0x${string}`;
@@ -39,7 +47,7 @@ const ClaimButton = ({
   });
 
   if (isDisconnected) {
-    return <div>You must Connect your Wallet</div>;
+    return <ConnectKitButton />;
   }
 
   if (isConnecting || isLoading) {
@@ -47,7 +55,18 @@ const ClaimButton = ({
   }
 
   if (!canClaim) {
-    return <div>You are not eligible to claim from this Jar</div>;
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button disabled>Claim</Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>You are not eligible to reach in this jar</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
   }
 
   return (
@@ -68,4 +87,4 @@ const ClaimButton = ({
   );
 };
 
-export default ClaimButton;
+export { ClaimDialog };

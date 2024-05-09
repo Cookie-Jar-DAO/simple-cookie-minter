@@ -14,10 +14,12 @@ import {
 export const JarCard = ({ cookieJar }: { cookieJar: CookieJar }) => {
   return (
     <Link href={`/jars/${cookieJar.id}`}>
-      <Card className="w-full cursor-pointer hover:bg-amber-200 ">
+      <Card className="w-full cursor-pointer border-none bg-amber-50 hover:bg-amber-200 hover:bg-opacity-40">
         <CardHeader>
-          <CardTitle>{cookieJar.name}</CardTitle>
-          <CardDescription>{cookieJar.description}</CardDescription>
+          <CardTitle className="flex text-start">{cookieJar.name}</CardTitle>
+          <CardDescription className="flex text-start">
+            {cookieJar.description}
+          </CardDescription>
         </CardHeader>
         {/* <CardContent>
           <p>Cookie Jar Token: {cookieJar.cookieToken}</p>

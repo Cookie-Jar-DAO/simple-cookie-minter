@@ -1,9 +1,14 @@
 import Image from "next/image";
 
+import cookieBackground from "@/assets/cookie-background.webp";
+
 import { Claim, CookieJar } from "@/lib/indexer/db";
 
 import { ClaimsList } from "@/components/claims-list";
-import ClaimButton from "@/components/claim-dialog";
+import { ClaimDialog } from "@/components/claim-dialog";
+import { Card } from "@/components/ui/card";
+import { truncateEthereumAddress } from "@/lib/utils";
+import AdminButton from "@/components/admin-button";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
@@ -95,39 +100,48 @@ export default async function JarPage({
   const { cookieJar, claims } = jarData;
 
   return (
-    <section className="container my-8 flex max-w-3xl flex-col items-center gap-8 rounded-xl bg-amber-100 bg-opacity-90 p-8">
-      <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
-        <div className="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
-          <Image
-            src={`/cookie-jar.png`}
-            alt="Cookie Jar Image"
-            height={600}
-            width={400}
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="flex h-full flex-col justify-between sm:col-span-8 lg:col-span-7">
-          <section aria-labelledby="jar-information" className="mt-2">
-            <h1 className="text-3xl font-bold text-gray-900 sm:pr-12">
-              {cookieJar.name}
-            </h1>
-            <div className="">
-              <h3 id="information-heading" className="sr-only">
-                Jar information
-              </h3>
-              <p className="text-xl text-gray-900">
-                Claim period: {cookieJar.periodLength}
-              </p>
-              <div className="mt-6">
-                <h4 className="sr-only">Description</h4>
-                <p className="text-sm text-gray-700">{cookieJar.description}</p>
+    <div className="max-w-3x container my-8">
+      <div className="relative flex w-full flex-col items-center gap-8 overflow-hidden rounded-3xl p-20">
+        <div className="absolute inset-0 bg-amber-900 opacity-30" />
+        {/* <section className="container relative my-8 flex w-full max-w-3xl flex-col items-center gap-8 rounded-xl bg-amber-100 bg-opacity-30 p-8"> */}
+        <Image
+          src={cookieBackground}
+          alt="Background of cookie jars and cookies"
+          className="-z-10 bg-center object-cover blur-sm"
+          fill
+        />
+        <section className="relative z-20 w-full max-w-3xl">
+          <Card className="flex flex-col gap-6 bg-amber-50 p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col">
+                  <h1 className="font-gluten text-4xl font-bold">
+                    {cookieJar.name}
+                  </h1>
+                  <p className="text-amber-800">{cookieJar.description}</p>
+                </div>
+                <div className="flex flex-col">
+                  <p>Claim period: {cookieJar.periodLength}</p>
+                  <p>Owned by: {truncateEthereumAddress(cookieJar.owner)}</p>
+                </div>
+                <div className="flex">
+                  <ClaimDialog contractAddress={cookieJar.id} />
+                  <AdminButton owner={cookieJar.owner} />
+                </div>
               </div>
+              <Image
+                className="h-44 w-auto"
+                src={"/cookie-jar.png"}
+                alt="Cookie Jar"
+                height={176}
+                width={176}
+                priority
+              />
             </div>
-          </section>
-          <ClaimButton contractAddress={cookieJar.id} />
-        </div>
+            <ClaimsList claims={claims} />
+          </Card>
+        </section>
       </div>
-      <ClaimsList claims={claims} />
-    </section>
+    </div>
   );
 }
