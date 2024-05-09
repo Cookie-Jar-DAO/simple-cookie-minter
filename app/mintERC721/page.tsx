@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import cookieBackground from "@/assets/cookie-background.webp";
 import CreateJarFormERC721 from "@/components/CreateJarFormERC721";
+import { Card } from "@/components/ui/card";
 
 export default function Mint() {
   return (
@@ -15,9 +16,9 @@ export default function Mint() {
           className="-z-10 bg-center object-cover blur-sm"
           fill
         />
-        <div className="relative z-20">
+        <Card className="relative z-20 border-none bg-amber-100 p-8">
           <CreateJarFormERC721 />;
-        </div>
+        </Card>
       </section>
     </div>
   );
