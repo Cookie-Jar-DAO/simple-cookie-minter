@@ -9,6 +9,8 @@ import { ClaimDialog } from "@/components/claim-dialog";
 import { Card } from "@/components/ui/card";
 import { truncateEthereumAddress } from "@/lib/utils";
 import AdminButton from "@/components/admin-button";
+import { Button } from "@/components/ui/button";
+import { CookieJarBalance } from "@/components/cookie-jar-balance";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
@@ -111,8 +113,8 @@ export default async function JarPage({
           fill
         />
         <section className="relative z-20 w-full max-w-3xl">
-          <Card className="flex flex-col gap-6 bg-amber-50 p-6">
-            <div className="flex items-center justify-between">
+          <Card className="flex flex-col gap-6 border-none bg-amber-100 p-12">
+            <Card className="flex items-center justify-between border-none bg-amber-50 p-6">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
                   <h1 className="font-gluten text-4xl font-bold">
@@ -121,6 +123,7 @@ export default async function JarPage({
                   <p className="text-amber-800">{cookieJar.description}</p>
                 </div>
                 <div className="flex flex-col">
+                  <CookieJarBalance jarAddress={cookieJar.id} />
                   <p>Claim period: {cookieJar.periodLength}</p>
                   <p>Owned by: {truncateEthereumAddress(cookieJar.owner)}</p>
                 </div>
@@ -129,15 +132,18 @@ export default async function JarPage({
                   <AdminButton owner={cookieJar.owner} />
                 </div>
               </div>
-              <Image
-                className="h-44 w-auto"
-                src={"/cookie-jar.png"}
-                alt="Cookie Jar"
-                height={176}
-                width={176}
-                priority
-              />
-            </div>
+              <div className="flex flex-col items-center">
+                <Image
+                  className="aspect-square"
+                  src={"/cookie-jar.png"}
+                  alt="Cookie Jar"
+                  height={176}
+                  width={176}
+                  priority
+                />
+                <Button variant="outline">Feed me!</Button>
+              </div>
+            </Card>
             <ClaimsList claims={claims} />
           </Card>
         </section>

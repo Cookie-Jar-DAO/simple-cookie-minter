@@ -35,7 +35,7 @@ export const Header = () => {
       className="max-h-16 bg-amber-100 bg-opacity-90"
       onValueChange={onNavChange}
     >
-      <NavigationMenuList>
+      <NavigationMenuList className="space-x-2">
         <Link legacyBehavior href="/" passHref>
           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             Home
