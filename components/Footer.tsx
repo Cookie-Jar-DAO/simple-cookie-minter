@@ -4,7 +4,9 @@ export const Footer = () => {
   return (
     <footer className="dark-bg-opacity-90 bg-amber-100 bg-opacity-90 p-4 dark:bg-gray-800 dark:text-gray-100">
       <div className="container mx-auto flex flex-col items-center justify-center">
-        <p className="text-sm text-amber-950">Co Funded by the MetaFam</p>
+        <p className="font-gluten text-2xl text-amber-950">
+          Co Funded by the MetaFam
+        </p>
         <div className="flex max-w-xl flex-row items-center justify-between gap-12">
           <a
             href="https://daohaus.club/"

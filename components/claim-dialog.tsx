@@ -23,13 +23,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { Address } from "viem";
 
-const ClaimDialog = ({
-  contractAddress,
-}: {
-  contractAddress: `0x${string}`;
-}) => {
-  console.log("contractAddress", contractAddress);
+const ClaimDialog = ({ contractAddress }: { contractAddress: Address }) => {
   const { address, isDisconnected, isConnecting } = useAccount();
   const {
     data: canClaim,
