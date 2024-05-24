@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { truncateEthereumAddress } from "@/lib/utils";
-import { CookieJar } from "@/lib/indexer/db";
+import type { CookieJar } from "@/lib/indexer/db";
 import {
   Card,
   CardContent,

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import cookieBackground from "@/assets/cookie-background.webp";
 
-import { Claim, CookieJar } from "@/lib/indexer/db";
+import type { Claim, CookieJar } from "@/lib/indexer/db";
 
 import { ClaimsList } from "@/components/claims-list";
 import { ClaimDialog } from "@/components/claim-dialog";
