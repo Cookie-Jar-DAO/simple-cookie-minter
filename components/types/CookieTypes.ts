@@ -1,29 +1,29 @@
-import { SupportedImplementations } from "@/app/contracts";
-import { UseFormReturn } from "react-hook-form";
+import type { SupportedImplementations } from "@/app/contracts";
+import type { UseFormReturn } from "react-hook-form";
 
 export interface ICreateJarFormInput {
-  cookieJar: SupportedImplementations;
-  receiver: string;
-  title: string;
-  description: string;
-  link: string;
-  cookiePeriod: number;
-  cookieAmount: string;
-  cookieToken: string;
-  donation: boolean;
-  donationAmount?: string;
+	cookieJar: SupportedImplementations;
+	receiver: string;
+	title: string;
+	description: string;
+	link: string;
+	cookiePeriod: number;
+	cookieAmount: string;
+	cookieToken: string;
+	donation: boolean;
+	donationAmount?: string;
 }
 
 export interface ICreateJarFormInputERC20 {
-  erc20Token: string;
-  erc20Threshold: string;
+	erc20Token: string;
+	erc20Threshold: string;
 }
 
 // 5. address _erc721addr,
 // 6. uint256 _threshold
 export interface ICreateJarFormInputERC721 {
-  erc721Token: string;
-  erc721Threshold: string;
+	erc721Token: string;
+	erc721Threshold: string;
 }
 
 // Baal
@@ -32,15 +32,15 @@ export interface ICreateJarFormInputERC721 {
 // 7. bool _useShares,
 // 8. bool _useLoot
 export interface ICreateJarFormInputBaal {
-  baalDao: string;
-  baalThreshold: string;
-  baalUseShares: boolean;
-  baalUseLoot: boolean;
+	baalDao: string;
+	baalThreshold: string;
+	baalUseShares: boolean;
+	baalUseLoot: boolean;
 }
 
 export interface SegmentCookieMetaProps<
-  T extends ICreateJarFormInput &
-    (ICreateJarFormInputERC20 | ICreateJarFormInputERC721),
+	T extends ICreateJarFormInput &
+		(ICreateJarFormInputERC20 | ICreateJarFormInputERC721),
 > {
-  form: UseFormReturn<T>;
+	form: UseFormReturn<T>;
 }
