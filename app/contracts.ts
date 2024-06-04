@@ -1,4 +1,4 @@
-import { Abi } from "viem";
+import type { Abi } from "viem";
 import deployments from "@/app/deployments.json";
 
 export type SupportedChainIds = keyof typeof deployments | "development";

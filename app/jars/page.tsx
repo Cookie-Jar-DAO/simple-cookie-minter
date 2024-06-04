@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { JarCard } from "@/components/jar-card";
 import CreateJarFormERC20 from "../../components/CreateJarFormERC20";
-import { CookieJar } from "@/lib/indexer/db";
+import type { CookieJar } from "@/lib/indexer/db";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import cookieBackground from "@/assets/cookie-background.webp";
