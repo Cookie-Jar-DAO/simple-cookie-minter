@@ -54,7 +54,7 @@ export default async function Home() {
         />
         <div className="absolute inset-0 bg-amber-900 opacity-30" />
         <div className="relative z-20 flex flex-col items-center text-center">
-          <h1 className="font-gluten relative z-30 text-[6rem] font-extrabold text-amber-50">
+          <h1 className="relative z-30 font-gluten text-[6rem] font-extrabold text-amber-50">
             Welcome to
           </h1>
           <Image
@@ -80,15 +80,10 @@ export default async function Home() {
                 See all Jars
               </Button>
             </Link>
-            <Link className="w-[150px]" href="/mintERC20">
-              <Button className="w-full" size="lg">
-                Create Jar
-              </Button>
-            </Link>
           </div>
         </div>
         <div className="mx-auto max-w-2xl lg:max-w-none">
-          <h3 className="font-gluten my-4 text-4xl">How it works</h3>
+          <h3 className="my-4 font-gluten text-4xl">How it works</h3>
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
             {features.map((feature) => (
               <div key={feature.name} className="flex flex-col">
