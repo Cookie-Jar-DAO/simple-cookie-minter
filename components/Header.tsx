@@ -11,8 +11,11 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import { useAccount } from "wagmi";
 
 export const Header = () => {
+  const { address } = useAccount();
+
   function onNavChange() {
     setTimeout(() => {
       const triggers = document.querySelectorAll(
@@ -46,36 +49,38 @@ export const Header = () => {
             Jars
           </NavigationMenuLink>
         </Link>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger
-            className={`submenu-trigger ${navigationMenuTriggerStyle()}`}
-          >
-            Mint Jar
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="flex flex-col gap-2 bg-amber-100 p-2">
-            <Link legacyBehavior href="/mintERC20" passHref>
-              <NavigationMenuLink
-                className={cn(navigationMenuTriggerStyle(), "w-full")}
-              >
-                ERC20
-              </NavigationMenuLink>
-            </Link>
-            <Link legacyBehavior href="/mintERC721" passHref>
-              <NavigationMenuLink
-                className={cn(navigationMenuTriggerStyle(), "w-full")}
-              >
-                ERC721
-              </NavigationMenuLink>
-            </Link>
-            <Link legacyBehavior href="/mintBaal" passHref>
-              <NavigationMenuLink
-                className={cn(navigationMenuTriggerStyle(), "w-full")}
-              >
-                Baal
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        {address && (
+          <NavigationMenuItem>
+            <NavigationMenuTrigger
+              className={`submenu-trigger ${navigationMenuTriggerStyle()}`}
+            >
+              Mint Jar
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="flex flex-col gap-2 bg-amber-100 p-2">
+              <Link legacyBehavior href="/mintERC20" passHref>
+                <NavigationMenuLink
+                  className={cn(navigationMenuTriggerStyle(), "w-full")}
+                >
+                  ERC20
+                </NavigationMenuLink>
+              </Link>
+              <Link legacyBehavior href="/mintERC721" passHref>
+                <NavigationMenuLink
+                  className={cn(navigationMenuTriggerStyle(), "w-full")}
+                >
+                  ERC721
+                </NavigationMenuLink>
+              </Link>
+              <Link legacyBehavior href="/mintBaal" passHref>
+                <NavigationMenuLink
+                  className={cn(navigationMenuTriggerStyle(), "w-full")}
+                >
+                  Baal
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        )}
       </NavigationMenuList>
 
       <ConnectKitButton />
