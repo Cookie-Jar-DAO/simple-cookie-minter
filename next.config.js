@@ -7,7 +7,7 @@ const nextConfig = {
       loader: "graphql-tag/loader",
     });
     // See: https://github.com/WalletConnect/walletconnect-monorepo/issues/1908
-    config.externals.push("pino-pretty");
+    config.externals.push('pino-pretty', 'lokijs', 'encoding') 
     config.resolve.fallback = { fs: false, net: false, tls: false };
     return config;
   },
