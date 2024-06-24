@@ -1,7 +1,7 @@
 import { useWalletClient } from "wagmi";
 import { writeContract, simulateContract } from "wagmi/actions";
 import type { IClaimFromJarFormInput } from "@/components/ClaimFromJarForm";
-import { wagmiConfig } from "@/app/providers";
+import { wagmiConfig } from "@/config/wagmi";
 import { CookieJarCore } from "../abis";
 
 export const useReachInJar = () => {

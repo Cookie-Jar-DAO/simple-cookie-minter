@@ -21,7 +21,7 @@ import type {
 	ICreateJarFormInputBaal,
 } from "@/components/types/CookieTypes";
 import SegmentBaalTokenGating from "./SegmentBaalTokenGating";
-import { wagmiConfig } from "@/app/providers";
+import { wagmiConfig } from "@/config/wagmi";
 
 const toNumber = zod
 	.number()
@@ -98,7 +98,7 @@ const CreateJarFormERC721 = () => {
 				if (txData.status === "success") {
 					toast({
 						title: "Cookie baked",
-						description: `Cookie jar created!`,
+						description: "Cookie jar created!",
 					});
 				} else {
 					toast({
@@ -112,28 +112,29 @@ const CreateJarFormERC721 = () => {
 		handleTx();
 	}, [hash]);
 
-	const onSubmit: SubmitHandler<ICreateJarFormInput & ICreateJarFormInputBaal> =
-		async (data) => {
-			console.log(data);
-			if (isValid) {
-				const result = await mintCookieJarNFT(data);
+	const onSubmit: SubmitHandler<
+		ICreateJarFormInput & ICreateJarFormInputBaal
+	> = async (data) => {
+		console.log(data);
+		if (isValid) {
+			const result = await mintCookieJarNFT(data);
 
-				if (!result) {
-					toast({
-						title: "Cookie burnt",
-						description: `Transaction failed!`,
-					});
-					return;
-				}
-
+			if (!result) {
 				toast({
-					title: "Baking cookie",
-					description: `Transaction submitted with hash ${result}`,
+					title: "Cookie burnt",
+					description: "Transaction failed!",
 				});
-
-				setHash(result);
+				return;
 			}
-		};
+
+			toast({
+				title: "Baking cookie",
+				description: `Transaction submitted with hash ${result}`,
+			});
+
+			setHash(result);
+		}
+	};
 
 	console.log(isValid);
 

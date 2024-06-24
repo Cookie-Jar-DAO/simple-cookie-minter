@@ -15,7 +15,7 @@ import {
 	parseEther,
 } from "viem/utils";
 import { useToast } from "@/components/ui/use-toast";
-import { wagmiConfig } from "@/app/providers";
+import { wagmiConfig } from "@/config/wagmi";
 
 export const useMintNFTJar = () => {
 	const walletClient = useWalletClient();
