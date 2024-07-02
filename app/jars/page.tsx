@@ -16,7 +16,8 @@ import { data } from "./mock-data";
 const fetchJars = async (): Promise<CookieJar[] | undefined> => {
 	try {
 		const res = await fetch(
-			"https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing",
+			// "https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing",
+			"https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
 			{
 				cache: "no-store",
 				method: "POST",
@@ -87,7 +88,7 @@ export default async function JarsPage() {
 					<h1 className="font-gluten text-5xl font-semibold">Jars</h1>
 					<ScrollArea className="h-[40rem] w-full max-w-4xl">
 						<div className="flex flex-col gap-2 p-4 pt-0">
-							<DataTable columns={columns} data={data} />
+							{/* <DataTable columns={columns} data={data} /> */}
 							{cookieJars.length > 0 ? (
 								cookieJars.map((jar) => (
 									<JarCard key={jar.id} cookieJar={jar} />
