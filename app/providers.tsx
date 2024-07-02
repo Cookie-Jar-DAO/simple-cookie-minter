@@ -8,18 +8,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // TODO: Update CustomTheme
 import CustomTheme from "./theme.json";
-import { projectId, wagmiConfig } from "@/config/wagmi";
+import { wagmiConfig } from "@/config/wagmi";
 
 const queryClient = new QueryClient();
 
-if (!projectId) throw new Error("Project ID is not defined");
-
-export function Providers({
-	children,
-	initialState,
-}: { children: React.ReactNode; initialState?: State }) {
+export function Providers({ children }: { children: React.ReactNode }) {
 	return (
-		<WagmiProvider config={wagmiConfig} initialState={initialState}>
+		<WagmiProvider config={wagmiConfig}>
 			<QueryClientProvider client={queryClient}>
 				<ConnectKitProvider theme="retro">
 					{children}

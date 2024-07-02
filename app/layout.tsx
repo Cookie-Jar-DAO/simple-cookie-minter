@@ -28,10 +28,6 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	const initialState = cookieToInitialState(
-		wagmiConfig,
-		headers().get("cookie"),
-	);
 	return (
 		<html lang="en">
 			<body
@@ -41,7 +37,7 @@ export default function RootLayout({
 				)}
 			>
 				{/* ts-ignore */}
-				<Providers initialState={initialState}>
+				<Providers>
 					<div className="relative flex min-h-screen flex-col">
 						<Header />
 						<main className="flex-1">{children}</main>
