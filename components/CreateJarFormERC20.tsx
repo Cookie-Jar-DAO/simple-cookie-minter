@@ -27,7 +27,7 @@ import type {
 	ICreateJarFormInputERC20,
 } from "@/components/types/CookieTypes";
 import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
-import { wagmiConfig } from "@/app/providers";
+import { wagmiConfig } from "@/config/wagmi";
 import { waitForTransactionReceipt } from "viem/actions";
 
 const toNumber = zod
@@ -107,7 +107,7 @@ const CreateJarFormERC20 = () => {
 		setHash(undefined);
 		toast({
 			title: "Cookie baked",
-			description: `Cookie jar created!`,
+			description: "Cookie jar created!",
 		});
 	}
 
@@ -147,7 +147,7 @@ const CreateJarFormERC20 = () => {
 			if (!result) {
 				toast({
 					title: "Cookie burnt",
-					description: `Transaction failed!`,
+					description: "Transaction failed!",
 				});
 				return;
 			}
