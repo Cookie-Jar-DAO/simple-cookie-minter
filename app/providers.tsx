@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { WagmiProvider, type State } from "wagmi";
 import { ConnectKitProvider } from "connectkit";
 
@@ -12,9 +13,15 @@ import { wagmiConfig } from "@/config/wagmi";
 
 const queryClient = new QueryClient();
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+	children,
+	initialState,
+}: {
+	children: ReactNode;
+	initialState?: State;
+}) {
 	return (
-		<WagmiProvider config={wagmiConfig}>
+		<WagmiProvider config={wagmiConfig} initialState={initialState}>
 			<QueryClientProvider client={queryClient}>
 				<ConnectKitProvider theme="retro">
 					{children}

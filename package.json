@@ -23,10 +23,11 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@tanstack/react-query": "^5.18.0",
+    "@tanstack/react-query": "^5.50.1",
     "@tanstack/react-query-devtools": "^5.29.0",
     "@tanstack/react-table": "^8.17.3",
     "@types/luxon": "^3.4.2",
+    "@web3modal/wagmi": "^5.0.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "connectkit": "^1.7.3",
@@ -43,8 +44,8 @@
     "react-hook-form": "^7.49.3",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "^2.9.29",
-    "wagmi": "^2.7.1",
+    "viem": "^2.17.2",
+    "wagmi": "^2.10.9",
     "zod": "^3.22.4"
   },
   "devDependencies": {

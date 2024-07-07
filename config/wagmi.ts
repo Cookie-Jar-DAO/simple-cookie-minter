@@ -1,4 +1,4 @@
-import { createConfig, http } from "wagmi";
+import { cookieStorage, createConfig, createStorage, http } from "wagmi";
 import { getDefaultConfig } from "connectkit";
 import { mainnet, sepolia, optimism, arbitrum, base } from "wagmi/chains";
 
@@ -11,6 +11,10 @@ if (!projectId) throw new Error("Project ID is not defined");
 
 export const wagmiConfig = createConfig(
 	getDefaultConfig({
+		ssr: true,
+		storage: createStorage({
+			storage: cookieStorage,
+		}),
 		chains: [mainnet, sepolia, optimism, arbitrum, base],
 		transports: {
 			[mainnet.id]: http(`${process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_RPC_URL}`),

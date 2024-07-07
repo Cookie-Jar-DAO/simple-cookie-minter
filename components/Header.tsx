@@ -1,5 +1,5 @@
 "use client";
-import { ConnectKitButton } from "connectkit";
+// import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
 import {
 	NavigationMenu,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { useAccount } from "wagmi";
+import ConnectButton from "./connect-button";
 
 export const Header = () => {
 	const { address } = useAccount();
@@ -86,8 +87,8 @@ export const Header = () => {
 					</NavigationMenuItem>
 				)}
 			</NavigationMenuList>
-
-			<ConnectKitButton />
+			<ConnectButton />
+			{/* <ConnectKitButton /> */}
 		</NavigationMenu>
 	);
 };
