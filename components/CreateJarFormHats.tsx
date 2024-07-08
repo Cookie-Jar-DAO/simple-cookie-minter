@@ -20,8 +20,8 @@ import type {
 	ICreateJarFormInput,
 	ICreateJarFormInputBaal,
 } from "@/components/types/CookieTypes";
-import SegmentBaalTokenGating from "./SegmentBaalTokenGating";
 import { wagmiConfig } from "@/config/wagmi";
+import SegmentHatsTokenGating from "./SegmentHatsTokenGating";
 
 const toNumber = zod
 	.number()
@@ -36,7 +36,7 @@ const ethAddressSchema = zod.string().refine((value) => isAddress(value), {
 
 const schema = zod
 	.object({
-		cookieJar: zod.string().transform((value) => "BaalCookieJar6551"),
+		cookieJar: zod.string().transform((value) => "HatsCookieJar6551"),
 		receiver: ethAddressSchema,
 		title: zod.string(),
 		description: zod.string(),
@@ -53,17 +53,17 @@ const schema = zod
 	})
 	.required();
 
-const CreateJarFormBaal = () => {
+const CreateJarFormHats = () => {
 	const { address } = useAccount();
 	const publicClient = usePublicClient();
 	const { toast } = useToast();
 	const [hash, setHash] = useState<string>("");
 	const form = useForm<ICreateJarFormInput & ICreateJarFormInputBaal>({
 		defaultValues: {
-			cookieJar: "BaalCookieJar6551",
+			cookieJar: "HatsCookieJar6551",
 			receiver: address,
-			title: "Cookie Jar",
-			description: "nom nom nom nom",
+			title: "",
+			description: "",
 			cookiePeriod: 86400,
 			cookieToken: ZERO_ADDRESS,
 			cookieAmount: "1000000000000000000",
@@ -146,7 +146,7 @@ const CreateJarFormBaal = () => {
 			>
 				<SegmentCookieMeta form={form} />
 
-				<SegmentBaalTokenGating form={form} />
+				<SegmentHatsTokenGating form={form} />
 
 				<SegmentDonation form={form} />
 
@@ -167,4 +167,4 @@ const CreateJarFormBaal = () => {
 	);
 };
 
-export default CreateJarFormBaal;
+export default CreateJarFormHats;

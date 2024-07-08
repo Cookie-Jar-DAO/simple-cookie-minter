@@ -84,6 +84,13 @@ export const Header = () => {
 									Baal
 								</NavigationMenuLink>
 							</Link>
+							<Link legacyBehavior href="/mintHats" passHref>
+								<NavigationMenuLink
+									className={cn(navigationMenuTriggerStyle(), "w-full")}
+								>
+									Hats
+								</NavigationMenuLink>
+							</Link>
 						</NavigationMenuContent>
 					</NavigationMenuItem>
 				)}
