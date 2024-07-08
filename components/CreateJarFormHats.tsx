@@ -19,6 +19,7 @@ import SegmentDonation from "./SegmentDonation";
 import type {
 	ICreateJarFormInput,
 	ICreateJarFormInputBaal,
+	ICreateJarFormInputHats,
 } from "@/components/types/CookieTypes";
 import { wagmiConfig } from "@/config/wagmi";
 import SegmentHatsTokenGating from "./SegmentHatsTokenGating";
@@ -44,10 +45,7 @@ const schema = zod
 		cookiePeriod: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
 		cookieAmount: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
 		cookieToken: ethAddressSchema,
-		baalDao: ethAddressSchema,
-		baalThreshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
-		baalUseLoot: zod.boolean(),
-		baalUseShares: zod.boolean(),
+		hatId: ethAddressSchema,
 		donation: zod.boolean(),
 		donationAmount: zod.string().optional(),
 	})
@@ -58,7 +56,7 @@ const CreateJarFormHats = () => {
 	const publicClient = usePublicClient();
 	const { toast } = useToast();
 	const [hash, setHash] = useState<string>("");
-	const form = useForm<ICreateJarFormInput & ICreateJarFormInputBaal>({
+	const form = useForm<ICreateJarFormInput & ICreateJarFormInputHats>({
 		defaultValues: {
 			cookieJar: "HatsCookieJar6551",
 			receiver: address,
@@ -67,10 +65,7 @@ const CreateJarFormHats = () => {
 			cookiePeriod: 86400,
 			cookieToken: ZERO_ADDRESS,
 			cookieAmount: "1000000000000000000",
-			baalDao: ZERO_ADDRESS,
-			baalThreshold: "1000000000000000000",
-			baalUseLoot: false,
-			baalUseShares: false,
+			hatId: ZERO_ADDRESS,
 			donation: false,
 		},
 		resolver: zodResolver(schema),
@@ -113,7 +108,7 @@ const CreateJarFormHats = () => {
 	}, [hash]);
 
 	const onSubmit: SubmitHandler<
-		ICreateJarFormInput & ICreateJarFormInputBaal
+		ICreateJarFormInput & ICreateJarFormInputHats
 	> = async (data) => {
 		console.log(data);
 		if (isValid) {

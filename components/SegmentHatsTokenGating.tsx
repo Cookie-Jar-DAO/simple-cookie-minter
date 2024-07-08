@@ -49,7 +49,7 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
 			<div className="col-span-full grid grid-cols-6 gap-4 lg:col-span-3">
 				<FormField
 					control={control}
-					name="baalDao"
+					name="hatId"
 					render={({ field }) => (
 						<FormItem className="col-span-full">
 							<FormLabel>Hat Id</FormLabel>
@@ -67,76 +67,8 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
 					)}
 				/>
 
-				<FormField
-					control={control}
-					name="baalThreshold"
-					render={({ field }) => (
-						<FormItem className="col-span-full">
-							<FormLabel>Total Threshold (Loot and/or Shares)</FormLabel>
-							<FormControl>
-								<Input placeholder="1" {...field} />
-							</FormControl>
-							<FormDescription>
-								The minimum balance of the ERC721 to allow cookie withdrawals
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				{/* checkbox for use shares */}
-				<FormField
-					control={control}
-					name="baalUseShares"
-					render={({ field }) => (
-						<FormItem className="col-span-full flex flex-row items-start space-x-3 space-y-0 p-4">
-							<FormControl>
-								<Checkbox
-									onCheckedChange={(checked) => {
-										return checked
-											? field.onChange(true)
-											: field.onChange(false);
-									}}
-								/>
-							</FormControl>
-							<div className="space-y-1 leading-none">
-								<FormLabel>Use Shares</FormLabel>
-								<FormDescription>
-									Use shares to gate cookie withdrawals
-								</FormDescription>
-							</div>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				{/* checkbox for use loot */}
-				<FormField
-					control={control}
-					name="baalUseLoot"
-					render={({ field }) => (
-						<FormItem className="col-span-full flex flex-row items-start space-x-3 space-y-0 p-4">
-							<FormControl>
-								<Checkbox
-									onCheckedChange={(checked) => {
-										return checked
-											? field.onChange(true)
-											: field.onChange(false);
-									}}
-								/>
-							</FormControl>
-							<div className="space-y-1 leading-none">
-								<FormLabel>Use Loot</FormLabel>
-
-								<FormDescription>
-									Use loot to gate cookie withdrawals
-								</FormDescription>
-							</div>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<Collapsible className="col-span-full">
+				{/* TODO: Update this to use Hats data and create useHatsData hook */}
+				{/* <Collapsible className="col-span-full">
 					<CollapsibleTrigger>✅ Gating DAO info ✅</CollapsibleTrigger>
 					<CollapsibleContent>
 						{!daoData?.data?.dao?.name && <p>DAO not found</p>}
@@ -148,7 +80,7 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
 							{daoData?.data?.dao?.activeMemberCount}
 						</p>
 					</CollapsibleContent>
-				</Collapsible>
+				</Collapsible> */}
 			</div>
 		</fieldset>
 	);

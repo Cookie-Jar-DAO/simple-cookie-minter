@@ -38,6 +38,10 @@ export interface ICreateJarFormInputBaal {
 	baalUseLoot: boolean;
 }
 
+export interface ICreateJarFormInputHats {
+	hatId: string;
+}
+
 export interface SegmentCookieMetaProps<
 	T extends ICreateJarFormInput &
 		(ICreateJarFormInputERC20 | ICreateJarFormInputERC721),
