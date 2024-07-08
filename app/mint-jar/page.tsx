@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import cookieBackground from "@/assets/cookie-background.webp";
 import { Card } from "@/components/ui/card";
-import CreateJarFormHats from "@/components/CreateJarFormHats";
+import { JarForm } from "@/components/create-jar/jar-form";
 
 export default function MintJar() {
 	return (
@@ -17,7 +17,7 @@ export default function MintJar() {
 					fill
 				/>
 				<Card className="relative z-20 border-none bg-amber-100 p-8">
-					<CreateJarFormHats />
+					<JarForm />
 				</Card>
 			</section>
 		</div>

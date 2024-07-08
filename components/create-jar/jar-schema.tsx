@@ -28,7 +28,7 @@ const baseJarSchema = z.object({
 	donationAmount: z.string().optional(),
 });
 
-export const jarSchema = baseJarSchema.and(
+export const JarSchema = baseJarSchema.and(
 	z.union([
 		z.object({
 			cookieJar: z.literal("BaalCookieJar6551"),
