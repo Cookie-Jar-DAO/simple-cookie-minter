@@ -15,7 +15,7 @@ export const wagmiConfig = createConfig(
 		storage: createStorage({
 			storage: cookieStorage,
 		}),
-		chains: [mainnet, sepolia, optimism, arbitrum, base],
+		chains: [sepolia, mainnet, optimism, arbitrum, base],
 		transports: {
 			[mainnet.id]: http(`${process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_RPC_URL}`),
 			[sepolia.id]: http(`${process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_RPC_URL}`),
@@ -35,8 +35,8 @@ export const wagmiConfig = createConfig(
 		appName: "CookieJar",
 
 		// Optional App Info
-		appDescription: "Your Web3 Slush Fund.",
-		appUrl: getUrl(), // your app's url
+		appDescription: "A Web3 slush fund for trusted groups",
+		appUrl: "https://cookiejar.wtf", // your app's url
 		// appIcon: "https://family.co/logo.png",
 	}),
 );

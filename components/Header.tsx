@@ -1,6 +1,9 @@
 "use client";
-// import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
+import { ConnectKitButton } from "connectkit";
+import { useAccount } from "wagmi";
+
+import { cn } from "@/lib/utils";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -10,13 +13,11 @@ import {
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
-import { useAccount } from "wagmi";
-import ConnectButton from "./connect-button";
 
 export const Header = () => {
 	const { address } = useAccount();
 
+	// TODO: Fix this onNavChange
 	function onNavChange() {
 		setTimeout(() => {
 			const triggers = document.querySelectorAll(
@@ -87,8 +88,7 @@ export const Header = () => {
 					</NavigationMenuItem>
 				)}
 			</NavigationMenuList>
-			<ConnectButton />
-			{/* <ConnectKitButton /> */}
+			<ConnectKitButton />
 		</NavigationMenu>
 	);
 };

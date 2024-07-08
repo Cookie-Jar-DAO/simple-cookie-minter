@@ -30,7 +30,7 @@
     "@web3modal/wagmi": "^5.0.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "connectkit": "^1.7.3",
+    "connectkit": "^1.8.2",
     "dexie": "^3.2.4",
     "dexie-react-hooks": "^1.1.7",
     "graphql-tag": "^2.12.6",

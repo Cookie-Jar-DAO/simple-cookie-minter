@@ -12,8 +12,6 @@ import { Footer } from "@/components/Footer";
 
 import { config } from "@/config";
 import Web3ModalProvider from "@/context";
-// import { wagmiConfig } from "@/config/wagmi";
-// import { Providers } from "./providers";
 
 const fontSans = FontSans({
 	subsets: ["latin"],
@@ -30,7 +28,6 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const initialState = cookieToInitialState(config, headers().get("cookie"));
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
@@ -39,7 +36,7 @@ export default function RootLayout({
 					fontSans.variable,
 				)}
 			>
-				<Web3ModalProvider initialState={initialState}>
+				<Web3ModalProvider>
 					<div className="relative flex min-h-screen flex-col">
 						<Header />
 						<main className="flex-1">{children}</main>
