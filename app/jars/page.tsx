@@ -11,7 +11,7 @@ import { JarsQuery } from "@/lib/jars-query.graphql";
 import { Card } from "@/components/ui/card";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { data } from "./mock-data";
+import { cookJarMockData, data } from "./mock-data";
 
 const fetchJars = async (): Promise<CookieJar[] | undefined> => {
 	try {
@@ -66,11 +66,14 @@ const fetchJars = async (): Promise<CookieJar[] | undefined> => {
 };
 
 export default async function JarsPage() {
-	const cookieJars = await fetchJars();
-	console.log("cookieJars", cookieJars);
+	const cookieJars = cookJarMockData;
 
 	if (cookieJars === undefined || cookieJars === null) {
-		return <CreateJarFormERC20 />;
+		return (
+			<div>
+				<h1>Looks like there are no jars</h1>
+			</div>
+		);
 	}
 
 	return (

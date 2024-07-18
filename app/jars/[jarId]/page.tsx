@@ -11,6 +11,7 @@ import { truncateEthereumAddress } from "@/lib/utils";
 import AdminButton from "@/components/admin-button";
 import { Button } from "@/components/ui/button";
 import { CookieJarBalance } from "@/components/cookie-jar-balance";
+import { cookJarMockData } from "../mock-data";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
@@ -91,7 +92,9 @@ export default async function JarPage({
 }: {
 	params: { jarId: string };
 }) {
-	const jarData = await fetchJarData(params.jarId);
+	// const jarData = await fetchJarData(params.jarId);
+	const jarData = cookJarMockData[0];
+
 	if (
 		jarData === undefined ||
 		jarData === null ||

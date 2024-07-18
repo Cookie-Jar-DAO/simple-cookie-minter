@@ -141,6 +141,7 @@ const encodeCookieMintParameters = (
 			| ICreateJarFormInputERC20
 			| ICreateJarFormInputERC721
 			| ICreateJarFormInputBaal
+			| ICreateJarFormInputHats
 		),
 ) => {
 	// 0. address owner or safeTarget,

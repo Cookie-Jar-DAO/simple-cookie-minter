@@ -37,7 +37,7 @@ const SegmentERC20TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
 	return (
 		<fieldset className="grid grid-cols-4 gap-6 p-6">
 			<div className="col-span-full space-y-2 lg:col-span-1">
-				<p className="font-medium">Set ERC20 gating</p>
+				<p className="font-medium">Set Token Gating</p>
 				<p className="text-xs">
 					Provide the address of the ERC20 and the threshold balance to allow
 					cookie withdrawals.
