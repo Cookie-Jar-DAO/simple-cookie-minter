@@ -79,7 +79,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
 		}
 		return {
 			cookieJar: jsonResponse.data.cookieJar,
-			claims: jsonResponse.data.claims,
+			claims: jsonResponse.data.claims || [],
 		};
 	} catch (error) {
 		// TODO: handle errors more gracefully
@@ -95,11 +95,7 @@ export default async function JarPage({
 }) {
 	const jarData = await fetchJarData(params.jarId);
 
-	if (
-		jarData === undefined ||
-		jarData === null ||
-		jarData.claims === undefined
-	) {
+	if (jarData === undefined || jarData === null) {
 		return <div>Failed to fetch Jar Data</div>;
 	}
 	const { cookieJar, claims } = jarData;
