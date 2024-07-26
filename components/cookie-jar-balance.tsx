@@ -7,6 +7,11 @@ import { useBalance, useReadContract } from "wagmi";
 import { formatEther } from "viem";
 
 const CookieJarBalance = ({ jarAddress }: { jarAddress: Address }) => {
+	/**
+	 ** TODO:
+	 ** Target is now returned from the GraphQL query.
+	 ** This can be updated to use target from initial query instead of reading contract for target.
+	 */
 	const { data: targetAddress } = useReadContract({
 		abi: [
 			{

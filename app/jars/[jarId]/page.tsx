@@ -19,7 +19,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
 	console.log("jarId", jarId, typeof jarId);
 	try {
 		const res = await fetch(
-			"https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
+			"https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-2-0x4c9",
 			{
 				cache: "no-store",
 				method: "POST",
@@ -38,6 +38,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
                 description
                 cookieToken
                 cookieAmount
+								target
               }
               claims(where: {jar: $jarId}) {
                   id
@@ -92,8 +93,7 @@ export default async function JarPage({
 }: {
 	params: { jarId: string };
 }) {
-	// const jarData = await fetchJarData(params.jarId);
-	const jarData = cookJarMockData[0];
+	const jarData = await fetchJarData(params.jarId);
 
 	if (
 		jarData === undefined ||

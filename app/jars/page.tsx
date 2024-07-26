@@ -16,8 +16,8 @@ import { cookJarMockData, data } from "./mock-data";
 const fetchJars = async (): Promise<CookieJar[] | undefined> => {
 	try {
 		const res = await fetch(
-			// "https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing",
-			"https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
+			// TODO: update to be dynamic, use something like gql.tada for types https://gql-tada.0no.co/
+			"https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-2-0x4c9",
 			{
 				cache: "no-store",
 				method: "POST",
@@ -66,7 +66,8 @@ const fetchJars = async (): Promise<CookieJar[] | undefined> => {
 };
 
 export default async function JarsPage() {
-	const cookieJars = cookJarMockData;
+	const cookieJars = await fetchJars();
+	console.log("cookieJars", cookieJars);
 
 	if (cookieJars === undefined || cookieJars === null) {
 		return (
