@@ -19,9 +19,10 @@ import SegmentDonation from "./SegmentDonation";
 import type {
 	ICreateJarFormInput,
 	ICreateJarFormInputBaal,
+	ICreateJarFormInputHats,
 } from "@/components/types/CookieTypes";
-import SegmentBaalTokenGating from "./SegmentBaalTokenGating";
 import { wagmiConfig } from "@/config/wagmi";
+import SegmentHatsTokenGating from "./SegmentHatsTokenGating";
 
 const toNumber = zod
 	.number()
@@ -36,7 +37,7 @@ const ethAddressSchema = zod.string().refine((value) => isAddress(value), {
 
 const schema = zod
 	.object({
-		cookieJar: zod.string().transform((value) => "BaalCookieJar6551"),
+		cookieJar: zod.string().transform((value) => "HatsCookieJar6551"),
 		receiver: ethAddressSchema,
 		title: zod.string(),
 		description: zod.string(),
@@ -44,33 +45,27 @@ const schema = zod
 		cookiePeriod: zod.bigint().or(toNumber).pipe(zod.coerce.bigint()),
 		cookieAmount: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
 		cookieToken: ethAddressSchema,
-		baalDao: ethAddressSchema,
-		baalThreshold: zod.string().or(toNumber).pipe(zod.coerce.bigint()),
-		baalUseLoot: zod.boolean(),
-		baalUseShares: zod.boolean(),
+		hatId: ethAddressSchema,
 		donation: zod.boolean(),
 		donationAmount: zod.string().optional(),
 	})
 	.required();
 
-const CreateJarFormBaal = () => {
+const CreateJarFormHats = () => {
 	const { address } = useAccount();
 	const publicClient = usePublicClient();
 	const { toast } = useToast();
 	const [hash, setHash] = useState<string>("");
-	const form = useForm<ICreateJarFormInput & ICreateJarFormInputBaal>({
+	const form = useForm<ICreateJarFormInput & ICreateJarFormInputHats>({
 		defaultValues: {
-			cookieJar: "BaalCookieJar6551",
+			cookieJar: "HatsCookieJar6551",
 			receiver: address,
-			title: "Cookie Jar",
-			description: "nom nom nom nom",
+			title: "",
+			description: "",
 			cookiePeriod: 86400,
 			cookieToken: ZERO_ADDRESS,
 			cookieAmount: "1000000000000000000",
-			baalDao: ZERO_ADDRESS,
-			baalThreshold: "1000000000000000000",
-			baalUseLoot: false,
-			baalUseShares: false,
+			hatId: ZERO_ADDRESS,
 			donation: false,
 		},
 		resolver: zodResolver(schema),
@@ -113,7 +108,7 @@ const CreateJarFormBaal = () => {
 	}, [hash]);
 
 	const onSubmit: SubmitHandler<
-		ICreateJarFormInput & ICreateJarFormInputBaal
+		ICreateJarFormInput & ICreateJarFormInputHats
 	> = async (data) => {
 		console.log(data);
 		if (isValid) {
@@ -146,7 +141,7 @@ const CreateJarFormBaal = () => {
 			>
 				<SegmentCookieMeta form={form} />
 
-				<SegmentBaalTokenGating form={form} />
+				<SegmentHatsTokenGating form={form} />
 
 				<SegmentDonation form={form} />
 
@@ -167,4 +162,4 @@ const CreateJarFormBaal = () => {
 	);
 };
 
-export default CreateJarFormBaal;
+export default CreateJarFormHats;

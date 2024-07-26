@@ -1,17 +1,17 @@
+import "./globals.css";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Inter as FontSans } from "next/font/google";
 
 import { cookieToInitialState } from "wagmi";
-
-import "./globals.css";
-import { Providers } from "./providers";
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { wagmiConfig } from "@/config/wagmi";
-import { headers } from "next/headers";
+
+import { config } from "@/config";
+import Web3ModalProvider from "@/context";
 
 const fontSans = FontSans({
 	subsets: ["latin"],
@@ -25,25 +25,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
 	children,
-}: {
+}: Readonly<{
 	children: React.ReactNode;
-}) {
+}>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body
 				className={cn(
 					"min-h-screen bg-amber-100 font-sans text-foreground antialiased",
 					fontSans.variable,
 				)}
 			>
-				{/* ts-ignore */}
-				<Providers>
+				<Web3ModalProvider>
 					<div className="relative flex min-h-screen flex-col">
 						<Header />
 						<main className="flex-1">{children}</main>
 						<Footer />
 					</div>
-				</Providers>
+				</Web3ModalProvider>
 				<Toaster />
 			</body>
 		</html>

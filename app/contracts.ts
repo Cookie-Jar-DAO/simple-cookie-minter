@@ -5,6 +5,7 @@ export type SupportedChainIds = keyof typeof deployments | "development";
 
 export type SupportedImplementations =
 	| "BaalCookieJar6551"
+	| "HatsCookieJar6551"
 	| "ERC20CookieJar6551"
 	| "ERC721CookieJar6551"
 	| "ListCookieJar6551"

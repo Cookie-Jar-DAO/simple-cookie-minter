@@ -11,13 +11,13 @@ import { JarsQuery } from "@/lib/jars-query.graphql";
 import { Card } from "@/components/ui/card";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { data } from "./mock-data";
+import { cookJarMockData, data } from "./mock-data";
 
 const fetchJars = async (): Promise<CookieJar[] | undefined> => {
 	try {
 		const res = await fetch(
-			// "https://api.thegraph.com/subgraphs/name/psparacino/cookie-jar-testing",
-			"https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
+			// TODO: update to be dynamic, use something like gql.tada for types https://gql-tada.0no.co/
+			"https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-2-0x4c9",
 			{
 				cache: "no-store",
 				method: "POST",
@@ -70,7 +70,11 @@ export default async function JarsPage() {
 	console.log("cookieJars", cookieJars);
 
 	if (cookieJars === undefined || cookieJars === null) {
-		return <CreateJarFormERC20 />;
+		return (
+			<div>
+				<h1>Looks like there are no jars</h1>
+			</div>
+		);
 	}
 
 	return (

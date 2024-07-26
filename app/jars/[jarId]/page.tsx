@@ -11,6 +11,7 @@ import { truncateEthereumAddress } from "@/lib/utils";
 import AdminButton from "@/components/admin-button";
 import { Button } from "@/components/ui/button";
 import { CookieJarBalance } from "@/components/cookie-jar-balance";
+import { cookJarMockData } from "../mock-data";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
@@ -18,7 +19,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
 	console.log("jarId", jarId, typeof jarId);
 	try {
 		const res = await fetch(
-			"https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
+			"https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-2-0x4c9",
 			{
 				cache: "no-store",
 				method: "POST",
@@ -37,6 +38,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
                 description
                 cookieToken
                 cookieAmount
+								target
               }
               claims(where: {jar: $jarId}) {
                   id
@@ -77,7 +79,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
 		}
 		return {
 			cookieJar: jsonResponse.data.cookieJar,
-			claims: jsonResponse.data.claims,
+			claims: jsonResponse.data.claims || [],
 		};
 	} catch (error) {
 		// TODO: handle errors more gracefully
@@ -92,11 +94,8 @@ export default async function JarPage({
 	params: { jarId: string };
 }) {
 	const jarData = await fetchJarData(params.jarId);
-	if (
-		jarData === undefined ||
-		jarData === null ||
-		jarData.claims === undefined
-	) {
+
+	if (jarData === undefined || jarData === null) {
 		return <div>Failed to fetch Jar Data</div>;
 	}
 	const { cookieJar, claims } = jarData;

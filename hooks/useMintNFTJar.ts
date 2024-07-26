@@ -4,6 +4,7 @@ import type {
 	ICreateJarFormInputBaal,
 	ICreateJarFormInputERC20,
 	ICreateJarFormInputERC721,
+	ICreateJarFormInputHats,
 } from "@/components/types/CookieTypes";
 import { useDeployment } from "./useDeployment";
 import { ZERO_ADDRESS } from "@/app/constants";
@@ -28,6 +29,7 @@ export const useMintNFTJar = () => {
 				| ICreateJarFormInputERC20
 				| ICreateJarFormInputERC721
 				| ICreateJarFormInputBaal
+				| ICreateJarFormInputHats
 			),
 	) => {
 		console.log("mintData", mintData);
@@ -139,6 +141,7 @@ const encodeCookieMintParameters = (
 			| ICreateJarFormInputERC20
 			| ICreateJarFormInputERC721
 			| ICreateJarFormInputBaal
+			| ICreateJarFormInputHats
 		),
 ) => {
 	// 0. address owner or safeTarget,
