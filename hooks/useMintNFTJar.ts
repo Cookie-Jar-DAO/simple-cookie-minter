@@ -228,7 +228,7 @@ const encodeCookieMintParameters = (
 
   if ("hatId" in data && data.cookieJar === "HatsCookieJar6551") {
     console.log("hatId in data", data.hatId);
-    const hatId = isAddress(data.hatId) ? data.hatId : ZERO_ADDRESS;
+    const hatId = BigInt(data.hatId);
     console.log("hatId", hatId);
     const hatThreshold = BigInt(1);
 
