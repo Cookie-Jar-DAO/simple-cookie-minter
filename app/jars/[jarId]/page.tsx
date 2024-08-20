@@ -12,7 +12,8 @@ import AdminButton from "@/components/admin-button";
 import { Button } from "@/components/ui/button";
 import { CookieJarBalance } from "@/components/cookie-jar-balance";
 import { cookJarMockData } from "../mock-data";
-import { FeedJarButton } from "@/components/feed-jar-button";
+import { FeedJarButton } from "@/components/feed-jar/feed-jar-button";
+import { FeedJarDialog } from "@/components/feed-jar/feed-jar-dialog";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
@@ -39,7 +40,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
                 description
                 cookieToken
                 cookieAmount
-				target
+                target
               }
               claims(where: {jar: $jarId}) {
                   id
@@ -123,15 +124,23 @@ export default async function JarPage({
                   <p className="text-amber-800">{cookieJar.description}</p>
                 </div>
                 <div className="flex flex-col">
-                  <CookieJarBalance jarAddress={cookieJar.id} />
-                  <p>Claim period: {cookieJar.periodLength}</p>
-                  <p>Owned by: {truncateEthereumAddress(cookieJar.owner)}</p>
+                  <CookieJarBalance
+                    jarTargetAddress={cookieJar.target}
+                    cookieToken={cookieJar.cookieToken}
+                    owner={cookieJar.owner}
+                    periodLength={cookieJar.periodLength}
+                  />
                 </div>
                 <div className="flex">
-                  <ClaimDialog contractAddress={cookieJar.id} />
+                  <ClaimDialog
+                    contractAddress={cookieJar.id}
+                    cookieToken={cookieJar.cookieToken}
+                    jarTargetAddress={cookieJar.target}
+                  />
                   <AdminButton owner={cookieJar.owner} />
                 </div>
               </div>
+
               <div className="flex flex-col items-center">
                 <Image
                   className="aspect-square"
@@ -141,7 +150,11 @@ export default async function JarPage({
                   width={176}
                   priority
                 />
-                <FeedJarButton targetAddress={cookieJar.target} />
+                <FeedJarDialog
+                  targetAddress={cookieJar.target}
+                  cookieToken={cookieJar.cookieToken}
+                  cookieAmount={cookieJar.cookieAmount}
+                />
               </div>
             </Card>
             <ClaimsList claims={claims} />
