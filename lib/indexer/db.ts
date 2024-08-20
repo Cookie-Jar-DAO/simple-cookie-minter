@@ -48,7 +48,7 @@ export interface CookieJar {
   link: string;
   id: Address;
   description: string;
-  cookieToken: string;
+  cookieToken: Address;
   cookieAmount: string;
   target: Address;
 }

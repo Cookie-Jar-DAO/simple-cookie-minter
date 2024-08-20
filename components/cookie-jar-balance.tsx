@@ -5,57 +5,44 @@ import type { Address } from "viem";
 import { useBalance, useReadContract } from "wagmi";
 
 import { formatEther } from "viem";
+import { truncateEthereumAddress } from "@/lib/utils";
 
-const CookieJarBalance = ({ jarAddress }: { jarAddress: Address }) => {
-	/**
-	 ** TODO:
-	 ** Target is now returned from the GraphQL query.
-	 ** This can be updated to use target from initial query instead of reading contract for target.
-	 */
-	const { data: targetAddress } = useReadContract({
-		abi: [
-			{
-				inputs: [],
-				name: "target",
-				outputs: [
-					{
-						internalType: "address",
-						name: "target",
-						type: "address",
-					},
-				],
-				stateMutability: "view",
-				type: "function",
-			},
-		],
-		address: jarAddress,
-		functionName: "target",
-	});
+const CookieJarBalance = ({
+  cookieToken,
+  jarTargetAddress,
+  owner,
+  periodLength,
+}: {
+  cookieToken: Address;
+  jarTargetAddress: Address;
+  owner: Address;
+  periodLength: string;
+}) => {
+  const {
+    data: jarBalance,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useBalance({
+    address: jarTargetAddress,
+    token: cookieToken,
+  });
 
-	const {
-		data: jarBalance,
-		isLoading,
-		isSuccess,
-		isError,
-	} = useBalance({
-		address: targetAddress,
-		query: {
-			enabled: !!targetAddress,
-		},
-	});
-	return (
-		<div>
-			{isLoading && <div>Loading...</div>}
-			{isError && <div>Oops, something went wrong...</div>}
-			{isSuccess && (
-				<div className="flex gap-2">
-					<p>
-						Balance: {formatEther(jarBalance.value)} {jarBalance.symbol}
-					</p>
-				</div>
-			)}
-		</div>
-	);
+  console.log("jarBalance", jarBalance);
+  return (
+    <div className="flex flex-col">
+      {isLoading && <div>Loading...</div>}
+      {isError && <div>Oops, failed to load balance...</div>}
+      {isSuccess && (
+        <p>
+          Balance: {jarBalance.formatted} {""}
+          {jarBalance.symbol}
+        </p>
+      )}
+      <p>Claim period: {periodLength}</p>
+      <p>Owned by: {truncateEthereumAddress(owner)}</p>
+    </div>
+  );
 };
 
 export { CookieJarBalance };

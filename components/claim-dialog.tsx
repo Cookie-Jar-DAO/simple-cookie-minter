@@ -2,7 +2,7 @@
 import React from "react";
 
 import type { Address } from "viem";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount, useBalance, useReadContract } from "wagmi";
 import { ConnectKitButton } from "connectkit";
 
 import { CookieJarCore } from "@/abis/CookieJarCore";
@@ -27,7 +27,15 @@ import { ClaimFromJarForm } from "@/components/claim-from-jar-form";
 
 import { cn } from "@/lib/utils";
 
-const ClaimDialog = ({ contractAddress }: { contractAddress: Address }) => {
+const ClaimDialog = ({
+  contractAddress,
+  cookieToken,
+  jarTargetAddress,
+}: {
+  contractAddress: Address;
+  cookieToken: Address;
+  jarTargetAddress: Address;
+}) => {
   const { address, isDisconnected, isConnecting } = useAccount();
   const {
     data: canClaim,
@@ -43,6 +51,15 @@ const ClaimDialog = ({ contractAddress }: { contractAddress: Address }) => {
         !!address && !!contractAddress && !isDisconnected && !isConnecting,
     },
   });
+  const {
+    data: jarBalance,
+    isLoading: isJarBalanceLoading,
+    isSuccess,
+    isError: isJarBalanceError,
+  } = useBalance({
+    address: jarTargetAddress,
+    token: cookieToken,
+  });
 
   if (isDisconnected) {
     return <ConnectKitButton />;
@@ -52,15 +69,23 @@ const ClaimDialog = ({ contractAddress }: { contractAddress: Address }) => {
     return <div>Loading...</div>;
   }
 
-  if (!canClaim) {
+  if (!canClaim || (jarBalance && jarBalance?.value <= 0)) {
     return (
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger disabled className={cn(buttonVariants)}>
-            Claim
+          <TooltipTrigger>
+            <div className="cursor-not-allowed">
+              <Button disabled className=" cursor-not-allowed">
+                Claim
+              </Button>
+            </div>
           </TooltipTrigger>
           <TooltipContent>
-            <p>You are not eligible to reach in this jar</p>
+            <p>
+              {jarBalance && jarBalance.value <= 0
+                ? "Oh No! No Cookies in this jar"
+                : "You are not eligible to reach in this jar"}
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
