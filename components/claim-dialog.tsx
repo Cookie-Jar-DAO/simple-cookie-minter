@@ -73,7 +73,7 @@ const ClaimDialog = ({
     return (
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <div className="cursor-not-allowed">
               <Button disabled className=" cursor-not-allowed">
                 Claim

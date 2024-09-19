@@ -20,8 +20,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ZERO_ADDRESS } from "@/app/constants";
-import { z } from "zod";
-import FeedJarForm, { FeedJarSchema } from "./feed-jar-form";
+import type { z } from "zod";
+import FeedJarForm, { type FeedJarSchema } from "./feed-jar-form";
+import { toast } from "../ui/use-toast";
 
 const FeedJarDialog = ({
   targetAddress,
@@ -49,6 +50,15 @@ const FeedJarDialog = ({
     isPending,
     writeContract: transferToken,
   } = useWriteContract();
+  const { data } = useWriteContract({
+    mutation: {
+      onError: () =>
+        toast({
+          title: "Oops! Failed to send",
+          description: "Please try again later",
+        }),
+    },
+  });
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
@@ -75,12 +85,21 @@ const FeedJarDialog = ({
       throw new Error("Not connected to wallet");
     }
     if (!approval) {
-      approveToken({
-        address: cookieToken,
-        abi: erc20Abi,
-        functionName: "approve",
-        args: [address, BigInt(data.amount)],
-      });
+      approveToken(
+        {
+          address: cookieToken,
+          abi: erc20Abi,
+          functionName: "approve",
+          args: [address, BigInt(data.amount)],
+        },
+        {
+          onError: () =>
+            toast({
+              title: "Oops! Failed to approve",
+              description: "Please try again later",
+            }),
+        },
+      );
     }
     if (approval) {
       transferToken({
