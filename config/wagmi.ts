@@ -1,6 +1,13 @@
 import { cookieStorage, createConfig, createStorage, http } from "wagmi";
 import { getDefaultConfig } from "connectkit";
-import { mainnet, sepolia, optimism, arbitrum, base } from "wagmi/chains";
+import {
+  mainnet,
+  sepolia,
+  optimism,
+  arbitrum,
+  base,
+  gnosis,
+} from "wagmi/chains";
 
 import { getUrl } from "@/config/endpoint";
 import { chain } from "lodash";
@@ -12,7 +19,7 @@ if (!projectId) throw new Error("Project ID is not defined");
 export const wagmiConfig = createConfig(
   getDefaultConfig({
     ssr: true,
-    chains: [sepolia, mainnet, optimism, arbitrum, base],
+    chains: [sepolia, mainnet, optimism, arbitrum, base, gnosis],
     transports: {
       [mainnet.id]: http(`${process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_RPC_URL}`),
       [sepolia.id]: http(`${process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_RPC_URL}`),
@@ -23,6 +30,7 @@ export const wagmiConfig = createConfig(
         `${process.env.NEXT_PUBLIC_ALCHEMY_ARBITRUM_RPC_URL}`,
       ),
       [base.id]: http(`${process.env.NEXT_PUBLIC_ALCHEMY_BASE_RPC_URL}`),
+      [gnosis.id]: http(`${process.env.NEXT_PUBLIC_ALCHEMY_GNOSIS_RPC_URL}`),
     },
 
     // Required API Keys
