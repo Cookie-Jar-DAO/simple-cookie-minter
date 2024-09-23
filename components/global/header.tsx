@@ -12,7 +12,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import ConnectButton from "./connect-button";
+import ConnectButton from "../connect-button";
 
 export const Header = () => {
   const { address } = useAccount();
