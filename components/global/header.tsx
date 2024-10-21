@@ -36,66 +36,68 @@ export const Header = () => {
   }
 
   return (
-    <NavigationMenu
-      className="max-h-16 bg-amber-100 bg-opacity-90"
-      onValueChange={onNavChange}
-    >
-      <NavigationMenuList className="space-x-2">
-        <NavigationMenuItem>
-          <Link legacyBehavior href="/" passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Home
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link legacyBehavior href="/jars" passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Jars
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        {address && (
+    <>
+      <NavigationMenu
+        className="max-h-16 bg-amber-100 bg-opacity-90"
+        onValueChange={onNavChange}
+      >
+        <NavigationMenuList className="space-x-2">
           <NavigationMenuItem>
-            <NavigationMenuTrigger
-              className={`submenu-trigger ${navigationMenuTriggerStyle()}`}
-            >
-              Mint Jar
-            </NavigationMenuTrigger>
-            <NavigationMenuContent className="flex flex-col gap-2 bg-amber-100 p-2">
-              <Link legacyBehavior href="/mintERC20" passHref>
-                <NavigationMenuLink
-                  className={cn(navigationMenuTriggerStyle(), "w-full")}
-                >
-                  ERC20
-                </NavigationMenuLink>
-              </Link>
-              <Link legacyBehavior href="/mintERC721" passHref>
-                <NavigationMenuLink
-                  className={cn(navigationMenuTriggerStyle(), "w-full")}
-                >
-                  ERC721
-                </NavigationMenuLink>
-              </Link>
-              <Link legacyBehavior href="/mintBaal" passHref>
-                <NavigationMenuLink
-                  className={cn(navigationMenuTriggerStyle(), "w-full")}
-                >
-                  Baal
-                </NavigationMenuLink>
-              </Link>
-              <Link legacyBehavior href="/mintHats" passHref>
-                <NavigationMenuLink
-                  className={cn(navigationMenuTriggerStyle(), "w-full")}
-                >
-                  Hats
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuContent>
+            <Link legacyBehavior href="/" passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Home
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
-        )}
-      </NavigationMenuList>
+          <NavigationMenuItem>
+            <Link legacyBehavior href="/jars" passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Jars
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          {address && (
+            <NavigationMenuItem>
+              <NavigationMenuTrigger
+                className={`submenu-trigger ${navigationMenuTriggerStyle()}`}
+              >
+                Mint Jar
+              </NavigationMenuTrigger>
+              <NavigationMenuContent className="flex flex-col gap-2 bg-amber-100 p-2">
+                <Link legacyBehavior href="/mintERC20" passHref>
+                  <NavigationMenuLink
+                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                  >
+                    ERC20
+                  </NavigationMenuLink>
+                </Link>
+                <Link legacyBehavior href="/mintERC721" passHref>
+                  <NavigationMenuLink
+                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                  >
+                    ERC721
+                  </NavigationMenuLink>
+                </Link>
+                <Link legacyBehavior href="/mintBaal" passHref>
+                  <NavigationMenuLink
+                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                  >
+                    Baal
+                  </NavigationMenuLink>
+                </Link>
+                <Link legacyBehavior href="/mintHats" passHref>
+                  <NavigationMenuLink
+                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                  >
+                    Hats
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          )}
+        </NavigationMenuList>
+      </NavigationMenu>
       <ConnectButton />
-    </NavigationMenu>
+    </>
   );
 };
