@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { isAddress, isHex } from "viem";
-import { useAccount, usePublicClient } from "wagmi";
+import { Config, useAccount, usePublicClient } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import zod from "zod";
 
@@ -19,7 +19,7 @@ import type {
   ICreateJarFormInputBaal,
   ICreateJarFormInputHats,
 } from "@/components/types/CookieTypes";
-import { wagmiConfig } from "@/config/wagmi";
+import { config } from "@/config";
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
 import SegmentHatsTokenGating from "./SegmentHatsTokenGating";
@@ -86,7 +86,7 @@ const CreateJarFormHats = () => {
   useEffect(() => {
     const handleTx = async () => {
       if (hash && isHex(hash)) {
-        const txData = await waitForTransactionReceipt(wagmiConfig, {
+        const txData = await waitForTransactionReceipt(config as Config, {
           hash,
         });
 
