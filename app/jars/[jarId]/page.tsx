@@ -18,7 +18,6 @@ import { FeedJarDialog } from "@/components/feed-jar/feed-jar-dialog";
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
 const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
-  console.log("jarId", jarId, typeof jarId);
   try {
     const res = await fetch(
       "https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-2-0x4c9",
@@ -69,7 +68,6 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
     }
 
     const jsonResponse = await res.json();
-    console.log("data", jsonResponse.data);
     // Check if the expected data structure is present
     if (
       !jsonResponse ||
@@ -85,7 +83,6 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
     };
   } catch (error) {
     // TODO: handle errors more gracefully
-    console.log("error fetching jars", error);
     return undefined;
   }
 };

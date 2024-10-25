@@ -27,7 +27,7 @@ import type {
   ICreateJarFormInputERC20,
 } from "@/components/types/CookieTypes";
 import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
-import { config } from "@/config";
+import { wagmiConfig } from "@/config/wagmi";
 import { waitForTransactionReceipt } from "viem/actions";
 
 const toNumber = zod
@@ -113,7 +113,6 @@ const CreateJarFormERC20 = () => {
 
   // TODO: Clean up and use wagmi hooks
   // useEffect(() => {
-  //   console.log('in useEffect', hash)
   //   const handleTx = async () => {
   //     if (hash && isHex(hash)) {
   //       const txData = await waitForTransactionReceipt(wagmiConfig, {
@@ -140,7 +139,6 @@ const CreateJarFormERC20 = () => {
   const onSubmit: SubmitHandler<
     ICreateJarFormInput & ICreateJarFormInputERC20
   > = async (data) => {
-    console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
 
@@ -151,7 +149,6 @@ const CreateJarFormERC20 = () => {
         });
         return;
       }
-      console.log("result", result);
 
       // const { hash } = result;
 
@@ -163,8 +160,6 @@ const CreateJarFormERC20 = () => {
       setHash(result);
     }
   };
-
-  console.log("isFormValid", isValid);
 
   return (
     <Form {...form}>

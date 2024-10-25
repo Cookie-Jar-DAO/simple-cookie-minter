@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { isAddress, isHex } from "viem";
-import { Config, useAccount, usePublicClient } from "wagmi";
+import { useAccount, usePublicClient } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import zod from "zod";
 
@@ -19,7 +19,7 @@ import type {
   ICreateJarFormInputBaal,
   ICreateJarFormInputHats,
 } from "@/components/types/CookieTypes";
-import { config } from "@/config";
+import { wagmiConfig } from "@/config/wagmi";
 import SegmentCookieMeta from "./SegmentCookieMeta";
 import SegmentDonation from "./SegmentDonation";
 import SegmentHatsTokenGating from "./SegmentHatsTokenGating";
@@ -81,12 +81,11 @@ const CreateJarFormHats = () => {
 
   const data = form.watch();
 
-  console.log(data);
   // TODO: Clean up and use wagmi hooks
   useEffect(() => {
     const handleTx = async () => {
       if (hash && isHex(hash)) {
-        const txData = await waitForTransactionReceipt(config as Config, {
+        const txData = await waitForTransactionReceipt(wagmiConfig, {
           hash,
         });
 
@@ -110,7 +109,6 @@ const CreateJarFormHats = () => {
   const onSubmit: SubmitHandler<
     ICreateJarFormInput & ICreateJarFormInputHats
   > = async (data) => {
-    console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
 
@@ -130,8 +128,6 @@ const CreateJarFormHats = () => {
       setHash(result);
     }
   };
-
-  console.log(isValid);
 
   return (
     <Form {...form}>

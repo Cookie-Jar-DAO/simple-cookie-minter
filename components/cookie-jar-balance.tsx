@@ -28,7 +28,6 @@ const CookieJarBalance = ({
     token: cookieToken,
   });
 
-  console.log("jarBalance", jarBalance);
   return (
     <div className="flex flex-col">
       {isLoading && <div>Loading...</div>}

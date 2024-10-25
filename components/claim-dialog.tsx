@@ -3,7 +3,6 @@ import React from "react";
 
 import type { Address } from "viem";
 import { useAccount, useBalance, useReadContract } from "wagmi";
-import { ConnectKitButton } from "connectkit";
 
 import { CookieJarCore } from "@/abis/CookieJarCore";
 
@@ -62,7 +61,7 @@ const ClaimDialog = ({
   });
 
   if (isDisconnected) {
-    return <ConnectKitButton />;
+    return <p>Must connect wallet to claim</p>;
   }
 
   if (isConnecting || isLoading) {

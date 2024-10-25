@@ -21,7 +21,7 @@ import type {
   ICreateJarFormInputBaal,
 } from "@/components/types/CookieTypes";
 import SegmentBaalTokenGating from "./SegmentBaalTokenGating";
-import { config } from "@/config";
+import { wagmiConfig } from "@/config/wagmi";
 
 const toNumber = zod
   .number()
@@ -86,12 +86,11 @@ const CreateJarFormBaal = () => {
 
   const data = form.watch();
 
-  console.log(data);
   // TODO: Clean up and use wagmi hooks
   useEffect(() => {
     const handleTx = async () => {
       if (hash && isHex(hash)) {
-        const txData = await waitForTransactionReceipt(config as Config, {
+        const txData = await waitForTransactionReceipt(wagmiConfig, {
           hash,
         });
 
@@ -115,7 +114,6 @@ const CreateJarFormBaal = () => {
   const onSubmit: SubmitHandler<
     ICreateJarFormInput & ICreateJarFormInputBaal
   > = async (data) => {
-    console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
 
@@ -135,8 +133,6 @@ const CreateJarFormBaal = () => {
       setHash(result);
     }
   };
-
-  console.log(isValid);
 
   return (
     <Form {...form}>

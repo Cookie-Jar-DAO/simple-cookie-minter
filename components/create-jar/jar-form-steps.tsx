@@ -21,7 +21,6 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useAccount } from "wagmi";
-import ConnectButton from "../connect-button";
 import { Checkbox } from "../ui/checkbox";
 
 interface JarFormStepsProps {
@@ -119,7 +118,8 @@ const JarFormSteps = ({
             <ArrowRightIcon className="ml-2 h-4 w-4" />
           </Button>
         )}
-        {isLastStep && !address && <ConnectButton />}
+        {/* TODO: Open connect dialog */}
+        {isLastStep && !address && <p>Must connect wallet to create jar</p>}
       </div>
     </div>
   );

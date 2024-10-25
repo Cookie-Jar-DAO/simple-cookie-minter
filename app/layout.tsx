@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
-import ContextProvider from "@/context";
+import { Web3ModalProvider } from "@/context/wagmi";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -35,14 +35,14 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <ContextProvider cookies={cookies}>
+        <Web3ModalProvider>
           <div className="relative flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
-        </ContextProvider>
-        <Toaster />
+          <Toaster />
+        </Web3ModalProvider>
       </body>
     </html>
   );

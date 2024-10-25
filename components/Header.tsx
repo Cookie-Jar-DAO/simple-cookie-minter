@@ -12,7 +12,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import ConnectButton from "./connect-button";
+import { WalletProfile } from "./wallet-profile";
 
 export const Header = () => {
   const { address } = useAccount();
@@ -95,7 +95,7 @@ export const Header = () => {
           </NavigationMenuItem>
         )}
       </NavigationMenuList>
-      <ConnectButton />
+      <WalletProfile />
     </NavigationMenu>
   );
 };
