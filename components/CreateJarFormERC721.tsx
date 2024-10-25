@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Config, useAccount, usePublicClient } from "wagmi";
+import { useAccount, usePublicClient } from "wagmi";
 import { isAddress, isHex } from "viem";
 import zod from "zod";
 import { useMintNFTJar } from "@/hooks/useMintNFTJar";
@@ -21,7 +21,7 @@ import type {
   ICreateJarFormInputERC721,
 } from "@/components/types/CookieTypes";
 import SegmentERC721TokenGating from "./SegmentERC721TokenGating";
-import { config } from "@/config";
+import { wagmiConfig } from "@/config/wagmi";
 
 const toNumber = zod
   .number()
@@ -83,7 +83,7 @@ const CreateJarFormERC721 = () => {
   useEffect(() => {
     const handleTx = async () => {
       if (hash && isHex(hash)) {
-        const txData = await waitForTransactionReceipt(config as Config, {
+        const txData = await waitForTransactionReceipt(wagmiConfig, {
           hash,
         });
 

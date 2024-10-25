@@ -16,7 +16,7 @@ import {
   parseEther,
 } from "viem/utils";
 import { useToast } from "@/components/ui/use-toast";
-import { config } from "@/config";
+import { wagmiConfig } from "@/config/wagmi";
 
 export const useMintNFTJar = () => {
   const walletClient = useWalletClient();
@@ -109,7 +109,7 @@ export const useMintNFTJar = () => {
       link: mintData.link,
     };
 
-    const { request } = await simulateContract(config as Config, {
+    const { request } = await simulateContract(wagmiConfig, {
       address: nftContract.contractAddress as `0x${string}`,
       abi: nftContract?.abi,
       functionName: "cookieMint",
@@ -123,7 +123,7 @@ export const useMintNFTJar = () => {
       value,
     });
 
-    return await writeContract(config as Config, request);
+    return await writeContract(wagmiConfig, request);
   };
 
   return {

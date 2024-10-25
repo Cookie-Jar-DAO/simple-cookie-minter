@@ -27,7 +27,7 @@ import type {
   ICreateJarFormInputERC20,
 } from "@/components/types/CookieTypes";
 import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
-import { config } from "@/config";
+import { wagmiConfig } from "@/config/wagmi";
 import { waitForTransactionReceipt } from "viem/actions";
 
 const toNumber = zod

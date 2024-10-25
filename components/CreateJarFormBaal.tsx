@@ -21,7 +21,7 @@ import type {
   ICreateJarFormInputBaal,
 } from "@/components/types/CookieTypes";
 import SegmentBaalTokenGating from "./SegmentBaalTokenGating";
-import { config } from "@/config";
+import { wagmiConfig } from "@/config/wagmi";
 
 const toNumber = zod
   .number()
@@ -91,7 +91,7 @@ const CreateJarFormBaal = () => {
   useEffect(() => {
     const handleTx = async () => {
       if (hash && isHex(hash)) {
-        const txData = await waitForTransactionReceipt(config as Config, {
+        const txData = await waitForTransactionReceipt(wagmiConfig, {
           hash,
         });
 
