@@ -101,7 +101,6 @@ export default async function JarPage({
     return <div>Failed to fetch Jar Data</div>;
   }
   const { cookieJar, claims } = jarData;
-  console.log("claims", claims[0].reason.reason);
 
   return (
     <div className="max-w-3x container my-8">
