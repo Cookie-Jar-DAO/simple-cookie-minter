@@ -8,7 +8,6 @@ export const useReachInJar = () => {
   const walletClient = useWalletClient();
 
   const reachInCookieJar = async (claimData: IClaimFromJarFormInput) => {
-    console.log("claimData", claimData);
     if (!walletClient) {
       throw new Error("Not connected to wallet");
     }
@@ -20,7 +19,6 @@ export const useReachInJar = () => {
       functionName: "reachInJar",
       args: [claimData.cookieMonster, claimData.reason],
     });
-    console.log("request", request);
 
     return await writeContract(wagmiConfig, request);
   };

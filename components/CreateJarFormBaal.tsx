@@ -86,7 +86,6 @@ const CreateJarFormBaal = () => {
 
   const data = form.watch();
 
-  console.log(data);
   // TODO: Clean up and use wagmi hooks
   useEffect(() => {
     const handleTx = async () => {
@@ -115,7 +114,6 @@ const CreateJarFormBaal = () => {
   const onSubmit: SubmitHandler<
     ICreateJarFormInput & ICreateJarFormInputBaal
   > = async (data) => {
-    console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
 
@@ -135,8 +133,6 @@ const CreateJarFormBaal = () => {
       setHash(result);
     }
   };
-
-  console.log(isValid);
 
   return (
     <Form {...form}>

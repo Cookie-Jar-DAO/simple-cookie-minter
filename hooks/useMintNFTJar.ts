@@ -32,8 +32,6 @@ export const useMintNFTJar = () => {
         | ICreateJarFormInputHats
       ),
   ) => {
-    console.log("mintData", mintData);
-
     if (!walletClient) {
       toast({
         variant: "destructive",
@@ -140,8 +138,6 @@ const encodeCookieMintParameters = (
       | ICreateJarFormInputHats
     ),
 ) => {
-  console.log("encode data", data);
-  console.log("hatId", "hatId" in data);
   // 0. address owner or safeTarget,
   // 1. uint256 _periodLength,
   // 2. uint256 _cookieAmount,
@@ -227,9 +223,7 @@ const encodeCookieMintParameters = (
   }
 
   if ("hatId" in data && data.cookieJar === "HatsCookieJar6551") {
-    console.log("hatId in data", data.hatId);
     const hatId = BigInt(data.hatId);
-    console.log("hatId", hatId);
     const hatThreshold = BigInt(1);
 
     if (hatId === null || hatId === undefined) {

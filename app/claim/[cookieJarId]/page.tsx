@@ -35,8 +35,6 @@
 //     cookieJarId,
 //   });
 
-//   console.log({ cookieJarId, cookieJar, isLoading, error, data });
-
 //   if (!cookieJar || !token)
 //     return (
 //       <DisplayClaim

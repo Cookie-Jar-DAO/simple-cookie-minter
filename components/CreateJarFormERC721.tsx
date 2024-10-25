@@ -107,7 +107,6 @@ const CreateJarFormERC721 = () => {
   const onSubmit: SubmitHandler<
     ICreateJarFormInput & ICreateJarFormInputERC721
   > = async (data) => {
-    console.log(data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
 
@@ -119,8 +118,6 @@ const CreateJarFormERC721 = () => {
         return;
       }
 
-      console.log("hash", result);
-
       toast({
         title: "Baking cookie",
         description: `Transaction submitted with hash ${result}`,
@@ -129,8 +126,6 @@ const CreateJarFormERC721 = () => {
       setHash(result);
     }
   };
-
-  console.log(isValid);
 
   return (
     <Form {...form}>
