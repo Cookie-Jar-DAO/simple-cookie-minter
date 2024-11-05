@@ -15,13 +15,18 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { cookJarMockData, data } from "./mock-data";
 import ChainJars from "@/components/chain-jars";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type Chain = "Sepolia" | "Base" | "Gnosis" | "Arbitrum" | "Optimism";
 
 export interface ChainAndGraph {
   url: string;
   name: Chain;
+}
+
+export interface SortSettings {
+  orderBy: "cookieAmount" | "periodLength";
+  orderDirection: "asc" | "desc";
 }
 
 const chainGraphs: ChainAndGraph[] = [
@@ -55,8 +60,25 @@ const chainToImageMap: Record<Chain, string> = {
   Optimism: "/optimism.webp",
 };
 
+type SortingSelectValues =
+  | "cookieAmount-desc"
+  | "cookieAmount-asc"
+  | "periodLength-asc"
+  | "periodLength-desc";
+
 export default function JarsPage() {
   const [selectedChain, setSelectedChain] = useState<Chain>("Sepolia");
+  const [sorting, setSorting] = useState<SortSettings>({
+    orderBy: "cookieAmount",
+    orderDirection: "desc",
+  });
+  const changeSorting = useCallback((val: SortingSelectValues) => {
+    const [order, direction] = val.split("-");
+    setSorting({
+      orderBy: order as SortSettings["orderBy"],
+      orderDirection: direction as SortSettings["orderDirection"],
+    });
+  }, []);
   return (
     <div className="max-w-3x container my-8">
       <section className="relative flex w-full flex-col items-center gap-8 overflow-hidden rounded-3xl p-20">
@@ -75,7 +97,6 @@ export default function JarsPage() {
               key={name}
               onClick={() => {
                 setSelectedChain(name);
-                console.log("what");
               }}
             >
               <Image
@@ -108,9 +129,31 @@ export default function JarsPage() {
                 />
                 {chainAndGraph.name} Jars
               </h1>
+              <div className="mv-2">
+                Order by{" "}
+                <select
+                  className="text-strong bg-amber-200 p-2 font-bold"
+                  onChange={(val) =>
+                    changeSorting(val.target.value as SortingSelectValues)
+                  }
+                >
+                  <option value="cookieAmount-desc">
+                    Largest cookie stash
+                  </option>
+                  <option value="cookieAmount-asc">
+                    Smallest cookie stash
+                  </option>
+                  <option value="periodLength-asc">
+                    Shortest claim period
+                  </option>
+                  <option value="periodLength-desc">
+                    Longest claim period
+                  </option>
+                </select>
+              </div>
               <ScrollArea className="h-[40rem] w-full max-w-4xl">
                 <div className="flex flex-col gap-2 p-4 pt-0">
-                  <ChainJars chainAndGraph={chainAndGraph} />
+                  <ChainJars chainAndGraph={chainAndGraph} sorting={sorting} />
                   {/* <DataTable columns={columns} data={data} /> */}
                 </div>
               </ScrollArea>
