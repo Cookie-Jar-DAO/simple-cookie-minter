@@ -12,69 +12,37 @@ import { Card } from "@/components/ui/card";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { cookJarMockData, data } from "./mock-data";
+import ChainJars from "@/components/chain-jars";
 
-const fetchJars = async (): Promise<CookieJar[] | undefined> => {
-  try {
-    const res = await fetch(
-      // TODO: update to be dynamic, use something like gql.tada for types https://gql-tada.0no.co/
-      "https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-2-0x4c9",
-      {
-        cache: "no-store",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-          {
-            cookieJars {
-              type
-              periodLength
-              owner
-              name
-              link
-              id
-              description
-              cookieToken
-              cookieAmount
-            }
-          }
-          `,
-        }),
-      },
-    );
-    if (!res.ok) {
-      throw new Error("Network response was not ok.");
-    }
+export interface ChainAndGraph {
+  url: string;
+  chain: string;
+}
 
-    const jsonResponse = await res.json();
-
-    // Check if the expected data structure is present
-    if (
-      !jsonResponse ||
-      !jsonResponse.data ||
-      !Array.isArray(jsonResponse.data.cookieJars)
-    ) {
-      throw new Error("Invalid response structure");
-    }
-    return jsonResponse.data.cookieJars;
-  } catch (error) {
-    // TODO: handle errors more gracefully
-    return undefined;
-  }
-};
+const chainGraphs: ChainAndGraph[] = [
+  {
+    url: "https://api.studio.thegraph.com/query/92478/cg-base/version/latest",
+    chain: "base",
+  },
+  {
+    url: "https://api.studio.thegraph.com/query/92478/cg-gnosis/version/latest",
+    chain: "gnosis",
+  },
+  {
+    url: "https://api.studio.thegraph.com/query/92478/cg-arbitrum/version/latest",
+    chain: "arbitrum",
+  },
+  {
+    url: "https://api.studio.thegraph.com/query/92478/cg-optimism/version/latest",
+    chain: "optimism",
+  },
+  {
+    url: "https://api.studio.thegraph.com/query/92478/cg-sepolia/version/latest",
+    chain: "sepolia",
+  },
+];
 
 export default async function JarsPage() {
-  const cookieJars = await fetchJars();
-
-  if (cookieJars === undefined || cookieJars === null) {
-    return (
-      <div>
-        <h1>Looks like there are no jars</h1>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-3x container my-8">
       <section className="relative flex w-full flex-col items-center gap-8 overflow-hidden rounded-3xl p-20">
@@ -90,14 +58,13 @@ export default async function JarsPage() {
           <h1 className="font-gluten text-5xl font-semibold">Jars</h1>
           <ScrollArea className="h-[40rem] w-full max-w-4xl">
             <div className="flex flex-col gap-2 p-4 pt-0">
+              {chainGraphs.map((chainAndGraph) => (
+                <ChainJars
+                  key={chainAndGraph.chain}
+                  chainAndGraph={chainAndGraph}
+                />
+              ))}
               {/* <DataTable columns={columns} data={data} /> */}
-              {cookieJars.length > 0 ? (
-                cookieJars.map((jar) => (
-                  <JarCard key={jar.id} cookieJar={jar} />
-                ))
-              ) : (
-                <CreateJarFormERC20 />
-              )}
             </div>
           </ScrollArea>
         </Card>
