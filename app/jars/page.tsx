@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import { JarCard } from "@/components/jar-card";
@@ -13,6 +15,7 @@ import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { cookJarMockData, data } from "./mock-data";
 import ChainJars from "@/components/chain-jars";
+import { useState } from "react";
 
 type Chain = "Sepolia" | "Base" | "Gnosis" | "Arbitrum" | "Optimism";
 
@@ -52,7 +55,8 @@ const chainToImageMap: Record<Chain, string> = {
   Optimism: "/optimism.webp",
 };
 
-export default async function JarsPage() {
+export default function JarsPage() {
+  const [selectedChain, setSelectedChain] = useState<Chain>("Sepolia");
   return (
     <div className="max-w-3x container my-8">
       <section className="relative flex w-full flex-col items-center gap-8 overflow-hidden rounded-3xl p-20">
@@ -64,30 +68,54 @@ export default async function JarsPage() {
           className="-z-10 bg-center object-cover blur-sm"
           fill
         />
-        {chainGraphs.map((chainAndGraph) => (
-          <Card
-            key={chainAndGraph.name}
-            className="relative z-20 flex flex-col items-center gap-8 border-none bg-amber-100 p-8 text-center"
-          >
-            <h1 className="font-gluten text-5xl font-semibold">
+        <div className="flex-warp relative relative z-20 flex cursor-pointer flex-row items-center gap-8 border-none bg-transparent bg-none">
+          {chainGraphs.map(({ name }) => (
+            <Card
+              className={`border-none ${name === selectedChain ? "bg-amber-300" : "bg-amber-100 hover:bg-amber-200 active:bg-amber-300"} p-3 text-center`}
+              key={name}
+              onClick={() => {
+                setSelectedChain(name);
+                console.log("what");
+              }}
+            >
               <Image
-                src={chainToImageMap[chainAndGraph.name]}
-                title={chainAndGraph.name}
+                src={chainToImageMap[name]}
+                title={name}
                 alt="Chain logo"
-                width={80}
-                height={80}
-                className="mr-5 inline-block"
+                width={40}
+                height={40}
+                className="mr-2 inline-block"
               />
-              {chainAndGraph.name} Jars
-            </h1>
-            <ScrollArea className="h-[40rem] w-full max-w-4xl">
-              <div className="flex flex-col gap-2 p-4 pt-0">
-                <ChainJars chainAndGraph={chainAndGraph} />
-                {/* <DataTable columns={columns} data={data} /> */}
-              </div>
-            </ScrollArea>
-          </Card>
-        ))}
+              {name}
+            </Card>
+          ))}
+        </div>
+        {chainGraphs
+          .filter(({ name }) => name == selectedChain)
+          .map((chainAndGraph) => (
+            <Card
+              key={chainAndGraph.name}
+              className="relative z-20 flex flex-col items-center gap-8 border-none bg-amber-100 p-8 text-center"
+            >
+              <h1 className="font-gluten text-5xl font-semibold">
+                <Image
+                  src={chainToImageMap[chainAndGraph.name]}
+                  title={chainAndGraph.name}
+                  alt="Chain logo"
+                  width={80}
+                  height={80}
+                  className="mr-5 inline-block"
+                />
+                {chainAndGraph.name} Jars
+              </h1>
+              <ScrollArea className="h-[40rem] w-full max-w-4xl">
+                <div className="flex flex-col gap-2 p-4 pt-0">
+                  <ChainJars chainAndGraph={chainAndGraph} />
+                  {/* <DataTable columns={columns} data={data} /> */}
+                </div>
+              </ScrollArea>
+            </Card>
+          ))}
       </section>
     </div>
   );
