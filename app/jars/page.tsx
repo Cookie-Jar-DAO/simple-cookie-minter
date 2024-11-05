@@ -93,7 +93,7 @@ export default function JarsPage() {
         <div className="flex-warp relative relative z-20 flex cursor-pointer flex-row items-center gap-8 border-none bg-transparent bg-none">
           {chainGraphs.map(({ name }) => (
             <Card
-              className={`border-none ${name === selectedChain ? "bg-amber-300" : "bg-amber-100 hover:bg-amber-200 active:bg-amber-300"} p-3 text-center`}
+              className={`border-none font-bold ${name === selectedChain ? "bg-amber-300" : "bg-amber-100 hover:bg-amber-200 active:bg-amber-300"} p-3 text-center`}
               key={name}
               onClick={() => {
                 setSelectedChain(name);

@@ -5,6 +5,7 @@ import { JarCard } from "./jar-card";
 import CreateJarFormERC20 from "./CreateJarFormERC20";
 import { useCallback, useEffect, useState } from "react";
 import { CookieJar } from "@/lib/indexer/db";
+import { LoaderIcon } from "lucide-react";
 
 const fetchJarsOnGraph = async (
   url: string,
@@ -67,6 +68,7 @@ interface ChainJarsProps {
 
 const ChainJars = ({ chainAndGraph, sorting }: ChainJarsProps) => {
   const [cookieJars, setCookieJars] = useState<CookieJar[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchJars = useCallback(
     async (chainUrl: string) => {
@@ -74,12 +76,14 @@ const ChainJars = ({ chainAndGraph, sorting }: ChainJarsProps) => {
       if (jars) {
         setCookieJars(jars);
       }
+      setLoading(false);
     },
     [sorting],
   );
 
   useEffect(() => {
     if (chainAndGraph != null) {
+      setLoading(true);
       fetchJars(chainAndGraph.url);
     }
   }, [chainAndGraph, fetchJars]);
@@ -91,10 +95,21 @@ const ChainJars = ({ chainAndGraph, sorting }: ChainJarsProps) => {
       </div>
     );
   }
-  return cookieJars.length > 0 ? (
+  return loading ? (
+    <div className="flex min-w-[768px] justify-center p-10">
+      <LoaderIcon className="h-[80px] w-[80px] animate-spin" />
+    </div>
+  ) : cookieJars.length > 0 ? (
     cookieJars.map((jar) => <JarCard key={jar.id} cookieJar={jar} />)
   ) : (
-    <CreateJarFormERC20 />
+    <div>
+      <h2 className="text-2xl font-semibold leading-tight">
+        No jars just yet ...
+        <br />
+        Let&apos;s create the first one 👇
+      </h2>
+      <CreateJarFormERC20 />
+    </div>
   );
 };
 
