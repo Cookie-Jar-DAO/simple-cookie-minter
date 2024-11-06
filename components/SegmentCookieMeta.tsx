@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { NFTImage } from "@/components/NFTImage";
 import { ZERO_ADDRESS } from "@/app/constants";
 import { TokenInput } from "./ui/token-input";
+import { TimePeriodInput } from "./ui/time-period-input";
 
 const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
   const {
@@ -133,10 +134,16 @@ const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
             <FormItem className="col-span-full">
               <FormLabel>Cookie period</FormLabel>
               <FormControl>
-                <Input placeholder="86400" {...field} />
+                <TimePeriodInput
+                  initialInterval="days"
+                  onChangeAmount={(val) => setValue("cookiePeriod", val)}
+                  initialValue={field.value}
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
-                The time in seconds between cookie distributions
+                The time in seconds between cookie distributions (
+                {field.value.toString()} seconds)
               </FormDescription>
               <FormMessage />
             </FormItem>

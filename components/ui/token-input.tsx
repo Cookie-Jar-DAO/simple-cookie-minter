@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { forwardRef, useCallback, useEffect, useState } from "react";
-import { formatUnits, parseUnits } from "viem";
+import { parseUnits } from "viem";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
