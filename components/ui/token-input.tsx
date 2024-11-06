@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { forwardRef, useCallback, useEffect, useState } from "react";
-import { parseUnits } from "viem";
+import { formatUnits, parseUnits } from "viem";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -29,7 +29,7 @@ const TokenInput = forwardRef<HTMLInputElement, InputProps>(
     const [innerValue, setInnerValue] = useState(initialValue);
     const [initialized, setInitialized] = useState(false);
     const handleChange = useCallback(
-      (value: string) => {
+      (value: string, decimalPlaces: number) => {
         setInnerValue(value);
         try {
           const inWei = parseUnits(value, decimalPlaces ?? 0);
@@ -40,12 +40,15 @@ const TokenInput = forwardRef<HTMLInputElement, InputProps>(
           setError("Check number format");
         }
       },
-      [clearError, decimalPlaces, onChangeAmount, setError],
+      [clearError, onChangeAmount, setError],
     );
 
     useEffect(() => {
       if (initialValue != null && decimalPlaces != null && !initialized) {
-        handleChange(initialValue);
+        handleChange(
+          formatUnits(BigInt(initialValue), decimalPlaces),
+          decimalPlaces,
+        );
         setInitialized(true);
       }
     }, [initialValue, initialized, handleChange, decimalPlaces]);
@@ -56,7 +59,7 @@ const TokenInput = forwardRef<HTMLInputElement, InputProps>(
           {...props}
           value={innerValue}
           type="text"
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={(e) => handleChange(e.target.value, decimalPlaces ?? 0)}
           className={cn(
             "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
             className,

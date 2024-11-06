@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { forwardRef, useCallback, useEffect, useState } from "react";
-import { parseUnits } from "viem";
 
 const intervals = {
   minutes: 60,
@@ -37,7 +36,7 @@ const TimePeriodInput = forwardRef<HTMLInputElement, TimePeriodInputProps>(
     ref,
   ) => {
     const [selectedInterval, setSelectedInterval] =
-      useState<TimeInterval>("minutes");
+      useState<TimeInterval>(initialInterval);
     const [innerValue, setInnerValue] = useState(
       fromSeconds(initialValue, initialInterval),
     );
@@ -68,8 +67,9 @@ const TimePeriodInput = forwardRef<HTMLInputElement, TimePeriodInputProps>(
     );
 
     useEffect(() => {
-      if (initialValue != null && !initialized) {
-        handleChange(initialValue.toString(), initialInterval);
+      if (initialValue != null && initialInterval != null && !initialized) {
+        console.log(initialValue, initialInterval);
+        setInnerValue(fromSeconds(initialValue, initialInterval));
         setInitialized(true);
       }
     }, [initialValue, initialized, handleChange, initialInterval]);
@@ -89,13 +89,16 @@ const TimePeriodInput = forwardRef<HTMLInputElement, TimePeriodInputProps>(
           ref={ref}
         />
         <select
+          value={selectedInterval}
           className="flex h-10 flex-1 cursor-pointer items-center items-center justify-center rounded-md border border-input bg-amber-200 p-2 font-semibold"
           onChange={(e) =>
             changeInterval(e.target.value as TimeInterval, innerValue)
           }
         >
           {Object.keys(intervals).map((i) => (
-            <option key={i}>{i}</option>
+            <option key={i} value={i}>
+              {i}
+            </option>
           ))}
         </select>
       </div>
