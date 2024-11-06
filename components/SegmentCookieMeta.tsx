@@ -24,12 +24,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { NFTImage } from "@/components/NFTImage";
 import { ZERO_ADDRESS } from "@/app/constants";
+import { TokenInput } from "./ui/token-input";
 
 const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
 	const {
 		control,
 		formState: { isValid },
 		watch,
+		setError,
+		clearErrors,
 	} = form;
 
 	const { address } = useAccount();
@@ -159,14 +162,28 @@ const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
 				<FormField
 					control={control}
 					name="cookieAmount"
-					render={({ field }) => (
+					render={({ field, fieldState }) => (
 						<FormItem className="col-span-full">
 							<FormLabel>Cookie amount</FormLabel>
 							<FormControl>
-								<Input placeholder="1" {...field} />
+								<TokenInput
+									setError={(val) => {
+										setError("cookieAmount", {
+											type: "custom",
+											message: val,
+										});
+									}}
+									clearError={() => clearErrors("cookieAmount")}
+									onChangeAmount={(val) => field.onChange(val)}
+									initialValue={field.value}
+									decimalPlaces={cookieToken?.decimals}
+									symbol={cookieToken?.symbol ?? ""}
+									{...field}
+								/>
 							</FormControl>
 							<FormDescription>
-								The amount of cookies to distribute
+								The amount of cookies to distribute ({field.value.toString()}{" "}
+								WEI)
 							</FormDescription>
 							<FormMessage />
 						</FormItem>
