@@ -69,7 +69,6 @@ const TimePeriodInput = forwardRef<HTMLInputElement, TimePeriodInputProps>(
 
     useEffect(() => {
       if (initialValue != null && initialInterval != null && !initialized) {
-        console.log(initialValue, initialInterval);
         setInnerValue(fromSeconds(initialValue, initialInterval));
         setInitialized(true);
       }
