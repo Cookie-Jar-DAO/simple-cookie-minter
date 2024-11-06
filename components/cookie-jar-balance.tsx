@@ -2,13 +2,18 @@
 import React from "react";
 import type { Address } from "viem";
 
-import { useBalance, useReadContract } from "wagmi";
+import { useBalance } from "wagmi";
 
-import { formatEther } from "viem";
 import { truncateEthereumAddress } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Copy } from "lucide-react";
+import { Copy, Info } from "lucide-react";
 import { useToast } from "./ui/use-toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 const CookieJarBalance = ({
   cookieToken,
@@ -44,15 +49,37 @@ const CookieJarBalance = ({
         </p>
       )}
       <p>Claim period: {periodLength}</p>
-      <div className="flex flex-row gap-x-2">
-        <span>Owned by: {truncateEthereumAddress(owner)} </span>
+      <p>Owned by: {truncateEthereumAddress(owner)}</p>
+      <div className="flex flex-row items-center gap-x-2">
+        <div className="flex flex-row items-center gap-x-1">
+          <span>Jar address</span>
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info
+                  size={16}
+                  strokeWidth={2}
+                  aria-label="Information about jar address"
+                  className="rounded-md text-gray-400 hover:bg-accent hover:text-white"
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  This is the address of the safe that holds CookieJar funds.
+                  Use this if you want to fund the jar from a DAO or Multisig
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <span>: {truncateEthereumAddress(owner)}</span>
+        </div>
         <Button
           variant="ghost"
           size="icon"
           className="h-6 w-6 text-gray-400 hover:text-white"
           aria-label="Copy address"
           onClick={() => {
-            navigator.clipboard.writeText(owner);
+            navigator.clipboard.writeText(jarTargetAddress);
             toast({
               variant: "default",
               description: `Address copied!`,
