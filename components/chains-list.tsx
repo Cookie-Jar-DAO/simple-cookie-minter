@@ -1,4 +1,5 @@
 "use client";
+
 import { sepolia } from "wagmi/chains";
 import { Card } from "@/components/ui/card";
 import ChainJars from "@/components/chain-jars";
@@ -8,13 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import ChainsSelector from "./chains-selector";
 import Image from "next/image";
 import { SortSettings } from "@/hooks/useGraphData";
-import { useAccount, useChainId, useWalletClient } from "wagmi";
-
-export interface ChainAndGraph {
-  id: number;
-  url: string;
-  name: string;
-}
+import { useAccount } from "wagmi";
 
 type SortingSelectValues =
   | "cookieAmount-desc"
