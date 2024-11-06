@@ -45,8 +45,10 @@ const fetchJarsOnGraph = async (
       throw new Error("Network response was not ok.");
     }
     const jsonResponse = await res.json();
-
     // Check if the expected data structure is present
+    if (jsonResponse.errors && jsonResponse.errors.length > 0) {
+      throw new Error(jsonResponse.errors[0].message);
+    }
     if (
       !jsonResponse ||
       !jsonResponse.data ||
@@ -56,8 +58,7 @@ const fetchJarsOnGraph = async (
     }
     return jsonResponse.data.cookieJars;
   } catch (error) {
-    // TODO: handle errors more gracefully
-    return undefined;
+    throw new Error(error as unknown as string);
   }
 };
 
@@ -72,7 +73,7 @@ export const useGraphData = ({ chainId, sorting }: UseGraphDataProps) => {
       `graph-data-${chainId}-${sorting.orderBy}-${sorting.orderDirection}`,
     ],
     queryFn: () => fetchJarsOnGraph(chainId, sorting),
-    enabled: !!chainId,
+    enabled: !!chainId && !!sorting,
   });
   return { data, error, ...rest };
 };

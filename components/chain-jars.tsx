@@ -11,8 +11,14 @@ interface ChainJarsProps {
 }
 
 const ChainJars = ({ chainId, sorting }: ChainJarsProps) => {
-  const { data: cookieJars, isFetching } = useGraphData({ chainId, sorting });
-  return isFetching || cookieJars == null ? (
+  const {
+    data: cookieJars,
+    isFetching,
+    error,
+  } = useGraphData({ chainId, sorting });
+  return error ? (
+    <p>{error.toString()}</p>
+  ) : isFetching || cookieJars == null ? (
     <div className="flex min-w-[768px] justify-center p-10">
       <LoaderIcon className="h-[80px] w-[80px] animate-spin" />
     </div>
