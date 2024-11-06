@@ -3,7 +3,7 @@
 
 import type React from "react";
 import type { SegmentCookieMetaProps } from "@/components/types/CookieTypes";
-import { useToken } from "wagmi";
+import { useReadContracts } from "wagmi";
 
 import {
   FormControl,
@@ -21,6 +21,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { TokenInput } from "./ui/token-input";
+import { erc20Abi } from "viem";
 
 const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
   form,
@@ -34,9 +35,27 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
     setError,
   } = form;
 
-  const { data: erc721Token } = useToken({
-    address: watch("erc721Token") as `0x${string}`,
+  const { data: token } = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: watch("erc721Token") as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "decimals",
+      },
+      {
+        address: watch("erc721Token") as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "symbol",
+      },
+      {
+        address: watch("erc721Token") as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "name",
+      },
+    ],
   });
+  const [decimals, symbol, name] = token || [18, "", ""];
 
   return (
     <fieldset className="grid grid-cols-4 gap-6 p-6">
@@ -86,8 +105,8 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
                   clearError={() => clearErrors("erc721Threshold")}
                   onChangeAmount={(val) => setValue("erc721Threshold", val)}
                   initialValue={field.value}
-                  decimalPlaces={erc721Token?.decimals}
-                  symbol={erc721Token?.symbol ?? ""}
+                  decimalPlaces={decimals}
+                  symbol={symbol ?? ""}
                   {...field}
                 />
               </FormControl>
@@ -104,10 +123,10 @@ const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
           <CollapsibleTrigger>✅ Gating token info ✅</CollapsibleTrigger>
           <CollapsibleContent>
             <p>
-              <strong>Symbol</strong> {erc721Token?.symbol}
+              <strong>Symbol</strong> {symbol}
             </p>
             <p>
-              <strong>Name</strong> {erc721Token?.name}
+              <strong>Name</strong> {name}
             </p>
           </CollapsibleContent>
         </Collapsible>

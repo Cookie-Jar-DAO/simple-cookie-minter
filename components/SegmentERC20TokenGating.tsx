@@ -3,7 +3,8 @@
 
 import type React from "react";
 import type { SegmentCookieMetaProps } from "@/components/types/CookieTypes";
-import { useToken } from "wagmi";
+import { useReadContracts } from "wagmi";
+import { erc20Abi } from "viem";
 
 import {
   FormControl,
@@ -21,6 +22,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { TokenInput } from "./ui/token-input";
+import {} from "wagmi";
 
 const SegmentERC20TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
   form,
@@ -34,9 +36,22 @@ const SegmentERC20TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
     setValue,
   } = form;
 
-  const { data: erc20Token } = useToken({
-    address: watch("erc20Token") as `0x${string}`,
+  const { data: token } = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: watch("erc20Token") as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "decimals",
+      },
+      {
+        address: watch("erc20Token") as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "symbol",
+      },
+    ],
   });
+  const [decimals, symbol] = token || [18, ""];
 
   return (
     <fieldset className="grid grid-cols-4 gap-6 p-6">
@@ -85,8 +100,8 @@ const SegmentERC20TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
                   clearError={() => clearErrors("erc20Threshold")}
                   onChangeAmount={(val) => setValue("erc20Threshold", val)}
                   initialValue={field.value}
-                  decimalPlaces={erc20Token?.decimals}
-                  symbol={erc20Token?.symbol ?? ""}
+                  decimalPlaces={decimals}
+                  symbol={symbol ?? ""}
                   {...field}
                 />
               </FormControl>
@@ -103,10 +118,10 @@ const SegmentERC20TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
           <CollapsibleTrigger>✅ Gating token info ✅</CollapsibleTrigger>
           <CollapsibleContent>
             <p>
-              <strong>Symbol</strong> {erc20Token?.symbol}
+              <strong>Symbol</strong> {symbol}
             </p>
             <p>
-              <strong>Decimals</strong> {erc20Token?.decimals}
+              <strong>Decimals</strong> {decimals}
             </p>
           </CollapsibleContent>
         </Collapsible>
