@@ -46,11 +46,13 @@ const ChainsList = () => {
   return (
     <section>
       {isConnected && !isChainValid && (
-        <Card className="relative z-20 mb-4 flex flex-col items-center gap-8 border-none bg-amber-100 p-8 text-center">
+        <Card className="relative z-20 mb-4 flex flex-col items-center gap-4 border-none bg-amber-100 p-8 text-center">
           <h2 className="text-xl font-semibold">
             We dont support the chain you are currently connected to just yet 🫥
           </h2>
-          <p className="text-xl">Check out the jars on our other chains:</p>
+          <p className="text-xl font-normal">
+            Check out the jars on our other chains 👇
+          </p>
         </Card>
       )}
       {(!isConnected || !isChainValid) && (
