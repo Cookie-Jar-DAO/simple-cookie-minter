@@ -4,10 +4,11 @@ import { Card } from "@/components/ui/card";
 import ChainJars from "@/components/chain-jars";
 import { chainMetadata, supportedChains } from "@/config/endpoint";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ChainsSelector from "./chains-selector";
 import Image from "next/image";
 import { SortSettings } from "@/hooks/useGraphData";
+import { useAccount, useChainId, useWalletClient } from "wagmi";
 
 export interface ChainAndGraph {
   id: number;
@@ -22,7 +23,9 @@ type SortingSelectValues =
   | "periodLength-desc";
 
 const ChainsList = () => {
+  const { isConnected, chainId: userChainId } = useAccount();
   const [selectedChain, setSelectedChain] = useState<number>(sepolia.id);
+  const [isChainValid, setIsChainValid] = useState(true);
   const [sorting, setSorting] = useState<SortSettings>({
     orderBy: "cookieAmount",
     orderDirection: "desc",
@@ -35,14 +38,34 @@ const ChainsList = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (userChainId && supportedChains.includes(userChainId)) {
+      setSelectedChain(userChainId);
+      setIsChainValid(true);
+    } else {
+      setSelectedChain(sepolia.id);
+      setIsChainValid(false);
+    }
+  }, [userChainId]);
+
   return (
     <section>
-      <div className="mb-4">
-        <ChainsSelector
-          selectedId={selectedChain}
-          setSelectedId={setSelectedChain}
-        />
-      </div>
+      {isConnected && !isChainValid && (
+        <Card className="relative z-20 mb-4 flex flex-col items-center gap-8 border-none bg-amber-100 p-8 text-center">
+          <h2 className="text-xl font-semibold">
+            We dont support the chain you are currently connected to just yet 🫥
+          </h2>
+          <p className="text-xl">Check out the jars on our other chains:</p>
+        </Card>
+      )}
+      {(!isConnected || !isChainValid) && (
+        <div className="mb-4">
+          <ChainsSelector
+            selectedId={selectedChain}
+            setSelectedId={setSelectedChain}
+          />
+        </div>
+      )}
       {supportedChains
         .filter((id) => id == selectedChain)
         .map((id) => (
