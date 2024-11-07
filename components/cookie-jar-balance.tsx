@@ -51,28 +51,25 @@ const CookieJarBalance = ({
       <p>Claim period: {periodLength}</p>
       <p>Owned by: {truncateEthereumAddress(owner)}</p>
       <div className="flex flex-row items-center gap-x-2">
-        <div className="flex flex-row items-center gap-x-1">
-          <span>Jar address</span>
-          <TooltipProvider delayDuration={200}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info
-                  size={16}
-                  strokeWidth={2}
-                  aria-label="Information about jar address"
-                  className="rounded-md text-gray-400 hover:bg-accent hover:text-white"
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  This is the address of the safe that holds CookieJar funds.
-                  Use this if you want to fund the jar from a DAO or Multisig
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <span>: {truncateEthereumAddress(owner)}</span>
-        </div>
+        <span>Jar address: {truncateEthereumAddress(owner)}</span>
+        <TooltipProvider delayDuration={200}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info
+                size={16}
+                strokeWidth={2}
+                aria-label="Information about jar address"
+                className="rounded-md text-gray-400 hover:bg-accent hover:text-white"
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                This is the address of the safe that holds CookieJar funds. Use
+                this if you want to fund the jar from a DAO or Multisig
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <Button
           variant="ghost"
           size="icon"
