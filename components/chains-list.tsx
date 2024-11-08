@@ -63,7 +63,7 @@ const ChainsList = () => {
           onChange={(e) => setFilter(e.target.value)}
         />
       </div>
-      <ScrollArea className="h-[40rem] w-full max-w-4xl">
+      <ScrollArea className="h-[40rem] w-full min-w-[690px] max-w-4xl">
         <div className="flex flex-col gap-2 p-4 pt-0">
           {isConnected && !isChainValid ? (
             "Whoops, we dont support the chain you are connected to just yet :/"

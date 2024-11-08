@@ -19,7 +19,7 @@ const ChainJars = ({ chainId, sorting, filter }: ChainJarsProps) => {
   });
 
   return (
-    <div className="min-w-[690px] flex-col">
+    <div className="w-full flex-col">
       {isFetching && (
         <div className="flex justify-center">
           <span className="mb-4 animate-spin text-4xl">🍪</span>
