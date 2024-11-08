@@ -19,12 +19,12 @@ const ChainJars = ({ chainId, sorting, filter }: ChainJarsProps) => {
   });
 
   return (
-    <div className="w-full flex-col">
+    <div className="flex w-full flex-col gap-4">
       {isFetching && (
         <div className="flex justify-center">
-          <span className="mb-4 animate-spin text-4xl">🍪</span>
-          <span className="mb-4 animate-spin text-4xl">🍪</span>
-          <span className="mb-4 animate-spin text-4xl">🍪</span>
+          <span className="animate-spin text-4xl">🍪</span>
+          <span className="animate-spin text-4xl">🍪</span>
+          <span className="animate-spin text-4xl">🍪</span>
         </div>
       )}
       {cookieJars.getFilteredRowModel().rows.map((jar) => (
