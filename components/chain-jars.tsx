@@ -1,37 +1,38 @@
 "use client";
 
 import { JarCard } from "./jar-card";
-import CreateJarFormERC20 from "./CreateJarFormERC20";
-import { LoaderIcon } from "lucide-react";
-import { SortSettings, useGraphData } from "@/hooks/useGraphData";
+import { SortSettings } from "@/hooks/useGraphData";
+import useJarsTable from "@/hooks/useJarsTable";
+import { Loader2Icon } from "lucide-react";
 
 interface ChainJarsProps {
-  chainId: number;
+  chainId?: number;
   sorting: SortSettings;
+  filter: string;
 }
 
-const ChainJars = ({ chainId, sorting }: ChainJarsProps) => {
-  const {
-    data: cookieJars,
-    isFetching,
-    error,
-  } = useGraphData({ chainId, sorting });
-  return error ? (
-    <p>{error.toString()}</p>
-  ) : isFetching || cookieJars == null ? (
-    <div className="flex min-w-[768px] justify-center p-10">
-      <LoaderIcon className="h-[80px] w-[80px] animate-spin" />
-    </div>
-  ) : cookieJars.length > 0 ? (
-    cookieJars.map((jar) => <JarCard key={jar.id} cookieJar={jar} />)
-  ) : (
-    <div>
-      <h2 className="text-2xl font-semibold leading-tight">
-        No jars just yet ...
-        <br />
-        Let&apos;s create the first one 👇
-      </h2>
-      <CreateJarFormERC20 />
+const ChainJars = ({ chainId, sorting, filter }: ChainJarsProps) => {
+  const { table: cookieJars, isFetching } = useJarsTable({
+    chainId,
+    sorting,
+    filter,
+  });
+
+  return (
+    <div className="min-w-[690px] flex-col">
+      {isFetching && (
+        <div className="flex justify-center">
+          <span className="mb-4 animate-spin text-4xl">🍪</span>
+          <span className="mb-4 animate-spin text-4xl">🍪</span>
+          <span className="mb-4 animate-spin text-4xl">🍪</span>
+        </div>
+      )}
+      {cookieJars.getFilteredRowModel().rows.map((jar) => (
+        <JarCard key={jar.id} cookieJar={jar.original} />
+      ))}
+      {!isFetching && cookieJars.getFilteredRowModel().rows.length === 0 && (
+        <p>No results, have a cookie anyway 🍪</p>
+      )}
     </div>
   );
 };
