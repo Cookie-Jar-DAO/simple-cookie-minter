@@ -39,19 +39,15 @@ export const AssessmentDialog: FC<AssessmentDialogProps> = ({
   const { toast } = useToast();
   
   // Check if user can assess
-  const { data: canAssess, isLoading: isCheckingPermission } = useReadContract<
-  typeof CookieJarCore,
-  'canClaim',
-  boolean
->({
-  address: cookieJarAddress,
-  abi: CookieJarCore,
-  functionName: "canClaim",
-  args: [address],
-  query: {
-    enabled: !!address && !!cookieJarAddress,
-  },
-});
+  const { data: canAssess, isLoading: isCheckingPermission } = useReadContract({
+    address: cookieJarAddress,
+    abi: CookieJarCore,
+    functionName: "canClaim",
+    args: [address],
+    query: {
+      enabled: !!address && !!cookieJarAddress,
+    },
+  }) as { data: boolean | undefined, isLoading: boolean };
 
   const form = useForm<AssessmentFormValues>({
     resolver: zodResolver(assessmentSchema),
