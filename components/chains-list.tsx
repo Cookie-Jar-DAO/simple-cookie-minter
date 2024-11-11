@@ -10,6 +10,15 @@ import ChainsSelector from "./chains-selector";
 import Image from "next/image";
 import { SortSettings } from "@/hooks/useGraphData";
 import { useAccount } from "wagmi";
+import {
+  Select,
+  SelectItem,
+  SelectLabel,
+  SelectGroup,
+  SelectContent,
+  SelectValue,
+  SelectTrigger,
+} from "@/components/ui/select";
 
 type SortingSelectValues =
   | "cookieAmount-desc"
@@ -81,19 +90,29 @@ const ChainsList = () => {
               />
               {chainMetadata[id].name} Jars
             </h1>
-            <div className="mv-2">
-              Order by{" "}
-              <select
-                className="text-strong bg-amber-200 p-2 font-bold"
-                onChange={(val) =>
-                  changeSorting(val.target.value as SortingSelectValues)
-                }
-              >
-                <option value="cookieAmount-desc">Largest cookie stash</option>
-                <option value="cookieAmount-asc">Smallest cookie stash</option>
-                <option value="periodLength-asc">Shortest claim period</option>
-                <option value="periodLength-desc">Longest claim period</option>
-              </select>
+            <div className="self-end">
+              <Select onValueChange={changeSorting}>
+                <SelectTrigger className="z-20 w-[180px]">
+                  <SelectValue placeholder="Filter by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Fruits</SelectLabel>
+                    <SelectItem value="cookieAmount-desc">
+                      Largest Cookies
+                    </SelectItem>
+                    <SelectItem value="cookieAmount-asc">
+                      Smallest Cookies
+                    </SelectItem>
+                    <SelectItem value="periodLength-asc">
+                      Claim period Asc
+                    </SelectItem>
+                    <SelectItem value="periodLength-desc">
+                      Claim period Desc
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             <ScrollArea className="h-[40rem] w-full max-w-4xl">
               <div className="flex flex-col gap-2 p-4 pt-0">
