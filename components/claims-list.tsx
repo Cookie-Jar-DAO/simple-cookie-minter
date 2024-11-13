@@ -18,6 +18,8 @@ export function ClaimsList({
   claims: Claim[];
   cookieJarAddress: Address;
 }) {
+  console.log(cookieJarAddress,"cjadd2");
+  
   if (claims.length === 0) {
     return (
       <div className="flex h-10 items-center justify-center text-center">
@@ -38,10 +40,10 @@ export function ClaimsList({
               <AccordionItem key={claim.id} value={claim.id}>
                 <AccordionTrigger>
                   {truncateEthereumAddress(claim.receiver)}
+                  <p>{claim.reason.reason}</p>
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="flex items-center justify-between">
-                    <p>{claim.reason.reason}</p>
                     <AssessmentDialog 
                       claimId={claim.id} 
                       cookieJarAddress={cookieJarAddress}

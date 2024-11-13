@@ -1,13 +1,14 @@
 import { Config, useWalletClient } from "wagmi";
 import { writeContract, simulateContract } from "wagmi/actions";
-import type { IClaimFromJarFormInput } from "@/components/ClaimFromJarForm";
+import type { z } from "zod";
+import { CookieClaimSchema } from "@/components/claim-from-jar-form";
 
 import { CookieJarCore } from "../abis";
 import { wagmiConfig } from "@/config/wagmi";
 export const useReachInJar = () => {
   const walletClient = useWalletClient();
 
-  const reachInCookieJar = async (claimData: IClaimFromJarFormInput) => {
+  const reachInCookieJar = async (claimData: z.infer<typeof CookieClaimSchema>) => {
     if (!walletClient) {
       throw new Error("Not connected to wallet");
     }
@@ -17,8 +18,9 @@ export const useReachInJar = () => {
       address: claimData.cookieJarAddress,
       abi: CookieJarCore,
       functionName: "reachInJar",
-      args: [claimData.cookieMonster, claimData.reason],
+      args: [claimData.cookieMonster, JSON.stringify(claimData.reason)],
     });
+    console.log("request", request);
 
     return await writeContract(wagmiConfig, request);
   };

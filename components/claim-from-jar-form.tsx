@@ -19,22 +19,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-export interface IClaimFromJarFormInput {
-  cookieJarAddress: Address;
-  cookieMonster: Address;
-  reason: string;
-}
-
 const ethAddressSchema = z.string().refine((value) => isAddress(value), {
   message:
     "Provided address is invalid. Please insure you have typed correctly.",
 });
 
-const schema = z
+export const CookieClaimSchema = z
   .object({
     cookieJarAddress: ethAddressSchema,
     cookieMonster: ethAddressSchema,
-    reason: z.string(),
+    reason: z.object({
+      link: z.string().url().optional().or(z.literal('')),
+      reason: z.string().min(1, 'Reason is required'),
+      tag: z.string().optional().or(z.literal('')),
+    }),
   })
   .required();
 
@@ -44,17 +42,22 @@ const ClaimFromJarForm = ({
   cookieJarAddress: Address;
 }) => {
   const { address } = useAccount();
-  const form = useForm<IClaimFromJarFormInput>({
+  const form = useForm<z.infer<typeof CookieClaimSchema>>({
     defaultValues: {
-      cookieJarAddress,
+      cookieJarAddress: cookieJarAddress,
       cookieMonster: address,
-      reason: "COOKIES!",
+      reason: {
+        link:"",
+        reason:"",
+        tag:""
+      },
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(CookieClaimSchema),
   });
   const { reachInCookieJar } = useReachInJar();
 
-  const onSubmit: SubmitHandler<IClaimFromJarFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    console.log('data from form',data);
     const hash = await reachInCookieJar(data);
     // if (form.formState.isValid) {
     //   const hash = await reachInCookieJar(data);
@@ -80,7 +83,7 @@ const ClaimFromJarForm = ({
         />
         <FormField
           control={form.control}
-          name="reason"
+          name="reason.reason"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Reason</FormLabel>
