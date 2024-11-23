@@ -14,8 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { FormControl, FormField, FormItem } from "./ui/form";
 import { Input } from "./ui/input";
 
 type SortingSelectValues =
