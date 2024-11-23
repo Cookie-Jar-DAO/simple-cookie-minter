@@ -53,7 +53,10 @@ const ChainsList = () => {
       <h1 className="font-gluten text-5xl font-semibold">Jars</h1>
       <div className="mx-2 flex w-full gap-4 px-4">
         <div className="w-[340px]">
-          <Select onValueChange={changeSorting} defaultValue={""}>
+          <Select
+            onValueChange={changeSorting}
+            defaultValue={"cookieAmount-desc"}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select a CookieJar" />
             </SelectTrigger>
