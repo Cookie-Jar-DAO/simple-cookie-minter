@@ -80,6 +80,7 @@ export const useGraphData = ({ chainId, sorting }: UseGraphDataProps) => {
         sorting.orderDirection,
       ],
       queryFn: () => fetchJarsOnGraph(chainId, sorting),
+      enabled: !!sorting,
     })),
     combine: (results) => ({
       data: results
