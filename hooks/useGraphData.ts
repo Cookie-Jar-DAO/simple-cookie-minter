@@ -1,6 +1,6 @@
 import { chainMetadata, endpoints } from "@/config/endpoint";
 import { CookieJar } from "@/lib/indexer/db";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 
 export interface SortSettings {
   orderBy: "cookieAmount" | "periodLength";
@@ -62,37 +62,36 @@ const fetchJarsOnGraph = async (
   }
 };
 
-const fetchMultipleJars = async ({
-  chainId,
-  sorting,
-}: UseGraphDataProps): Promise<CookieJar[]> => {
-  const queries = Object.keys(endpoints)
-    .filter((e) => (chainId ? Number(e) === chainId : true))
-    .map((e) => fetchJarsOnGraph(Number(e), sorting));
-
-  const dataFromGraphs = await Promise.allSettled(queries);
-
-  const validJars = dataFromGraphs.reduce((acc, result) => {
-    if (result.status === "fulfilled" && Array.isArray(result.value)) {
-      return [...acc, ...result.value];
-    }
-    return acc;
-  }, [] as CookieJar[]);
-
-  return validJars;
-};
-
 export interface UseGraphDataProps {
   chainId?: number;
   sorting: SortSettings;
 }
 
 export const useGraphData = ({ chainId, sorting }: UseGraphDataProps) => {
-  const key = `graph-data-${chainId || "all"}-${sorting.orderBy}-${sorting.orderDirection}`;
-  const { data, error, ...rest } = useQuery({
-    queryKey: [key],
-    queryFn: () => fetchMultipleJars({ chainId, sorting }),
-    enabled: !!sorting,
+  const endpointsToQuery = Object.keys(endpoints)
+    .filter((e) => (chainId ? Number(e) === chainId : true))
+    .map((chainId) => Number(chainId));
+  const { data, isFetching, error } = useQueries({
+    queries: endpointsToQuery.map((chainId) => ({
+      queryKey: [
+        "graph-data",
+        chainId,
+        sorting.orderBy,
+        sorting.orderDirection,
+      ],
+      queryFn: () => fetchJarsOnGraph(chainId, sorting),
+    })),
+    combine: (results) => ({
+      data: results
+        .filter((r) => r.data != null)
+        .map((r) => r.data)
+        .flat(),
+      isFetching: results.map((r) => r.isFetching).filter((r) => r).length > 0,
+      error: results
+        .map((r) => r.error)
+        .filter((r) => r != null)
+        .flat(),
+    }),
   });
-  return { data, error, ...rest };
+  return { data, isFetching, error };
 };

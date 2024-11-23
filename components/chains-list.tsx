@@ -1,15 +1,22 @@
 "use client";
 
-import { sepolia } from "wagmi/chains";
 import { Card } from "@/components/ui/card";
 import ChainJars from "@/components/chain-jars";
-import { chainMetadata, supportedChains } from "@/config/endpoint";
+import { supportedChains } from "@/config/endpoint";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCallback, useEffect, useState } from "react";
-import ChainsSelector from "./chains-selector";
-import Image from "next/image";
 import { SortSettings } from "@/hooks/useGraphData";
 import { useAccount } from "wagmi";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useForm } from "react-hook-form";
+import { FormControl, FormField, FormItem } from "./ui/form";
+import { Input } from "./ui/input";
 
 type SortingSelectValues =
   | "cookieAmount-desc"
@@ -45,19 +52,28 @@ const ChainsList = () => {
     <Card className="relative z-20 flex flex-col items-center gap-8 border-none bg-amber-100 p-8 text-center">
       <h1 className="font-gluten text-5xl font-semibold">Jars</h1>
       <div className="mx-2 flex w-full gap-4 px-4">
-        <select
-          className="text-strong rounded-md bg-amber-200 p-2 font-bold"
-          onChange={(val) =>
-            changeSorting(val.target.value as SortingSelectValues)
-          }
-        >
-          <option value="cookieAmount-desc">Largest cookie stash</option>
-          <option value="cookieAmount-asc">Smallest cookie stash</option>
-          <option value="periodLength-asc">Shortest claim period</option>
-          <option value="periodLength-desc">Longest claim period</option>
-        </select>
-        <input
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        <div className="w-[340px]">
+          <Select onValueChange={changeSorting} defaultValue={""}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a CookieJar" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="cookieAmount-desc">
+                Largest cookie stash
+              </SelectItem>
+              <SelectItem value="cookieAmount-asc">
+                Smallest cookie stash
+              </SelectItem>
+              <SelectItem value="periodLength-asc">
+                Shortest claim period
+              </SelectItem>
+              <SelectItem value="periodLength-desc">
+                Longest claim period
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <Input
           name="filter"
           placeholder="Search by anything (name, owner, ...)"
           onChange={(e) => setFilter(e.target.value)}
