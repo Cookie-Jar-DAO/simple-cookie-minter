@@ -1,6 +1,6 @@
-import { endpoints } from "@/config/endpoint";
+import { chainMetadata, endpoints } from "@/config/endpoint";
 import { CookieJar } from "@/lib/indexer/db";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 
 export interface SortSettings {
   orderBy: "cookieAmount" | "periodLength";
@@ -10,20 +10,17 @@ export interface SortSettings {
 const fetchJarsOnGraph = async (
   chainId: number,
   sorting: SortSettings,
-): Promise<CookieJar[] | undefined> => {
+): Promise<CookieJar[]> => {
   const url = endpoints[chainId];
   try {
-    const res = await fetch(
-      // TODO: update to be dynamic, use something like gql.tada for types https://gql-tada.0no.co/
-      url,
-      {
-        cache: "no-store",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
+    const res = await fetch(url, {
+      cache: "no-store",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `
           {
             cookieJars(orderBy: ${sorting.orderBy}, orderDirection: ${sorting.orderDirection}) {
               type
@@ -38,9 +35,8 @@ const fetchJarsOnGraph = async (
             }
           }
           `,
-        }),
-      },
-    );
+      }),
+    });
     if (!res.ok) {
       throw new Error("Network response was not ok.");
     }
@@ -56,24 +52,47 @@ const fetchJarsOnGraph = async (
     ) {
       throw new Error("Invalid response structure");
     }
-    return jsonResponse.data.cookieJars;
+    return jsonResponse.data.cookieJars.map((cookieJar: CookieJar) => ({
+      ...cookieJar,
+      chainId,
+      chainName: chainMetadata[chainId].name,
+    }));
   } catch (error) {
     throw new Error(error as unknown as string);
   }
 };
 
-interface UseGraphDataProps {
-  chainId: number;
+export interface UseGraphDataProps {
+  chainId?: number;
   sorting: SortSettings;
 }
 
 export const useGraphData = ({ chainId, sorting }: UseGraphDataProps) => {
-  const { data, error, ...rest } = useQuery({
-    queryKey: [
-      `graph-data-${chainId}-${sorting.orderBy}-${sorting.orderDirection}`,
-    ],
-    queryFn: () => fetchJarsOnGraph(chainId, sorting),
-    enabled: !!chainId && !!sorting,
+  const endpointsToQuery = Object.keys(endpoints)
+    .filter((e) => (chainId ? Number(e) === chainId : true))
+    .map((chainId) => Number(chainId));
+  const { data, isFetching, error } = useQueries({
+    queries: endpointsToQuery.map((chainId) => ({
+      queryKey: [
+        "graph-data",
+        chainId,
+        sorting.orderBy,
+        sorting.orderDirection,
+      ],
+      queryFn: () => fetchJarsOnGraph(chainId, sorting),
+      enabled: !!sorting,
+    })),
+    combine: (results) => ({
+      data: results
+        .filter((r) => r.data != null)
+        .map((r) => r.data)
+        .flat(),
+      isFetching: results.map((r) => r.isFetching).filter((r) => r).length > 0,
+      error: results
+        .map((r) => r.error)
+        .filter((r) => r != null)
+        .flat(),
+    }),
   });
-  return { data, error, ...rest };
+  return { data, isFetching, error };
 };
