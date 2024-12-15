@@ -1,16 +1,13 @@
-import { cn } from "@/lib/utils";
+import { fromSeconds, intervals, TimeInterval, toSeconds } from "@/lib/time";
 import { forwardRef, useCallback, useEffect, useState } from "react";
-
-const intervals = {
-  minutes: 60,
-  hours: 3600,
-  days: 86400,
-  weeks: 604800,
-  months: 2592000,
-  years: 31536000,
-} as const;
-
-export type TimeInterval = keyof typeof intervals;
+import { Input } from "./input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 
 export interface TimePeriodInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -18,12 +15,6 @@ export interface TimePeriodInputProps
   initialInterval: TimeInterval;
   onChangeAmount: (val: number) => void;
 }
-
-const toSeconds = (value: number, interval: TimeInterval) =>
-  Math.floor(value * intervals[interval]);
-const fromSeconds = (value: number, interval: TimeInterval) =>
-  Math.floor(value / intervals[interval]);
-
 const TimePeriodInput = forwardRef<HTMLInputElement, TimePeriodInputProps>(
   (
     {
@@ -76,31 +67,32 @@ const TimePeriodInput = forwardRef<HTMLInputElement, TimePeriodInputProps>(
 
     return (
       <div className="flex flex-row items-center gap-2">
-        <input
+        <Input
           {...props}
           value={innerValue}
           type="number"
           min={0}
           onChange={(e) => handleChange(e.target.value, selectedInterval)}
-          className={cn(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-            className,
-          )}
+          className={className}
           ref={ref}
         />
-        <select
+        <Select
           value={selectedInterval}
-          className="flex h-10 flex-1 cursor-pointer items-center items-center justify-center rounded-md border border-input bg-amber-200 p-2 font-semibold"
-          onChange={(e) =>
-            changeInterval(e.target.value as TimeInterval, innerValue)
+          onValueChange={(value: TimeInterval) =>
+            changeInterval(value, innerValue)
           }
         >
-          {Object.keys(intervals).map((i) => (
-            <option key={i} value={i}>
-              {i}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="flex-1 bg-amber-200 font-bold">
+            <SelectValue placeholder="Select a time interval" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.keys(intervals).map((i) => (
+              <SelectItem key={i} value={i}>
+                {i}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     );
   },

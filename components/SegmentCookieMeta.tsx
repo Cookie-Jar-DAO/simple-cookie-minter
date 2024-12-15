@@ -142,8 +142,8 @@ const SegmentCookieMeta: React.FC<SegmentCookieMetaProps<any>> = ({ form }) => {
                 />
               </FormControl>
               <FormDescription>
-                The time in seconds between cookie distributions (
-                {field.value.toString()} seconds)
+                The time between cookie distributions ({field.value.toString()}{" "}
+                seconds)
               </FormDescription>
               <FormMessage />
             </FormItem>
