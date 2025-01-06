@@ -14,10 +14,11 @@ import { CookieJarBalance } from "@/components/cookie-jar-balance";
 import { cookJarMockData } from "../mock-data";
 import { FeedJarButton } from "@/components/feed-jar/feed-jar-button";
 import { FeedJarDialog } from "@/components/feed-jar/feed-jar-dialog";
+import { Address } from "viem";
 
 type JarData = { cookieJar: CookieJar; claims: Claim[] };
 
-const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
+const fetchJarData = async (jarId: Address): Promise<JarData | undefined> => {
   try {
     const res = await fetch(
       "https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-2-0x4c9",
@@ -90,7 +91,7 @@ const fetchJarData = async (jarId: string): Promise<JarData | undefined> => {
 export default async function JarPage({
   params,
 }: {
-  params: { jarId: string };
+  params: { jarId: Address };
 }) {
   const jarData = await fetchJarData(params.jarId);
 
@@ -154,7 +155,7 @@ export default async function JarPage({
                 />
               </div>
             </Card>
-            <ClaimsList claims={claims} />
+            <ClaimsList claims={claims} cookieJarAddress={params.jarId} />
           </Card>
         </section>
       </div>
