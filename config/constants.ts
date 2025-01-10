@@ -1,12 +1,12 @@
-import { optimism, sepolia } from "viem/chains";
+import { arbitrum, gnosis, base, optimism, sepolia } from "viem/chains";
 import { Chain } from "viem";
 
 export const WC_PROJECT_ID = process.env.NEXT_PUBLIC_WC_PROJECT_ID;
 export const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT;
 
 // TODO: Update to not include testnets after stable release
-export const testNetChains = [optimism, sepolia] as const;
-export const prodNetChains = [optimism, sepolia] as const;
+export const testNetChains = [optimism, sepolia, gnosis,base,arbitrum] as const;
+export const prodNetChains = [optimism, sepolia, gnosis,base,arbitrum] as const;
 
 export const SUPPORTED_CHAINS = (
   ENVIRONMENT === "production" ? prodNetChains : testNetChains
