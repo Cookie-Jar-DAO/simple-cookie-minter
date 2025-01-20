@@ -1,9 +1,8 @@
 "use client";
 
-import { JarCard } from "./jar-card";
 import { SortSettings } from "@/hooks/useGraphData";
 import useJarsTable from "@/hooks/useJarsTable";
-import { Loader2Icon } from "lucide-react";
+import { JarCard } from "./jar-card";
 
 interface ChainJarsProps {
   chainId?: number;

@@ -1,34 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import zod from "zod";
 
-import { type Address, isAddress, isHex } from "viem";
+import { isAddress, type Address } from "viem";
 import {
   useAccount,
   usePublicClient,
   useWaitForTransactionReceipt,
 } from "wagmi";
 
-import { useMintNFTJar } from "@/hooks/useMintNFTJar";
 import { ZERO_ADDRESS } from "@/app/constants";
+import { useMintNFTJar } from "@/hooks/useMintNFTJar";
 
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import { Form } from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
 
-import SegmentCookieMeta from "./SegmentCookieMeta";
-import SegmentDonation from "./SegmentDonation";
 import type {
   ICreateJarFormInput,
   ICreateJarFormInputERC20,
 } from "@/components/types/CookieTypes";
+import SegmentCookieMeta from "./SegmentCookieMeta";
+import SegmentDonation from "./SegmentDonation";
 import SegmentERC20TokenGating from "./SegmentERC20TokenGating";
-import { wagmiConfig } from "@/config/wagmi";
-import { waitForTransactionReceipt } from "viem/actions";
 
 const toNumber = zod
   .number()
@@ -139,6 +137,7 @@ const CreateJarFormERC20 = () => {
   const onSubmit: SubmitHandler<
     ICreateJarFormInput & ICreateJarFormInputERC20
   > = async (data) => {
+    console.log("data", data);
     if (isValid) {
       const result = await mintCookieJarNFT(data);
 

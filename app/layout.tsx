@@ -1,12 +1,11 @@
-import "./globals.css";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { Inter as FontSans } from "next/font/google";
+import "./globals.css";
 
-import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/toaster";
-import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 import { Web3ModalProvider } from "@/context/wagmi";
 
@@ -25,8 +24,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookies = headers().get("cookie");
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
