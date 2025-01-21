@@ -1,10 +1,9 @@
 "use client";
 
-import { JarCard } from "./jar-card";
 import { SortSettings } from "@/hooks/useGraphData";
 import useJarsTable from "@/hooks/useJarsTable";
-import { Loader2Icon } from "lucide-react";
-
+import type { CookieJar } from "@/lib/indexer/db";
+import { JarCard } from "./jar-card";
 interface ChainJarsProps {
   chainId?: number;
   sorting: SortSettings;
@@ -27,9 +26,12 @@ const ChainJars = ({ chainId, sorting, filter }: ChainJarsProps) => {
           <span className="animate-spin text-4xl">🍪</span>
         </div>
       )}
-      {cookieJars.getFilteredRowModel().rows.map((jar) => (
-        <JarCard key={jar.id} cookieJar={jar.original} />
-      ))}
+      {cookieJars &&
+        cookieJars
+          .getFilteredRowModel()
+          .rows.map((jar) => (
+            <JarCard key={jar.id} cookieJar={jar.original as CookieJar} />
+          ))}
       {!isFetching && cookieJars.getFilteredRowModel().rows.length === 0 && (
         <p>No results, have a cookie anyway 🍪</p>
       )}
