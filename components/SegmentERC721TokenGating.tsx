@@ -26,30 +26,23 @@ import { erc20Abi } from "viem";
 const SegmentERC721TokenGating: React.FC<SegmentCookieMetaProps<any>> = ({
   form,
 }) => {
-  const {
-    control,
-    formState: { isValid },
-    watch,
-    setValue,
-    clearErrors,
-    setError,
-  } = form;
+  const { control, watch, setValue, clearErrors, setError } = form;
 
   const { data: token } = useReadContracts({
     allowFailure: false,
     contracts: [
       {
-        address: watch("erc721Token") as `0x${string}`,
+        address: watch("erc721Token"),
         abi: erc20Abi,
         functionName: "decimals",
       },
       {
-        address: watch("erc721Token") as `0x${string}`,
+        address: watch("erc721Token"),
         abi: erc20Abi,
         functionName: "symbol",
       },
       {
-        address: watch("erc721Token") as `0x${string}`,
+        address: watch("erc721Token"),
         abi: erc20Abi,
         functionName: "name",
       },

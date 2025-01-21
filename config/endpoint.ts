@@ -1,3 +1,5 @@
+import { sepolia, optimism, gnosis, base, arbitrum } from "wagmi/chains";
+
 const production = "https://cookiejar.wtf";
 const development = "https://cookiejar-dev.wtf";
 const localhost = "http://localhost:3000";
@@ -12,19 +14,28 @@ export const getUrl = () => {
   return localhost;
 };
 
-export const getApiEndpoint = (chainId: number) => {
-  const endpoints = {
-    11155111:
-      "https://api.studio.thegraph.com/query/28985/cookie-jar-testing/sepolia-0x4c941cafac0b6d67a6c4ee5399927aa889aab780",
-    10: "https://api.studio.thegraph.com/query/28985/cookie-jar-production/optimism-0x4c941cafac0b6d67a6c4ee5399927aa889aab780",
-    // ! TODO: EVERYTHING BELOW IS NOT ACCURATE AND NEEDS TO BE UPDATED WHEN THE GRAPH IS DEPLOYED TO THE FOLLOWING CHAINS
-    // 8453: "https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
-    // 42161:
-    // 	"https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
-    // 100: "https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca",
-  } as Record<number, string>;
-  return (
-    endpoints[chainId] ||
-    "https://api.studio.thegraph.com/proxy/28985/cookie-jar-testing/0d72cbaa2c26d234c82e6b150cc7ffbce69bdeca"
-  );
+const baseGraphUrl = "https://api.studio.thegraph.com/query/92478";
+export const endpoints = {
+  [arbitrum.id]: `${baseGraphUrl}/cg-arbitrum/version/latest`,
+  [base.id]: `${baseGraphUrl}/cg-base/version/latest`,
+  [gnosis.id]: `${baseGraphUrl}/cg-gnosis/version/latest`,
+  [optimism.id]: `${baseGraphUrl}/cg-optimism/version/latest`,
+  [sepolia.id]: `${baseGraphUrl}/cg-sepolia/version/latest`,
+} as Record<number, string>;
+
+export const getApiEndpoint = (chainId: number = sepolia.id) =>
+  endpoints[chainId];
+
+interface ChainMetadata {
+  logo: string;
+  name: string;
+}
+export const chainMetadata: Record<number, ChainMetadata> = {
+  [sepolia.id]: { logo: "/sepolia.webp", name: sepolia.name },
+  [base.id]: { logo: "/base.webp", name: base.name },
+  [gnosis.id]: { logo: "/gnosis.webp", name: gnosis.name },
+  [arbitrum.id]: { logo: "/arbitrum.webp", name: arbitrum.name },
+  [optimism.id]: { logo: "/optimism.webp", name: optimism.name },
 };
+
+export const supportedChains = Object.keys(endpoints).map((id) => Number(id));
