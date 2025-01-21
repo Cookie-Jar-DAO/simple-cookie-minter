@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useAccount } from "wagmi";
 
-import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,6 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 export const Header = () => {
   const { address } = useAccount();
@@ -36,11 +36,8 @@ export const Header = () => {
 
   return (
     <>
-      <NavigationMenu
-        className="max-h-16 bg-amber-100 bg-opacity-90"
-        onValueChange={onNavChange}
-      >
-        <NavigationMenuList className="space-x-2">
+      <NavigationMenu onValueChange={onNavChange}>
+        <NavigationMenuList>
           <NavigationMenuItem>
             <Link legacyBehavior href="/" passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -58,35 +55,35 @@ export const Header = () => {
           {address && (
             <NavigationMenuItem>
               <NavigationMenuTrigger
-                className={`submenu-trigger ${navigationMenuTriggerStyle()}`}
+                className={`${navigationMenuTriggerStyle()}`}
               >
                 Mint Jar
               </NavigationMenuTrigger>
-              <NavigationMenuContent className="flex flex-col gap-2 bg-amber-100 p-2">
+              <NavigationMenuContent>
                 <Link legacyBehavior href="/mintERC20" passHref>
                   <NavigationMenuLink
-                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                    className={cn(navigationMenuTriggerStyle())}
                   >
                     ERC20
                   </NavigationMenuLink>
                 </Link>
                 <Link legacyBehavior href="/mintERC721" passHref>
                   <NavigationMenuLink
-                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                    className={cn(navigationMenuTriggerStyle())}
                   >
                     ERC721
                   </NavigationMenuLink>
                 </Link>
                 <Link legacyBehavior href="/mintBaal" passHref>
                   <NavigationMenuLink
-                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                    className={cn(navigationMenuTriggerStyle())}
                   >
                     Baal
                   </NavigationMenuLink>
                 </Link>
                 <Link legacyBehavior href="/mintHats" passHref>
                   <NavigationMenuLink
-                    className={cn(navigationMenuTriggerStyle(), "w-full")}
+                    className={cn(navigationMenuTriggerStyle())}
                   >
                     Hats
                   </NavigationMenuLink>
