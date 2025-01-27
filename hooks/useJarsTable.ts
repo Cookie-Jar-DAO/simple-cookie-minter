@@ -5,9 +5,14 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useGraphData, UseGraphDataProps } from "./useGraphData";
+import { useMemo } from "react";
+import { UseGraphDataProps, useGraphData } from "./useGraphData";
 
+interface UseJarsTableProps extends UseGraphDataProps {
+  filter: string;
+}
 const columns: ColumnDef<CookieJar>[] = [
+  { accessorKey: "chainId", header: "Chain ID" },
   { accessorKey: "chainId", header: "Chain ID" },
   { accessorKey: "type", header: "Type" },
   { accessorKey: "periodLength", header: "Period Length" },
@@ -22,14 +27,20 @@ const columns: ColumnDef<CookieJar>[] = [
   { accessorKey: "chainName", header: "Chain name" },
 ];
 
-interface UseJarsTableProps extends UseGraphDataProps {
-  filter: string;
-}
-
+const EMPTY_DATA: CookieJar[] = [];
+// ! This whole implementation is a mess, but it works for now. Needs to be refactored.
 const useJarsTable = ({ chainId, sorting, filter }: UseJarsTableProps) => {
-  const { data, isFetching } = useGraphData({ chainId, sorting });
-  const table = useReactTable({
-    data: data ?? [],
+  const { data: rawData, isFetching } = useGraphData({ chainId, sorting });
+
+  // Filter out undefined values and ensure type safety
+  const tableData = useMemo(() => {
+    if (!rawData) return EMPTY_DATA;
+    // Filter out any undefined values and ensure we have a clean CookieJar array
+    return rawData.filter((item): item is CookieJar => item !== undefined);
+  }, [rawData]);
+
+  const table = useReactTable<CookieJar>({
+    data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
