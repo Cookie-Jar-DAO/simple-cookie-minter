@@ -19,10 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-const ethAddressSchema = z.string().refine((value) => isAddress(value), {
-  message:
-    "Provided address is invalid. Please insure you have typed correctly.",
-});
+const ethAddressSchema = z.custom<Address>((val) => {
+  return isAddress(val as string);
+}, "Invalid Ethereum address");
 
 export const CookieClaimSchema = z
   .object({
@@ -35,6 +34,8 @@ export const CookieClaimSchema = z
     }),
   })
   .required();
+
+export type CookieClaimFormValues = z.infer<typeof CookieClaimSchema>;
 
 const ClaimFromJarForm = ({
   cookieJarAddress,

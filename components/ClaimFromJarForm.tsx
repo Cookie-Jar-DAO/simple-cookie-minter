@@ -7,24 +7,7 @@ import zod from "zod";
 import { NFTImage } from "./NFTImage";
 import { useReachInJar } from "@/hooks/useReachInJar";
 import { Button } from "@/components/ui/button";
-
-export interface IClaimFromJarFormInput {
-  cookieJarAddress: Address;
-  cookieMonster: Address;
-  reason: string;
-}
-
-const ethAddressSchema = zod.string().refine((value) => isAddress(value), {
-  message:
-    "Provided address is invalid. Please insure you have typed correctly.",
-});
-
-const schema = zod
-  .object({
-    cookieMonster: ethAddressSchema,
-    reason: zod.string(),
-  })
-  .required();
+import { CookieClaimSchema, type CookieClaimFormValues } from "./claim-from-jar-form";
 
 const inputStyle =
   "w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900 p-2";
@@ -40,17 +23,21 @@ const ClaimFromJarForm = ({
     register,
     reset,
     formState: { errors, isValid },
-  } = useForm<IClaimFromJarFormInput>({
+  } = useForm<CookieClaimFormValues>({
     defaultValues: {
       cookieJarAddress,
       cookieMonster: address,
-      reason: "COOKIES!",
+      reason: {
+        reason: "",
+        link: "",
+        tag: ""
+      },
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(CookieClaimSchema),
   });
   const { reachInCookieJar } = useReachInJar();
 
-  const onSubmit: SubmitHandler<IClaimFromJarFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<CookieClaimFormValues> = async (data) => {
     if (isValid) {
       const hash = await reachInCookieJar(data);
     }
@@ -80,9 +67,12 @@ const ClaimFromJarForm = ({
               <p className="text-red-500">{errors.cookieMonster?.message}</p>
             </div>
             <div className="col-span-full">
-              <label htmlFor="reason">Title</label>
-              <input {...register("reason")} className={inputStyle} />
-              <p className="text-red-500">{errors.reason?.message}</p>
+              <label htmlFor="reason.reason">Title</label>
+              <input 
+                {...register("reason.reason")} 
+                className={inputStyle} 
+              />
+              <p className="text-red-500">{errors.reason?.reason?.message}</p>
             </div>
           </div>
         </fieldset>
