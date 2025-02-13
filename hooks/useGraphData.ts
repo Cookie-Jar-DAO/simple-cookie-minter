@@ -94,5 +94,6 @@ export const useGraphData = ({ chainId, sorting }: UseGraphDataProps) => {
         .flat(),
     }),
   });
+
   return { data, isFetching, error };
 };

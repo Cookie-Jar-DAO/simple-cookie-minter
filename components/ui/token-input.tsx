@@ -61,7 +61,7 @@ const TokenInput = forwardRef<HTMLInputElement, InputProps>(
           onChange={(e) => handleChange(e.target.value, decimalPlaces ?? 0)}
           ref={ref}
         />
-        <span className="flex h-10 items-center items-center justify-center rounded-md border border-input bg-amber-200 p-2 font-semibold">
+        <span className="flex h-10 items-center justify-center rounded-md border border-input bg-background p-2">
           {symbol || "❓"}
         </span>
       </div>

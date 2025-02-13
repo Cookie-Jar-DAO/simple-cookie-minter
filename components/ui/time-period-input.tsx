@@ -82,7 +82,7 @@ const TimePeriodInput = forwardRef<HTMLInputElement, TimePeriodInputProps>(
             changeInterval(value, innerValue)
           }
         >
-          <SelectTrigger className="flex-1 bg-amber-200 font-bold">
+          <SelectTrigger className="flex-1">
             <SelectValue placeholder="Select a time interval" />
           </SelectTrigger>
           <SelectContent>
